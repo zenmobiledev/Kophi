@@ -1,4 +1,4 @@
-package com.example.kophi.ui.onboarding.adapter
+package com.example.kophi.presentation.ui.onboarding.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kophi.R
 import com.example.kophi.databinding.ItemOnboardingScreenBinding
-import com.example.kophi.ui.onboarding.activity.AppIntroActivity
+import com.example.kophi.presentation.ui.onboarding.AppIntroActivity
 
 class AppIntroViewPager2Adapter(private val listener: IOnButton) :
     RecyclerView.Adapter<AppIntroViewPager2Adapter.ViewHolder>() {

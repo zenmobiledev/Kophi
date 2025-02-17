@@ -1,4 +1,4 @@
-package com.example.kophi.ui.onboarding.activity
+package com.example.kophi.presentation.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.kophi.MainActivity
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityAppIntroBinding
-import com.example.kophi.ui.onboarding.adapter.AppIntroViewPager2Adapter
+import com.example.kophi.presentation.ui.main.MainActivity
+import com.example.kophi.presentation.ui.onboarding.adapter.AppIntroViewPager2Adapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AppIntroActivity : AppCompatActivity() {

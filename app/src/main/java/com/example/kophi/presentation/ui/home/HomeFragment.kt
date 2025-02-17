@@ -1,4 +1,4 @@
-package com.example.kophi.ui.home
+package com.example.kophi.presentation.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

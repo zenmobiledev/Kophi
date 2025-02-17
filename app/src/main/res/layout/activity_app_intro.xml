@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.onboarding.activity.AppIntroActivity">
+    tools:context=".presentation.ui.onboarding.AppIntroActivity">
 
     <!--ViewPager2-->
     <androidx.viewpager2.widget.ViewPager2
@@ -17,18 +17,14 @@
     <!--indicator-->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="0dp"
+        android:layout_width="60dp"
         android:layout_height="20dp"
-        android:layout_gravity="bottom"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:background="@color/md_theme_surface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabBackground="@drawable/tab_selector"
-        app:tabIndicatorFullWidth="true"
         app:tabIndicatorHeight="0dp"
-        app:tabMaxWidth="15dp"
-        app:tabMode="fixed"
         app:tabRippleColor="@null" />
 </androidx.constraintlayout.widget.ConstraintLayout>

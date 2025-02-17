@@ -1,4 +1,4 @@
-package com.example.kophi.ui.dashboard
+package com.example.kophi.presentation.ui.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

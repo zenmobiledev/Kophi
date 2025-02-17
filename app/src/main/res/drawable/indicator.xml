@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list>
-    <item>
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:left="4dp"
+        android:right="4dp">
+
+        <shape
             android:shape="rectangle"
-            android:tint="@color/md_theme_surfaceVariant"
             android:useLevel="false">
+
             <corners android:radius="8dp" />
 
-<!--            <size-->
-<!--                android:width="15dp"-->
-<!--                android:height="20dp" />-->
+            <solid android:color="@color/md_theme_surfaceVariant" />
         </shape>
     </item>
 </layer-list>

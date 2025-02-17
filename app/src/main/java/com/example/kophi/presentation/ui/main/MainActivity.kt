@@ -1,4 +1,4 @@
-package com.example.kophi
+package com.example.kophi.presentation.ui.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.kophi.R
 import com.example.kophi.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
