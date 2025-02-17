@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityAppIntroBinding
-import com.example.kophi.presentation.ui.main.MainActivity
+import com.example.kophi.presentation.ui.authentication.AuthenticationActivity
 import com.example.kophi.presentation.ui.onboarding.adapter.AppIntroViewPager2Adapter
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -34,7 +34,7 @@ class AppIntroActivity : AppCompatActivity() {
             AppIntroViewPager2Adapter(object : AppIntroViewPager2Adapter.IOnButton {
                 override fun onClick() {
                     finish()
-                    startActivity(Intent(this@AppIntroActivity, MainActivity::class.java))
+                    startActivity(Intent(this@AppIntroActivity, AuthenticationActivity::class.java))
                 }
 
             })
