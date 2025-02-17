@@ -3,4 +3,13 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="intro_title_1">Choose the best coffee</string>
+    <string name="intro_sub_title_1">Browse and select from a variety of\npremium coffee options tailored to\nyour taste.</string>
+
+    <string name="intro_title_2">Transfer online</string>
+    <string name="intro_sub_title_2">Use various payment methods like\ndebit cards, credit cards, and digital\nwallets</string>
+
+    <string name="intro_title_3">Relax and Enjoy your coffee</string>
+    <string name="intro_sub_title_3">Pick up your coffee hassle-free and enjoy a\nperfect brew, anytime, anywhere</string>
 </resources>
