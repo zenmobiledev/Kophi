@@ -50,7 +50,6 @@ class AppIntroActivity : AppCompatActivity() {
             AppIntroViewPager2Adapter(object : AppIntroViewPager2Adapter.IOnButton {
                 override fun onClick() {
                     // get preference
-                    println(isOnboard)
                     if (isOnboard) {
                         preference.edit().putBoolean(PreferenceParameter.IS_ONBOARDING, false)
                             .apply()
