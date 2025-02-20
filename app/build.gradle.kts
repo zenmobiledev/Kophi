@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt.android)
+//    alias(libs.plugins.ksp)
+//    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -51,8 +51,12 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
+//    implementation(libs.hilt.android)
+//    ksp(libs.hilt.android.compiler)
+
+    // Coil
+    implementation("io.coil-kt.coil3:coil:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
