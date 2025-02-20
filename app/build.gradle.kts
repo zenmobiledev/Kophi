@@ -48,6 +48,10 @@ dependencies {
     // View Pager 2
     implementation(libs.androidx.viewpager2)
 
+    // Coil
+    implementation("io.coil-kt.coil3:coil:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+
     // Data Store - Preference
     implementation(libs.androidx.datastore.preferences)
 
