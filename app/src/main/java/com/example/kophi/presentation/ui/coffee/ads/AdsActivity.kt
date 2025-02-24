@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import coil3.load
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityAdsBinding
+import com.example.kophi.presentation.ui.coffee.coffee.CoffeeFragment
 
 class AdsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAdsBinding
@@ -25,6 +26,7 @@ class AdsActivity : AppCompatActivity() {
             insets
         }
 
-        binding.ivAds.load(binding.ivAds)
+        val imageRes = intent.getIntExtra(CoffeeFragment.ADS_IMAGE, 0)
+        binding.ivAds.load(imageRes)
     }
 }

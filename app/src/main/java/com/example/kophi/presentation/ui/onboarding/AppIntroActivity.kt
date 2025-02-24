@@ -9,7 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.kophi.R
-import com.example.kophi.data.local.preference.PreferenceParameter
+import com.example.kophi.data.source.local.preference.PreferenceParameter
 import com.example.kophi.databinding.ActivityAppIntroBinding
 import com.example.kophi.presentation.ui.authentication.AuthenticationActivity
 import com.example.kophi.presentation.ui.onboarding.adapter.AppIntroViewPager2Adapter

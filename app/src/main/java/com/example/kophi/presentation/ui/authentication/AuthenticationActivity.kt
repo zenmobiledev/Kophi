@@ -19,7 +19,7 @@ import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.example.kophi.R
-import com.example.kophi.data.local.preference.PreferenceParameter
+import com.example.kophi.data.source.local.preference.PreferenceParameter
 import com.example.kophi.databinding.ActivityAuthenticationBinding
 import com.example.kophi.presentation.ui.main.MainActivity
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption

@@ -2,17 +2,24 @@ package com.example.kophi.presentation.ui.coffee.ads.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import com.example.kophi.databinding.ItemAdsImageBinding
 
-class AdsAdapter(private val adsList: MutableList<Int>) :
+class AdsAdapter(
+    private val adsList: List<Int>,
+    val clickItemListener: (Int) -> Unit,
+) :
     RecyclerView.Adapter<AdsAdapter.AdsViewHolder>() {
-    private lateinit var onItemClickListener: OnItemClickListener
 
     inner class AdsViewHolder(private val binding: ItemAdsImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            itemView.setOnClickListener {
+                clickItemListener(adsList[bindingAdapterPosition])
+            }
+        }
+
         fun bind(image: Int) {
             binding.ivAds.load(image)
         }
@@ -31,13 +38,5 @@ class AdsAdapter(private val adsList: MutableList<Int>) :
 
     override fun onBindViewHolder(holder: AdsViewHolder, position: Int) {
         holder.bind(adsList[position])
-    }
-
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.onItemClickListener = onItemClickListener
-    }
-
-    interface OnItemClickListener {
-        fun onClick(image: ImageView, url: String)
     }
 }

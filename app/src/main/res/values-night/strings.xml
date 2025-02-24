@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Kophi</string>
     <string name="title_coffee">Coffee</string>
@@ -13,7 +14,6 @@
     <string name="intro_title_3">Relax and Enjoy your coffee</string>
     <string name="intro_sub_title_3">Pick up your coffee hassle-free and enjoy a\nperfect brew, anytime, anywhere</string>
 
-    <string name="default_web_client_id">529530527097-ab8lgj4sbvo8qpgotambf45c84kbr19u.apps.googleusercontent.com</string>
     <string name="add_to_cart">Add to Cart (%s)</string>
     <string name="item_total">1</string>
 </resources>
