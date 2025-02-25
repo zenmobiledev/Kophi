@@ -1,10 +1,9 @@
 package com.example.kophi.data.source.local.datasource
 
-import com.example.kophi.data.source.local.entity.CartCoffeeEntity
-import com.example.kophi.data.source.local.entity.CoffeeEntity
+import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 
 interface CoffeeLocalDataSource {
-    suspend fun insertCoffee(coffee: CartCoffeeEntity)
+    suspend fun insertCoffeeCart(coffee: CoffeeCartEntity)
 
-    suspend fun getCoffeeList(): List<CoffeeEntity>
+    suspend fun getAllCoffeeProducts(): List<CoffeeCartEntity>
 }

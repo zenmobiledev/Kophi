@@ -11,7 +11,7 @@ data class Coffee(
         val id: Int,
         val category: String,
         val image: String,
-        val title: String,
+        val name: String,
         val description: String,
         val temperature: List<String?>?,
         val milkOption: List<String?>?,

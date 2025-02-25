@@ -18,8 +18,8 @@ data class CoffeeResponse(
         val category: String,
         @SerializedName("image")
         val image: String,
-        @SerializedName("title")
-        val title: String,
+        @SerializedName("name")
+        val name: String,
         @SerializedName("description")
         val description: String,
         @SerializedName("temperature")

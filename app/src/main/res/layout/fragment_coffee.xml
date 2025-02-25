@@ -35,13 +35,6 @@
             app:tabMode="auto" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_coffee_list"
         android:layout_width="match_parent"
@@ -83,6 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/md_theme_surfaceContainerHighest"
+        android:clickable="true"
+        android:focusable="true"
         android:visibility="gone"
         app:cardCornerRadius="0dp"
         app:layout_anchor="@id/cl_coffee_list"
@@ -109,12 +104,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:text="Rp 1.000.000"
                 android:textAppearance="@style/Title.Medium"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/iv_coffee_cart"
                 app:layout_constraintStart_toEndOf="@+id/iv_coffee_cart"
-                app:layout_constraintTop_toTopOf="@id/iv_coffee_cart" />
+                app:layout_constraintTop_toTopOf="@id/iv_coffee_cart"
+                tools:text="Rp 1.000.000" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="40dp"

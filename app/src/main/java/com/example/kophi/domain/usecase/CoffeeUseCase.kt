@@ -1,7 +1,7 @@
 package com.example.kophi.domain.usecase
 
-import com.example.kophi.domain.model.CartCoffee
 import com.example.kophi.domain.model.Coffee
+import com.example.kophi.domain.model.CoffeeCart
 import com.example.kophi.domain.repositories.CoffeeRepository
 import com.example.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,11 @@ class CoffeeUseCase @Inject constructor(private val coffeeRepository: CoffeeRepo
         return coffeeRepository.getCoffeeList()
     }
 
-    suspend fun insertCoffee(coffee: CartCoffee) {
-        coffeeRepository.insertCoffee(coffee)
+    suspend fun insertCoffeeCart(coffee: CoffeeCart) {
+        coffeeRepository.insertCoffeeCart(coffee)
+    }
+
+    suspend fun getAllCoffeeProducts(): List<CoffeeCart> {
+        return coffeeRepository.getAllCoffeeProducts()
     }
 }

@@ -2,8 +2,8 @@ package com.example.kophi.presentation.ui.coffee.coffee
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kophi.domain.model.CartCoffee
 import com.example.kophi.domain.model.Coffee
+import com.example.kophi.domain.model.CoffeeCart
 import com.example.kophi.domain.usecase.CoffeeUseCase
 import com.example.kophi.utils.ResultResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +26,9 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
         )
     )
     val coffeeData: StateFlow<Coffee> = _coffeeData.asStateFlow()
+
+    private val _coffeeList = MutableStateFlow<List<CoffeeCart>>(emptyList())
+    val coffeeList: StateFlow<List<CoffeeCart>> = _coffeeList.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -62,10 +65,18 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
         }
     }
 
-    fun insertCoffee(coffee: CartCoffee) {
+    fun insertCoffeeCart(coffee: CoffeeCart) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                coffeeUseCase.insertCoffee(coffee)
+                coffeeUseCase.insertCoffeeCart(coffee)
+            }
+        }
+    }
+
+    fun getAllCoffeeProducts() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _coffeeList.value = coffeeUseCase.getAllCoffeeProducts()
             }
         }
     }

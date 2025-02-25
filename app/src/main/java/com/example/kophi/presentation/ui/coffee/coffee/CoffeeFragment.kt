@@ -19,6 +19,7 @@ import com.example.kophi.presentation.ui.coffee.adapter.CoffeeAdapter
 import com.example.kophi.presentation.ui.coffee.ads.AdsActivity
 import com.example.kophi.presentation.ui.coffee.ads.adapter.AdsAdapter
 import com.example.kophi.presentation.ui.coffee.detail.CoffeeDetailActivity
+import com.example.kophi.utils.IDRCurrency
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,8 +78,6 @@ class CoffeeFragment : Fragment() {
 
         setupRecyclerView()
         setupObserver()
-
-
     }
 
     override fun onDestroyView() {
@@ -89,12 +88,6 @@ class CoffeeFragment : Fragment() {
     private fun setupRecyclerView() {
         binding.rvAds.adapter = adsAdapter
         binding.rvCoffee.adapter = coffeeAdapter
-
-        if (binding.materialCardViewCart.isVisible) {
-            binding.rvCoffee.setPadding(0, 0, 0, 240)
-        } else {
-            binding.rvCoffee.setPadding(0, 0, 0, 0)
-        }
     }
 
     private fun setupObserver() {
@@ -121,6 +114,19 @@ class CoffeeFragment : Fragment() {
                         setupViewPager()
                     }
                 }
+
+                launch {
+                    coffeeViewModel.getAllCoffeeProducts()
+
+                    coffeeViewModel.coffeeList.collect {
+                        binding.materialCardViewCart.isVisible = it.isNotEmpty()
+                        val bottomPadding = if (it.isNotEmpty()) 240 else 0
+                        binding.rvCoffee.setPadding(0, 0, 0, bottomPadding)
+
+                        val totalPrice = it.sumOf { cartCoffee -> cartCoffee.price }
+                        binding.tvTotalPrice.text = IDRCurrency.format(totalPrice)
+                    }
+                }
             }
         }
     }
@@ -137,13 +143,9 @@ class CoffeeFragment : Fragment() {
                 })
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
 
         })
     }

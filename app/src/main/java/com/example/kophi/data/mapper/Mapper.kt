@@ -1,10 +1,9 @@
 package com.example.kophi.data.mapper
 
-import com.example.kophi.data.source.local.entity.CartCoffeeEntity
-import com.example.kophi.data.source.local.entity.CoffeeEntity
+import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 import com.example.kophi.data.source.remote.model.CoffeeResponse
-import com.example.kophi.domain.model.CartCoffee
 import com.example.kophi.domain.model.Coffee
+import com.example.kophi.domain.model.CoffeeCart
 import javax.inject.Inject
 
 class Mapper @Inject constructor() {
@@ -20,7 +19,7 @@ class Mapper @Inject constructor() {
             id = response.id,
             category = response.category,
             image = response.image,
-            title = response.title,
+            name = response.name,
             description = response.description,
             price = response.price,
             temperature = response.temperature,
@@ -29,28 +28,32 @@ class Mapper @Inject constructor() {
         )
     }
 
-    fun mapDomainToEntities(domain: Coffee.Data): CoffeeEntity {
-        return CoffeeEntity(
+
+    fun mapDomainToEntities(domain: CoffeeCart): CoffeeCartEntity {
+        return CoffeeCartEntity(
+            coffeeId = domain.coffeeId,
             id = domain.id,
-            category = domain.category,
             image = domain.image,
-            title = domain.title,
-            description = domain.description,
+            name = domain.name,
             temperature = domain.temperature,
             milkOption = domain.milkOption,
-            price = domain.price,
             sweetness = domain.sweetness,
+            price = domain.price
         )
     }
 
-    fun mapDomainToEntities(domain: CartCoffee): CartCoffeeEntity {
-        return CartCoffeeEntity(
-            id = domain.id,
-            title = domain.title,
-            temperature = domain.temperature,
-            milkOption = domain.milkOption,
-            sweetness = domain.sweetness,
-            price = domain.price,
-        )
+    fun mapEntityToDomain(entity: List<CoffeeCartEntity>): List<CoffeeCart> {
+        return entity.map {
+            CoffeeCart(
+                coffeeId = it.coffeeId,
+                id = it.id,
+                image = it.image,
+                name = it.name,
+                temperature = it.temperature,
+                milkOption = it.milkOption,
+                sweetness = it.sweetness,
+                price = it.price
+            )
+        }
     }
 }

@@ -3,8 +3,8 @@ package com.example.kophi.data.repository
 import com.example.kophi.data.mapper.Mapper
 import com.example.kophi.data.source.local.datasource.CoffeeLocalDataSource
 import com.example.kophi.data.source.remote.datasource.CoffeeRemoteDataSource
-import com.example.kophi.domain.model.CartCoffee
 import com.example.kophi.domain.model.Coffee
+import com.example.kophi.domain.model.CoffeeCart
 import com.example.kophi.domain.repositories.CoffeeRepository
 import com.example.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
@@ -33,11 +33,11 @@ class CoffeeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun insertCoffee(coffee: CartCoffee) {
-        coffeeLocalDataSource.insertCoffee(mapper.mapDomainToEntities(coffee))
+    override suspend fun insertCoffeeCart(coffee: CoffeeCart) {
+        coffeeLocalDataSource.insertCoffeeCart(mapper.mapDomainToEntities(coffee))
     }
 
-    override suspend fun getCoffeeListFromDatabase(): List<Coffee> {
-        return emptyList()
+    override suspend fun getAllCoffeeProducts(): List<CoffeeCart> {
+        return mapper.mapEntityToDomain(coffeeLocalDataSource.getAllCoffeeProducts())
     }
 }

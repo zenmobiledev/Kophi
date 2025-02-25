@@ -1,5 +1,6 @@
 package com.example.kophi.presentation.ui.coffee.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -11,13 +12,15 @@ import androidx.core.view.isVisible
 import coil3.load
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityCoffeeDetailBinding
-import com.example.kophi.domain.model.CartCoffee
 import com.example.kophi.domain.model.Coffee
+import com.example.kophi.domain.model.CoffeeCart
 import com.example.kophi.presentation.ui.coffee.coffee.CoffeeViewModel
+import com.example.kophi.presentation.ui.main.MainActivity
 import com.example.kophi.utils.IDRCurrency
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.UUID
 
 @AndroidEntryPoint
 class CoffeeDetailActivity : AppCompatActivity() {
@@ -44,7 +47,7 @@ class CoffeeDetailActivity : AppCompatActivity() {
         if (coffeeDetail != null) {
             with(binding) {
                 ivCoffeeImage.load(coffeeDetail.image)
-                tvCoffeeTitle.text = coffeeDetail.title
+                tvCoffeeTitle.text = coffeeDetail.name
                 tvCoffeeDescription.text = coffeeDetail.description
 
                 // SELECTED
@@ -91,29 +94,26 @@ class CoffeeDetailActivity : AppCompatActivity() {
                         val selectedMilk = findSelectedChipText(binding.cgMilk)
                         val selectedSweetness = findSelectedChipText(binding.cgSweetness)
 
-                        val cartCoffee = CartCoffee(
+                        val coffeeCart = CoffeeCart(
+                            coffeeId = UUID.randomUUID().toString(),
                             id = coffeeDetail.id,
-                            title = coffeeDetail.title,
+                            image = coffeeDetail.image,
+                            name = coffeeDetail.name,
                             temperature = selectedTemperature,
                             milkOption = selectedMilk,
                             sweetness = selectedSweetness,
-                            price = originalPrice * number
+                            price = originalPrice * number,
                         )
 
-                        val message =
-                            "Temperature: $selectedTemperature\nMilk: $selectedMilk\nSweetness: $selectedSweetness"
-                        Toast.makeText(this@CoffeeDetailActivity, message, Toast.LENGTH_SHORT)
-                            .show()
-
                         // Insert to Database
-//                        coffeeViewModel.insertCoffee(coffee = cartCoffee).also {
-//                            startActivity(
-//                                Intent(
-//                                    this@CoffeeDetailActivity,
-//                                    MainActivity::class.java
-//                                )
-//                            )
-//                        }
+                        coffeeViewModel.insertCoffeeCart(coffee = coffeeCart).also {
+                            startActivity(
+                                Intent(
+                                    this@CoffeeDetailActivity,
+                                    MainActivity::class.java
+                                )
+                            )
+                        }
                     }
                 }
             }

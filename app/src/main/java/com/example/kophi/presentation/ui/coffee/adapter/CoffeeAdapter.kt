@@ -16,7 +16,7 @@ class CoffeeAdapter(val clickItemListener: (Coffee.Data) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(coffee: Coffee.Data) {
             binding.ivCoffee.load(coffee.image)
-            binding.tvTitle.text = coffee.title
+            binding.tvTitle.text = coffee.name
             binding.tvDescription.text = coffee.description
             binding.tvPrice.text = IDRCurrency.format(coffee.price)
             binding.root.setOnClickListener {
