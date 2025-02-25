@@ -9,24 +9,26 @@ data class CoffeeResponse(
     @SerializedName("message")
     val message: String,
     @SerializedName("status")
-    val status: String
+    val status: String,
 ) {
     data class Data(
-        @SerializedName("category")
-        val category: String,
-        @SerializedName("description")
-        val description: String,
         @SerializedName("id")
         val id: Int,
+        @SerializedName("category")
+        val category: String,
         @SerializedName("image")
         val image: String,
+        @SerializedName("title")
+        val title: String,
+        @SerializedName("description")
+        val description: String,
+        @SerializedName("temperature")
+        val temperature: List<String?>?,
         @SerializedName("milk_option")
         val milkOption: List<String?>?,
+        @SerializedName("sweetness")
+        val sweetness: List<String>,
         @SerializedName("price")
         val price: Int,
-        @SerializedName("temperature")
-        val temperature: List<String>,
-        @SerializedName("title")
-        val title: String
     )
 }

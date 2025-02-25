@@ -15,7 +15,6 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             app:layout_scrollEffect="compress"
             app:layout_scrollFlags="scroll">
 
@@ -31,28 +30,20 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/md_theme_surface"
-            app:tabMode="auto">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Espresso-Based" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Milk-Based" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Flavored &amp; Specialty" />
-        </com.google.android.material.tabs.TabLayout>
+            app:tabMode="auto" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_coffee_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
@@ -75,13 +66,73 @@
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
 
+        <!--    COFFEE LIST-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_coffee"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="3"
+            tools:itemCount="5"
             tools:listitem="@layout/item_list_coffee" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    CART-->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardViewCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/md_theme_surfaceContainerHighest"
+        android:visibility="gone"
+        app:cardCornerRadius="0dp"
+        app:layout_anchor="@id/cl_coffee_list"
+        app:layout_anchorGravity="bottom"
+        app:strokeWidth="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_coffee_cart"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/md_theme_surfaceContainerHighest"
+                android:src="@drawable/coffee_cart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_total_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="Rp 1.000.000"
+                android:textAppearance="@style/Title.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/iv_coffee_cart"
+                app:layout_constraintStart_toEndOf="@+id/iv_coffee_cart"
+                app:layout_constraintTop_toTopOf="@id/iv_coffee_cart" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/md_theme_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_move_to_checkout_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/baseline_arrow_forward_24" />
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

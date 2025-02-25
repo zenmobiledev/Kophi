@@ -69,27 +69,14 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/cg_temperature"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/text_temperature"
-                app:layout_constraintTop_toBottomOf="@id/text_temperature">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_iced"
-                    style="@style/Widget.Material3.Chip.Suggestion.Elevated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="ICED"
-                    app:chipCornerRadius="4dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_hot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="HOT"
-                    app:chipCornerRadius="4dp" />
-            </com.google.android.material.chip.ChipGroup>
+                app:layout_constraintTop_toBottomOf="@id/text_temperature"
+                app:selectionRequired="true"
+                app:singleSelection="true" />
 
             <TextView
                 android:id="@+id/text_milk"
@@ -99,30 +86,19 @@
                 android:text="Milk"
                 android:textAppearance="@style/Title.Medium"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/text_temperature"
                 app:layout_constraintTop_toBottomOf="@id/cg_temperature" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/cg_milk"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintStart_toStartOf="@+id/text_milk"
-                app:layout_constraintTop_toBottomOf="@id/text_milk">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_fresh_milk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fresh Milk"
-                    app:chipCornerRadius="4dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_oat_milk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Oat Milk"
-                    app:chipCornerRadius="4dp" />
-            </com.google.android.material.chip.ChipGroup>
+                app:layout_constraintTop_toBottomOf="@id/text_milk"
+                app:selectionRequired="true"
+                app:singleSelection="true" />
 
             <TextView
                 android:id="@+id/text_sweetness"
@@ -137,32 +113,14 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/cg_sweetness"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintStart_toStartOf="@+id/text_sweetness"
-                app:layout_constraintTop_toBottomOf="@id/text_sweetness">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_normal_sugar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Normal Sugar"
-                    app:chipCornerRadius="4dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_less_sugar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Less Sugar"
-                    app:chipCornerRadius="4dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_no_sugar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No Sugar"
-                    app:chipCornerRadius="4dp" />
-            </com.google.android.material.chip.ChipGroup>
+                app:layout_constraintTop_toBottomOf="@id/text_sweetness"
+                app:selectionRequired="true"
+                app:singleSelection="true" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

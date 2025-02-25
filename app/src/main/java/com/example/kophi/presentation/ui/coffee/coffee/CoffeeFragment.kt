@@ -8,17 +8,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.kophi.R
 import com.example.kophi.databinding.FragmentCoffeeBinding
+import com.example.kophi.domain.model.Coffee
 import com.example.kophi.presentation.ui.coffee.adapter.CoffeeAdapter
 import com.example.kophi.presentation.ui.coffee.ads.AdsActivity
 import com.example.kophi.presentation.ui.coffee.ads.adapter.AdsAdapter
 import com.example.kophi.presentation.ui.coffee.detail.CoffeeDetailActivity
 import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -29,12 +31,14 @@ class CoffeeFragment : Fragment() {
     private var _binding: FragmentCoffeeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var coffeeViewModel: CoffeeViewModel
+    private val coffeeViewModel: CoffeeViewModel by viewModels()
 
     private val adsList = listOf(
         R.drawable.one, R.drawable.two,
         R.drawable.three, R.drawable.four, R.drawable.five
     )
+
+
     private val adsAdapter by lazy {
         AdsAdapter(adsList) {
             val intent = Intent(requireContext(), AdsActivity::class.java)
@@ -52,13 +56,14 @@ class CoffeeFragment : Fragment() {
         }
     }
 
+    private var coffeeList = emptyList<Coffee.Data>()
+    private var categoryList = mutableListOf<String>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        coffeeViewModel = ViewModelProvider(this)[CoffeeViewModel::class.java]
-
         _binding = FragmentCoffeeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -72,6 +77,8 @@ class CoffeeFragment : Fragment() {
 
         setupRecyclerView()
         setupObserver()
+
+
     }
 
     override fun onDestroyView() {
@@ -82,6 +89,12 @@ class CoffeeFragment : Fragment() {
     private fun setupRecyclerView() {
         binding.rvAds.adapter = adsAdapter
         binding.rvCoffee.adapter = coffeeAdapter
+
+        if (binding.materialCardViewCart.isVisible) {
+            binding.rvCoffee.setPadding(0, 0, 0, 240)
+        } else {
+            binding.rvCoffee.setPadding(0, 0, 0, 0)
+        }
     }
 
     private fun setupObserver() {
@@ -101,11 +114,38 @@ class CoffeeFragment : Fragment() {
 
                 launch {
                     coffeeViewModel.coffeeData.collect {
-                        coffeeAdapter.submitList(it.data)
+                        coffeeList = it.data
+                        categoryList =
+                            coffeeList.map { data -> data.category }.distinct().toMutableList()
+                        coffeeAdapter.submitList(it.data.filter { data -> data.category == categoryList.first() })
+                        setupViewPager()
                     }
                 }
             }
         }
+    }
+
+    private fun setupViewPager() {
+        binding.tabs.removeAllTabs()
+        categoryList.forEach {
+            binding.tabs.addTab(binding.tabs.newTab().setText(it))
+        }
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                coffeeAdapter.submitList(coffeeList.filter {
+                    it.category == categoryList[tab?.position ?: 0]
+                })
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+        })
     }
 
     companion object {

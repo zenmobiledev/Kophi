@@ -2,6 +2,9 @@ package com.example.kophi.di
 
 import com.example.kophi.data.mapper.Mapper
 import com.example.kophi.data.repository.CoffeeRepositoryImpl
+import com.example.kophi.data.source.local.dao.CoffeeDao
+import com.example.kophi.data.source.local.datasource.CoffeeLocalDataSource
+import com.example.kophi.data.source.local.datasource.CoffeeLocalDataSourceImpl
 import com.example.kophi.data.source.remote.api.CoffeeService
 import com.example.kophi.data.source.remote.datasource.CoffeeRemoteDataSource
 import com.example.kophi.data.source.remote.datasource.CoffeeRemoteDataSourceImpl
@@ -18,10 +21,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserRepository(
+        localDataSource: CoffeeLocalDataSource,
         remoteDataSource: CoffeeRemoteDataSource,
         mapper: Mapper,
     ): CoffeeRepository {
         return CoffeeRepositoryImpl(
+            coffeeLocalDataSource = localDataSource,
             coffeeRemoteDataSource = remoteDataSource,
             mapper = mapper
         )
@@ -31,5 +36,15 @@ object AppModule {
     @Singleton
     fun provideTravelRemoteDataSource(travelService: CoffeeService): CoffeeRemoteDataSource {
         return CoffeeRemoteDataSourceImpl(travelService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTravelLocalDataSource(
+        coffeeDao: CoffeeDao,
+    ): CoffeeLocalDataSource {
+        return CoffeeLocalDataSourceImpl(
+            coffeeDao = coffeeDao
+        )
     }
 }

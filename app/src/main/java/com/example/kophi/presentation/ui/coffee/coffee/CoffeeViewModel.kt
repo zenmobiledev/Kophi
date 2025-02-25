@@ -2,6 +2,7 @@ package com.example.kophi.presentation.ui.coffee.coffee
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kophi.domain.model.CartCoffee
 import com.example.kophi.domain.model.Coffee
 import com.example.kophi.domain.usecase.CoffeeUseCase
 import com.example.kophi.utils.ResultResponse
@@ -36,7 +37,7 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
         getCoffeeList()
     }
 
-    fun getCoffeeList() {
+    private fun getCoffeeList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 coffeeUseCase().collect { result ->
@@ -46,7 +47,7 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
                             _errorMessage.emit(result.message)
                         }
 
-                        ResultResponse.Loading -> _isLoading.value = true
+                        is ResultResponse.Loading -> _isLoading.value = true
                         is ResultResponse.Success -> {
                             _isLoading.value = false
                             result.data?.let {
@@ -57,6 +58,14 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun insertCoffee(coffee: CartCoffee) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                coffeeUseCase.insertCoffee(coffee)
             }
         }
     }
