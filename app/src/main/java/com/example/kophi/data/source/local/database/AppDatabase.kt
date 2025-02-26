@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.kophi.data.source.local.ListConverter
-import com.example.kophi.data.source.local.dao.CoffeeDao
+import com.example.kophi.data.source.local.dao.CoffeeCartDao
 import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 
 @Database(
@@ -14,5 +14,5 @@ import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 )
 @TypeConverters(ListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun coffeeDao(): CoffeeDao
+    abstract fun coffeeCartDao(): CoffeeCartDao
 }

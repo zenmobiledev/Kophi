@@ -127,7 +127,7 @@ class CoffeeFragment : Fragment() {
                 }
 
                 launch {
-                    coffeeViewModel.getAllCoffeeProducts()
+                    coffeeViewModel.getAllCartCoffees()
 
                     coffeeViewModel.coffeeList.collect {
                         binding.materialCardViewCart.isVisible = it.isNotEmpty()

@@ -20,10 +20,10 @@ class CheckoutViewModel @Inject constructor(private val coffeeUseCase: CoffeeUse
     private val _coffeeList = MutableStateFlow<List<CoffeeCart>>(emptyList())
     val coffeeList: StateFlow<List<CoffeeCart>> = _coffeeList.asStateFlow()
 
-    fun getAllCoffeeProducts() {
+    fun getAllCartCoffees() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _coffeeList.value = coffeeUseCase.getAllCoffeeProducts()
+                _coffeeList.value = coffeeUseCase.getAllCartCoffees()
             }
         }
     }

@@ -32,12 +32,12 @@ class CoffeeRepositoryImpl @Inject constructor(
             }
         }
     }
-
+    
     override suspend fun insertCoffeeCart(coffee: CoffeeCart) {
         coffeeLocalDataSource.insertCoffeeCart(mapper.mapDomainToEntities(coffee))
     }
 
-    override suspend fun getAllCoffeeProducts(): List<CoffeeCart> {
-        return mapper.mapEntityToDomain(coffeeLocalDataSource.getAllCoffeeProducts())
+    override suspend fun getAllCartCoffees(): List<CoffeeCart> {
+        return mapper.mapEntityToDomain(coffeeLocalDataSource.getAllCartCoffees())
     }
 }

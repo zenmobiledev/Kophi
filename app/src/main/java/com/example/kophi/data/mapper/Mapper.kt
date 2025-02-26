@@ -38,7 +38,9 @@ class Mapper @Inject constructor() {
             temperature = domain.temperature,
             milkOption = domain.milkOption,
             sweetness = domain.sweetness,
-            price = domain.price
+            price = domain.price,
+            quantity = domain.quantity,
+            subTotal = domain.subTotal,
         )
     }
 
@@ -52,7 +54,9 @@ class Mapper @Inject constructor() {
                 temperature = it.temperature,
                 milkOption = it.milkOption,
                 sweetness = it.sweetness,
-                price = it.price
+                price = it.price,
+                quantity = it.quantity,
+                subTotal = it.subTotal,
             )
         }
     }

@@ -2,7 +2,7 @@ package com.example.kophi.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.kophi.data.source.local.dao.CoffeeDao
+import com.example.kophi.data.source.local.dao.CoffeeCartDao
 import com.example.kophi.data.source.local.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -26,7 +26,7 @@ object LocalModule {
     }
 
     @Provides
-    fun provideUserDao(database: AppDatabase): CoffeeDao {
-        return database.coffeeDao()
+    fun provideUserDao(database: AppDatabase): CoffeeCartDao {
+        return database.coffeeCartDao()
     }
 }

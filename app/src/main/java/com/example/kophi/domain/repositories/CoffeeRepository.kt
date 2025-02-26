@@ -10,5 +10,5 @@ interface CoffeeRepository {
 
     suspend fun insertCoffeeCart(coffee: CoffeeCart)
 
-    suspend fun getAllCoffeeProducts(): List<CoffeeCart>
+    suspend fun getAllCartCoffees(): List<CoffeeCart>
 }

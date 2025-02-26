@@ -16,7 +16,7 @@ class CoffeeUseCase @Inject constructor(private val coffeeRepository: CoffeeRepo
         coffeeRepository.insertCoffeeCart(coffee)
     }
 
-    suspend fun getAllCoffeeProducts(): List<CoffeeCart> {
-        return coffeeRepository.getAllCoffeeProducts()
+    suspend fun getAllCartCoffees(): List<CoffeeCart> {
+        return coffeeRepository.getAllCartCoffees()
     }
 }

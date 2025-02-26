@@ -62,7 +62,7 @@ class CheckoutActivity : AppCompatActivity() {
     private fun setupObserver() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                checkoutViewModel.getAllCoffeeProducts()
+                checkoutViewModel.getAllCartCoffees()
 
                 launch {
                     checkoutViewModel.coffeeList.collect {

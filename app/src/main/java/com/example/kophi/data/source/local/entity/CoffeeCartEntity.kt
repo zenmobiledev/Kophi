@@ -13,4 +13,6 @@ data class CoffeeCartEntity(
     val milkOption: String?,
     val sweetness: String?,
     val price: Int,
+    val quantity: Int,
+    val subTotal: Int,
 )

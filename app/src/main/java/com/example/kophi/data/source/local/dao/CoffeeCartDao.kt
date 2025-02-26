@@ -7,10 +7,10 @@ import androidx.room.Query
 import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 
 @Dao
-interface CoffeeDao {
+interface CoffeeCartDao {
     @Insert(onConflict = OnConflictStrategy.NONE)
     suspend fun insertCoffeeCart(coffee: CoffeeCartEntity)
 
     @Query("SELECT * FROM coffeecartentity")
-    suspend fun getAllCoffeeProducts(): List<CoffeeCartEntity>
+    suspend fun getAllCartCoffees(): List<CoffeeCartEntity>
 }

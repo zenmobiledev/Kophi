@@ -9,4 +9,6 @@ data class CoffeeCart(
     val milkOption: String?,
     val sweetness: String?,
     val price: Int,
+    val quantity: Int,
+    val subTotal: Int,
 )

@@ -73,10 +73,10 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
         }
     }
 
-    fun getAllCoffeeProducts() {
+    fun getAllCartCoffees() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _coffeeList.value = coffeeUseCase.getAllCoffeeProducts()
+                _coffeeList.value = coffeeUseCase.getAllCartCoffees()
             }
         }
     }

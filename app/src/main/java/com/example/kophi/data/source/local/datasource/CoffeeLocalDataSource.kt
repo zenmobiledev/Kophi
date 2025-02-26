@@ -5,5 +5,5 @@ import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 interface CoffeeLocalDataSource {
     suspend fun insertCoffeeCart(coffee: CoffeeCartEntity)
 
-    suspend fun getAllCoffeeProducts(): List<CoffeeCartEntity>
+    suspend fun getAllCartCoffees(): List<CoffeeCartEntity>
 }
