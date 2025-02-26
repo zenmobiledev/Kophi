@@ -82,7 +82,8 @@
         app:cardCornerRadius="0dp"
         app:layout_anchor="@id/cl_coffee_list"
         app:layout_anchorGravity="bottom"
-        app:strokeWidth="0dp">
+        app:strokeWidth="0dp"
+        tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -98,6 +99,20 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_total_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_total_items"
+                android:gravity="bottom|center"
+                android:textAppearance="@style/Label.Small"
+                android:textColor="@color/md_theme_surface"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/iv_coffee_cart"
+                app:layout_constraintTop_toTopOf="@id/iv_coffee_cart"
+                tools:text="1" />
 
             <TextView
                 android:id="@+id/tv_total_price"

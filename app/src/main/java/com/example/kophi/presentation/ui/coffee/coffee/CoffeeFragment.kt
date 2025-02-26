@@ -15,9 +15,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.kophi.R
 import com.example.kophi.databinding.FragmentCoffeeBinding
 import com.example.kophi.domain.model.Coffee
-import com.example.kophi.presentation.ui.coffee.adapter.CoffeeAdapter
 import com.example.kophi.presentation.ui.coffee.ads.AdsActivity
 import com.example.kophi.presentation.ui.coffee.ads.adapter.AdsAdapter
+import com.example.kophi.presentation.ui.coffee.checkout.CheckoutActivity
+import com.example.kophi.presentation.ui.coffee.coffee.adapter.CoffeeAdapter
 import com.example.kophi.presentation.ui.coffee.detail.CoffeeDetailActivity
 import com.example.kophi.utils.IDRCurrency
 import com.google.android.material.carousel.CarouselSnapHelper
@@ -78,6 +79,16 @@ class CoffeeFragment : Fragment() {
 
         setupRecyclerView()
         setupObserver()
+
+        binding.materialCardViewCart.setOnClickListener {
+            val intent = Intent(requireContext(), CheckoutActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnMoveToCheckoutPage.setOnClickListener {
+            val intent = Intent(requireContext(), CheckoutActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
@@ -122,6 +133,9 @@ class CoffeeFragment : Fragment() {
                         binding.materialCardViewCart.isVisible = it.isNotEmpty()
                         val bottomPadding = if (it.isNotEmpty()) 240 else 0
                         binding.rvCoffee.setPadding(0, 0, 0, bottomPadding)
+
+                        val bundle = Bundle()
+                        binding.tvTotalItems.text = bundle.getInt(CoffeeDetailActivity.TOTAL_ITEM, it.size).toString()
 
                         val totalPrice = it.sumOf { cartCoffee -> cartCoffee.price }
                         binding.tvTotalPrice.text = IDRCurrency.format(totalPrice)

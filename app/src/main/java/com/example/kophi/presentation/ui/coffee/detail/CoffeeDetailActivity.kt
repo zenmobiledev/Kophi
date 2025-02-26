@@ -107,12 +107,16 @@ class CoffeeDetailActivity : AppCompatActivity() {
 
                         // Insert to Database
                         coffeeViewModel.insertCoffeeCart(coffee = coffeeCart).also {
-                            startActivity(
-                                Intent(
-                                    this@CoffeeDetailActivity,
-                                    MainActivity::class.java
-                                )
-                            )
+                            Toast.makeText(
+                                this@CoffeeDetailActivity,
+                                "Added to cart",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val intent =
+                                Intent(this@CoffeeDetailActivity, MainActivity::class.java).apply {
+                                    intent.putExtra(TOTAL_ITEM, number)
+                                }
+                            startActivity(intent)
                         }
                     }
                 }
@@ -153,5 +157,6 @@ class CoffeeDetailActivity : AppCompatActivity() {
 
     companion object {
         const val COFFEE_DETAIL = "coffee_detail"
+        const val TOTAL_ITEM = "total_item"
     }
 }
