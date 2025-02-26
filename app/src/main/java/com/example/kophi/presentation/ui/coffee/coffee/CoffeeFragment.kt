@@ -134,10 +134,10 @@ class CoffeeFragment : Fragment() {
                         val bottomPadding = if (it.isNotEmpty()) 240 else 0
                         binding.rvCoffee.setPadding(0, 0, 0, bottomPadding)
 
-                        val bundle = Bundle()
-                        binding.tvTotalItems.text = bundle.getInt(CoffeeDetailActivity.TOTAL_ITEM, it.size).toString()
+                        binding.tvTotalItems.text = it.sumOf { it.quantity }.toString()
 
-                        val totalPrice = it.sumOf { cartCoffee -> cartCoffee.price }
+                        val totalPrice =
+                            it.sumOf { cartCoffee -> cartCoffee.subTotal }
                         binding.tvTotalPrice.text = IDRCurrency.format(totalPrice)
                     }
                 }

@@ -102,7 +102,9 @@ class CoffeeDetailActivity : AppCompatActivity() {
                             temperature = selectedTemperature,
                             milkOption = selectedMilk,
                             sweetness = selectedSweetness,
-                            price = originalPrice * number,
+                            price = originalPrice,
+                            quantity = number,
+                            subTotal = coffeeDetail.price * number,
                         )
 
                         // Insert to Database
@@ -146,7 +148,7 @@ class CoffeeDetailActivity : AppCompatActivity() {
             val chip = chipGroup.findViewById<Chip>(selectedChipId)
             chip?.text.toString()
         } else {
-            "None"
+            "No Milk"
         }
     }
 

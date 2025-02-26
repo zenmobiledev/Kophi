@@ -1,7 +1,7 @@
 package com.example.kophi.presentation.ui.coffee.checkout
 
-import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityCheckoutBinding
-import com.example.kophi.presentation.ui.coffee.coffee.adapter.CoffeeAdapter
-import com.example.kophi.presentation.ui.coffee.detail.CoffeeDetailActivity
+import com.example.kophi.presentation.ui.coffee.checkout.adapter.CheckoutAdapter
 import com.example.kophi.utils.IDRCurrency
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,13 +24,8 @@ class CheckoutActivity : AppCompatActivity() {
 
     private val checkoutViewModel: CheckoutViewModel by viewModels()
 
-    private val coffeeAdapter by lazy {
-        CoffeeAdapter {
-            val intent = Intent(this@CheckoutActivity, CoffeeDetailActivity::class.java).apply {
-                putExtra(CoffeeDetailActivity.COFFEE_DETAIL, it)
-            }
-            startActivity(intent)
-        }
+    private val checkoutAdapter by lazy {
+        CheckoutAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +62,7 @@ class CheckoutActivity : AppCompatActivity() {
                     checkoutViewModel.coffeeList.collect {
                         if (it.isNotEmpty()) {
                             with(binding) {
+                                checkoutAdapter.submitList(it)
                                 // Empty cart
                                 ivEmptyCart.isVisible = false
                                 tvEmptyCart.isVisible = false
@@ -75,8 +70,18 @@ class CheckoutActivity : AppCompatActivity() {
 
                                 scrollView.isVisible = true
                                 materialCardViewPayment.isVisible = true
-                                val totalPrice = it.sumOf { cartCoffee -> cartCoffee.price }
+                                val totalPrice = it.sumOf { cartCoffee -> cartCoffee.subTotal }
+                                tvTotalPrice1.text = IDRCurrency.format(totalPrice)
                                 tvTotalPrice2.text = IDRCurrency.format(totalPrice)
+
+                                btnSelectPayment.setOnClickListener {
+                                    Toast.makeText(
+                                        this@CheckoutActivity,
+                                        "Navigato to Midtrans page",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
                             }
                         } else {
                             with(binding) {
@@ -95,6 +100,6 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        binding.rvOrder.adapter = coffeeAdapter
+        binding.rvOrder.adapter = checkoutAdapter
     }
 }
