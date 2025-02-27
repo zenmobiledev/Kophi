@@ -32,12 +32,28 @@ class CoffeeRepositoryImpl @Inject constructor(
             }
         }
     }
-    
+
     override suspend fun insertCoffeeCart(coffee: CoffeeCart) {
         coffeeLocalDataSource.insertCoffeeCart(mapper.mapDomainToEntities(coffee))
     }
 
     override suspend fun getAllCartCoffees(): List<CoffeeCart> {
         return mapper.mapEntityToDomain(coffeeLocalDataSource.getAllCartCoffees())
+    }
+
+    override suspend fun updateCoffeeCartQuantityAndSubtotal(cartId: String, newQuantity: Int) {
+        coffeeLocalDataSource.updateCoffeeCartQuantityAndSubtotal(cartId, newQuantity)
+    }
+
+    override suspend fun incrementCoffeeCartQuantity(cartId: String) {
+        coffeeLocalDataSource.incrementCoffeeCartQuantity(cartId)
+    }
+
+    override suspend fun decrementCoffeeCartQuantity(cartId: String) {
+        coffeeLocalDataSource.decrementCoffeeCartQuantity(cartId)
+    }
+
+    override suspend fun deleteCoffeeCart(cartId: String) {
+        coffeeLocalDataSource.deleteCoffeeCart(cartId)
     }
 }

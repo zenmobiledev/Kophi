@@ -1,8 +1,8 @@
 package com.example.kophi.domain.model
 
 data class CoffeeCart(
-    val coffeeId: String,
-    val id: Int,
+    val coffeeId: Int,
+    val id: String,
     val image: String,
     val name: String,
     val temperature: String?,

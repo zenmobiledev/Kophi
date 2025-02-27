@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class CoffeeCartEntity(
-    @PrimaryKey val coffeeId: String,
-    val id: Int,
+    val coffeeId: Int,
+    @PrimaryKey val id: String,
     val image: String,
     val name: String,
     val temperature: String?,

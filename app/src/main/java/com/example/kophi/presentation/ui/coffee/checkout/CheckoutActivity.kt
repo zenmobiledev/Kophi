@@ -13,19 +13,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityCheckoutBinding
+import com.example.kophi.presentation.ui.coffee.checkout.adapter.AdapterCallback
 import com.example.kophi.presentation.ui.coffee.checkout.adapter.CheckoutAdapter
 import com.example.kophi.utils.IDRCurrency
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CheckoutActivity : AppCompatActivity() {
+class CheckoutActivity : AppCompatActivity(), AdapterCallback {
     private lateinit var binding: ActivityCheckoutBinding
 
     private val checkoutViewModel: CheckoutViewModel by viewModels()
 
     private val checkoutAdapter by lazy {
-        CheckoutAdapter()
+        CheckoutAdapter(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +63,7 @@ class CheckoutActivity : AppCompatActivity() {
                     checkoutViewModel.coffeeList.collect {
                         if (it.isNotEmpty()) {
                             with(binding) {
-                                checkoutAdapter.submitList(it)
+                                checkoutAdapter.submitList(it.toList())
                                 // Empty cart
                                 ivEmptyCart.isVisible = false
                                 tvEmptyCart.isVisible = false
@@ -73,6 +74,8 @@ class CheckoutActivity : AppCompatActivity() {
                                 val totalPrice = it.sumOf { cartCoffee -> cartCoffee.subTotal }
                                 tvTotalPrice1.text = IDRCurrency.format(totalPrice)
                                 tvTotalPrice2.text = IDRCurrency.format(totalPrice)
+
+
 
                                 btnSelectPayment.setOnClickListener {
                                     Toast.makeText(
@@ -101,5 +104,21 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         binding.rvOrder.adapter = checkoutAdapter
+    }
+
+    override fun onUpdateQuantity(cartId: String, newQuantity: Int) {
+        checkoutViewModel.updateQuantityAndSubtotal(cartId, newQuantity)
+    }
+
+    override fun onIncrementQuantity(cartId: String) {
+        checkoutViewModel.incrementQuantity(cartId)
+    }
+
+    override fun onDecrementQuantity(cartId: String) {
+        checkoutViewModel.decrementQuantity(cartId)
+    }
+
+    override fun deleteItem(cartId: String) {
+        checkoutViewModel.deleteCoffeeCart(cartId)
     }
 }

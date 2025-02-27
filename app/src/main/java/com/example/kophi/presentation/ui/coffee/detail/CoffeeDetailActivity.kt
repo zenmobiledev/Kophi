@@ -95,8 +95,8 @@ class CoffeeDetailActivity : AppCompatActivity() {
                         val selectedSweetness = findSelectedChipText(binding.cgSweetness)
 
                         val coffeeCart = CoffeeCart(
-                            coffeeId = UUID.randomUUID().toString(),
-                            id = coffeeDetail.id,
+                            coffeeId = coffeeDetail.id,
+                            id = UUID.randomUUID().toString(),
                             image = coffeeDetail.image,
                             name = coffeeDetail.name,
                             temperature = selectedTemperature,
@@ -109,14 +109,11 @@ class CoffeeDetailActivity : AppCompatActivity() {
 
                         // Insert to Database
                         coffeeViewModel.insertCoffeeCart(coffee = coffeeCart).also {
-                            Toast.makeText(
-                                this@CoffeeDetailActivity,
-                                "Added to cart",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             val intent =
                                 Intent(this@CoffeeDetailActivity, MainActivity::class.java).apply {
                                     intent.putExtra(TOTAL_ITEM, number)
+                                    flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 }
                             startActivity(intent)
                         }

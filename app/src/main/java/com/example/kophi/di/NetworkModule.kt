@@ -34,7 +34,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder().apply {
             // HOME
-//            baseUrl("http://192.168.8.183:3001/")
+//            baseUrl("http://192.168.8.184:3001/")
             // RESTAURANT
 //            baseUrl("http://192.168.0.101:3001/")
             // Phincon

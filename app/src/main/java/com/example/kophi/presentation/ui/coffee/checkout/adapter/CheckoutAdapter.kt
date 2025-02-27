@@ -11,9 +11,11 @@ import com.example.kophi.databinding.ItemCoffeeBinding
 import com.example.kophi.domain.model.CoffeeCart
 import com.example.kophi.utils.IDRCurrency
 
-class CheckoutAdapter : ListAdapter<CoffeeCart, CheckoutAdapter.CheckoutViewHolder>(
-    DIFF_CALLBACK
-) {
+class CheckoutAdapter(private val adapterCallback: AdapterCallback) :
+    ListAdapter<CoffeeCart, CheckoutAdapter.CheckoutViewHolder>(
+        DIFF_CALLBACK
+    ) {
+
     inner class CheckoutViewHolder(private val binding: ItemCoffeeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(coffeeCart: CoffeeCart) {
@@ -27,24 +29,32 @@ class CheckoutAdapter : ListAdapter<CoffeeCart, CheckoutAdapter.CheckoutViewHold
                 tvCoffeePrice.text = IDRCurrency.format(coffeeCart.subTotal)
                 tvQuantity.text = coffeeCart.quantity.toString()
 
+
+
                 btnMinus.setOnClickListener {
                     if (quantity > 1) {
                         quantity--
                         tvQuantity.text = quantity.toString()
+                        adapterCallback.onDecrementQuantity(coffeeCart.id.toString())
+                        adapterCallback.onUpdateQuantity(
+                            cartId = coffeeCart.id,
+                            newQuantity = quantity
+                        )
                     } else {
                         // Delete item
-                        Toast.makeText(
-                            itemView.context,
-                            "Are you sure delete this item",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        Toast.makeText(itemView.context, "Delete item", Toast.LENGTH_SHORT).show()
+                        adapterCallback.deleteItem(coffeeCart.id)
                     }
                 }
 
                 btnPlus.setOnClickListener {
                     quantity++
                     tvQuantity.text = quantity.toString()
+                    adapterCallback.onIncrementQuantity(coffeeCart.id)
+                    adapterCallback.onUpdateQuantity(
+                        cartId = coffeeCart.id.toString(),
+                        newQuantity = quantity
+                    )
                 }
             }
         }
@@ -53,7 +63,7 @@ class CheckoutAdapter : ListAdapter<CoffeeCart, CheckoutAdapter.CheckoutViewHold
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): CheckoutAdapter.CheckoutViewHolder = CheckoutViewHolder(
+    ): CheckoutViewHolder = CheckoutViewHolder(
         ItemCoffeeBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -61,7 +71,7 @@ class CheckoutAdapter : ListAdapter<CoffeeCart, CheckoutAdapter.CheckoutViewHold
         )
     )
 
-    override fun onBindViewHolder(holder: CheckoutAdapter.CheckoutViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CheckoutViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
@@ -71,14 +81,16 @@ class CheckoutAdapter : ListAdapter<CoffeeCart, CheckoutAdapter.CheckoutViewHold
                 oldItem: CoffeeCart,
                 newItem: CoffeeCart,
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.coffeeId == newItem.coffeeId
             }
 
             override fun areContentsTheSame(
                 oldItem: CoffeeCart,
                 newItem: CoffeeCart,
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.coffeeId == newItem.coffeeId &&
+                        oldItem.quantity == newItem.quantity &&
+                        oldItem.subTotal == newItem.subTotal
             }
         }
     }
