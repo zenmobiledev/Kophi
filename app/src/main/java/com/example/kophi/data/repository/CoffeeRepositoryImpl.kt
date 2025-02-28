@@ -5,6 +5,7 @@ import com.example.kophi.data.source.local.datasource.CoffeeLocalDataSource
 import com.example.kophi.data.source.remote.datasource.CoffeeRemoteDataSource
 import com.example.kophi.domain.model.Coffee
 import com.example.kophi.domain.model.CoffeeCart
+import com.example.kophi.domain.model.Transaction
 import com.example.kophi.domain.repositories.CoffeeRepository
 import com.example.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
@@ -55,5 +56,22 @@ class CoffeeRepositoryImpl @Inject constructor(
 
     override suspend fun deleteCoffeeCart(cartId: String) {
         coffeeLocalDataSource.deleteCoffeeCart(cartId)
+    }
+
+    override suspend fun getTransactionList(): Flow<ResultResponse<Transaction>> {
+        return flow {
+            emit(ResultResponse.Loading)
+            val response = coffeeRemoteDataSource.getTransaction()
+            try {
+                if (response.isSuccessful) {
+                    val transactionResponse = response.body()?.let {
+                        mapper.mapResponseToDomain(it)
+                    }
+                    emit(ResultResponse.Success(transactionResponse))
+                }
+            } catch (e: Exception) {
+                emit(ResultResponse.Error(e.message.toString()))
+            }
+        }
     }
 }

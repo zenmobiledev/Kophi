@@ -16,4 +16,5 @@
     <string name="default_web_client_id">529530527097-ab8lgj4sbvo8qpgotambf45c84kbr19u.apps.googleusercontent.com</string>
     <string name="add_to_cart">Add to Cart (%s)</string>
     <string name="item_total">1</string>
+    <string name="total_price">Total: %s</string>
 </resources>

@@ -43,6 +43,10 @@ class CoffeeDetailActivity : AppCompatActivity() {
             insets
         }
 
+        binding.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         val coffeeDetail = intent.getParcelableExtra<Coffee.Data>(COFFEE_DETAIL)
         if (coffeeDetail != null) {
             with(binding) {

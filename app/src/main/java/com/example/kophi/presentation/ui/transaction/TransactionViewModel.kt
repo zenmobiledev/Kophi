@@ -1,13 +1,63 @@
 package com.example.kophi.presentation.ui.transaction
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.kophi.domain.model.Transaction
+import com.example.kophi.domain.usecase.TransactionUseCase
+import com.example.kophi.utils.ResultResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class TransactionViewModel : ViewModel() {
+@HiltViewModel
+class TransactionViewModel @Inject constructor(private val transactionUseCase: TransactionUseCase) :
+    ViewModel() {
+    private val _transactionList = MutableStateFlow(
+        value = Transaction(
+            data = emptyList()
+        )
+    )
+    val transactionList: StateFlow<Transaction> = _transactionList.asStateFlow()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Transaction Fragment"
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    private val _errorMessage = MutableSharedFlow<String>()
+    val errorMessage: SharedFlow<String> = _errorMessage
+
+    init {
+        getTransactionList()
     }
-    val text: LiveData<String> = _text
+
+    private fun getTransactionList() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                transactionUseCase().collect { result ->
+                    when (result) {
+                        is ResultResponse.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.emit(result.message)
+                        }
+
+                        is ResultResponse.Loading -> _isLoading.value = true
+                        is ResultResponse.Success -> {
+                            _isLoading.value = false
+                            result.data?.let {
+                                _transactionList.value = Transaction(
+                                    data = it.data
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

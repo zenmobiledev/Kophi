@@ -2,7 +2,6 @@ package com.example.kophi.presentation.ui.coffee.checkout.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -35,14 +34,9 @@ class CheckoutAdapter(private val adapterCallback: AdapterCallback) :
                     if (quantity > 1) {
                         quantity--
                         tvQuantity.text = quantity.toString()
-                        adapterCallback.onDecrementQuantity(coffeeCart.id.toString())
-                        adapterCallback.onUpdateQuantity(
-                            cartId = coffeeCart.id,
-                            newQuantity = quantity
-                        )
+                        adapterCallback.onDecrementQuantity(coffeeCart.id)
                     } else {
                         // Delete item
-                        Toast.makeText(itemView.context, "Delete item", Toast.LENGTH_SHORT).show()
                         adapterCallback.deleteItem(coffeeCart.id)
                     }
                 }
@@ -51,11 +45,12 @@ class CheckoutAdapter(private val adapterCallback: AdapterCallback) :
                     quantity++
                     tvQuantity.text = quantity.toString()
                     adapterCallback.onIncrementQuantity(coffeeCart.id)
-                    adapterCallback.onUpdateQuantity(
-                        cartId = coffeeCart.id.toString(),
-                        newQuantity = quantity
-                    )
                 }
+
+                adapterCallback.onUpdateQuantity(
+                    cartId = coffeeCart.id,
+                    newQuantity = quantity
+                )
             }
         }
     }

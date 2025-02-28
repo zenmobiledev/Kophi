@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_location_on"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Gandaria City"
+            android:textAppearance="@style/Title.Large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tv_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle"
+            android:textAppearance="@style/Title.Small"
+            android:textColor="@color/md_theme_onSurfaceVariant_mediumContrast"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_location_on"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_location_on"
+            tools:text="Paid" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Title.Small"
+            android:textColor="@color/md_theme_onSurfaceVariant"
+            app:layout_constraintStart_toStartOf="@+id/tv_location_on"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location_on"
+            tools:text="@tools:sample/date/ddmmyy" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_detail_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_detail_transaction" />
+
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/total_price"
+            android:textAppearance="@style/Title.Medium"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/rv_detail_item"
+            app:layout_constraintTop_toBottomOf="@+id/rv_detail_item"
+            tools:text="Rp xx.xxx" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

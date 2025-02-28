@@ -2,8 +2,10 @@ package com.example.kophi.data.mapper
 
 import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 import com.example.kophi.data.source.remote.model.CoffeeResponse
+import com.example.kophi.data.source.remote.model.TransactionResponse
 import com.example.kophi.domain.model.Coffee
 import com.example.kophi.domain.model.CoffeeCart
+import com.example.kophi.domain.model.Transaction
 import javax.inject.Inject
 
 class Mapper @Inject constructor() {
@@ -27,7 +29,6 @@ class Mapper @Inject constructor() {
             sweetness = response.sweetness,
         )
     }
-
 
     fun mapDomainToEntities(domain: CoffeeCart): CoffeeCartEntity {
         return CoffeeCartEntity(
@@ -59,5 +60,35 @@ class Mapper @Inject constructor() {
                 subTotal = it.subTotal,
             )
         }
+    }
+
+    // TRANSACTION
+    fun mapResponseToDomain(response: TransactionResponse): Transaction {
+        return Transaction(
+            data = response.data.map { mapResponseToDomain(it) }
+        )
+    }
+
+    private fun mapResponseToDomain(response: TransactionResponse.Data): Transaction.Data {
+        return Transaction.Data(
+            items = response.items.map { mapResponseToDomain(it) },
+            location = response.location,
+            paymentStatus = response.paymentStatus,
+            time = response.time,
+            totalAmount = response.totalAmount,
+            transactionId = response.transactionId
+        )
+    }
+
+    private fun mapResponseToDomain(response: TransactionResponse.Data.Item): Transaction.Data.Item {
+        return Transaction.Data.Item(
+            id = response.id,
+            image = response.image,
+            name = response.name,
+            description = response.description,
+            price = response.price,
+            quantity = response.quantity,
+            subTotal = response.subTotal
+        )
     }
 }

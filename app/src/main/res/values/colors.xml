@@ -3,6 +3,9 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF9999</color>
+    <color name="yellow">#FFEB99</color>
+    <color name="green">#B3EBB3</color>
 
     <color name="md_theme_primary">#8A5022</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>

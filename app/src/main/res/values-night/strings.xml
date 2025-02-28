@@ -16,4 +16,5 @@
 
     <string name="add_to_cart">Add to Cart (%s)</string>
     <string name="item_total">1</string>
+    <string name="total_price">Total: %s</string>
 </resources>

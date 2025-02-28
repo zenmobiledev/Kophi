@@ -2,6 +2,7 @@ package com.example.kophi.domain.repositories
 
 import com.example.kophi.domain.model.Coffee
 import com.example.kophi.domain.model.CoffeeCart
+import com.example.kophi.domain.model.Transaction
 import com.example.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +20,6 @@ interface CoffeeRepository {
     suspend fun decrementCoffeeCartQuantity(cartId: String)
 
     suspend fun deleteCoffeeCart(cartId: String)
+
+    suspend fun getTransactionList(): Flow<ResultResponse<Transaction>>
 }
