@@ -1,9 +1,13 @@
 package com.example.kophi.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import com.example.kophi.data.source.local.dao.CoffeeCartDao
 import com.example.kophi.data.source.local.database.AppDatabase
+import com.example.kophi.data.source.local.preference.PreferenceDataStore
+import com.example.kophi.data.source.local.preference.dataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +18,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object LocalModule {
+
+    @Provides
+    @Singleton
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return context.dataStore
+    }
+
+    @Provides
+    @Singleton
+    fun providePreferenceDataStore(dataStore: DataStore<Preferences>): PreferenceDataStore {
+        return PreferenceDataStore(dataStore)
+    }
 
     @Provides
     @Singleton

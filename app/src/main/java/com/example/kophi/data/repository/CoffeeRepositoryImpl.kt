@@ -17,6 +17,14 @@ class CoffeeRepositoryImpl @Inject constructor(
     private val coffeeRemoteDataSource: CoffeeRemoteDataSource,
     private val mapper: Mapper,
 ) : CoffeeRepository {
+    override suspend fun setOnboarding(isOnboarding: Boolean) {
+        coffeeLocalDataSource.setOnboarding(isOnboarding)
+    }
+
+    override suspend fun getOnboarding(): Boolean {
+        return coffeeLocalDataSource.getOnboarding()
+    }
+
     override suspend fun getCoffeeList(): Flow<ResultResponse<Coffee>> {
         return flow {
             emit(ResultResponse.Loading)
@@ -73,5 +81,17 @@ class CoffeeRepositoryImpl @Inject constructor(
                 emit(ResultResponse.Error(e.message.toString()))
             }
         }
+    }
+
+    override suspend fun setAuthenticateUser(isAuthenticated: Boolean) {
+        coffeeLocalDataSource.setAuthenticationUser(isAuthenticated)
+    }
+
+    override suspend fun getAuthenticateUser(): Boolean {
+        return coffeeLocalDataSource.getAuthenticationUser()
+    }
+
+    override suspend fun logout() {
+        coffeeLocalDataSource.logout()
     }
 }

@@ -7,6 +7,10 @@ import com.example.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
 
 interface CoffeeRepository {
+    suspend fun setOnboarding(isOnboarding: Boolean)
+
+    suspend fun getOnboarding(): Boolean
+
     suspend fun getCoffeeList(): Flow<ResultResponse<Coffee>>
 
     suspend fun insertCoffeeCart(coffee: CoffeeCart)
@@ -22,4 +26,10 @@ interface CoffeeRepository {
     suspend fun deleteCoffeeCart(cartId: String)
 
     suspend fun getTransactionList(): Flow<ResultResponse<Transaction>>
+
+    suspend fun setAuthenticateUser(isAuthenticated: Boolean)
+
+    suspend fun getAuthenticateUser(): Boolean
+
+    suspend fun logout()
 }

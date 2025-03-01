@@ -1,7 +1,10 @@
 package com.example.kophi.data.source.local.preference
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+
 object PreferenceParameter {
-    const val MY_PREF = "my_pref"
-    const val IS_ONBOARDING = "onboarding"
-    const val IS_AUTHENTICATION = "authentication"
+    val IS_ONBOARDING = booleanPreferencesKey("is_onboarding")
+    val IS_AUTHENTICATION = booleanPreferencesKey("is_authentication")
+    val NAME = stringPreferencesKey("name")
 }

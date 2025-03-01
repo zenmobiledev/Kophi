@@ -2,10 +2,22 @@ package com.example.kophi.data.source.local.datasource
 
 import com.example.kophi.data.source.local.dao.CoffeeCartDao
 import com.example.kophi.data.source.local.entity.CoffeeCartEntity
+import com.example.kophi.data.source.local.preference.PreferenceDataStore
 import javax.inject.Inject
 
-class CoffeeLocalDataSourceImpl @Inject constructor(private val coffeeCartDao: CoffeeCartDao) :
+class CoffeeLocalDataSourceImpl @Inject constructor(
+    private val preference: PreferenceDataStore,
+    private val coffeeCartDao: CoffeeCartDao,
+) :
     CoffeeLocalDataSource {
+    override suspend fun setOnboarding(isOnboarding: Boolean) {
+        preference.setOnboarding(isOnboarding)
+    }
+
+    override suspend fun getOnboarding(): Boolean {
+        return preference.getOnboarding()
+    }
+
     override suspend fun insertCoffeeCart(coffee: CoffeeCartEntity) {
 
         val coffeeCart = coffeeCartDao.getCart(
@@ -44,5 +56,16 @@ class CoffeeLocalDataSourceImpl @Inject constructor(private val coffeeCartDao: C
         coffeeCartDao.deleteCoffeeCart(cartId)
     }
 
+    override suspend fun setAuthenticationUser(isAuthenticated: Boolean) {
+        preference.setAuthenticationUser(isAuthenticated)
+    }
+
+    override suspend fun getAuthenticationUser(): Boolean {
+        return preference.getAuthenticationUser()
+    }
+
+    override suspend fun logout() {
+        preference.logout()
+    }
 
 }

@@ -1,25 +1,45 @@
 package com.example.kophi.presentation.ui.onboarding
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.kophi.R
-import com.example.kophi.data.source.local.preference.PreferenceParameter
 import com.example.kophi.databinding.ActivityAppIntroBinding
 import com.example.kophi.presentation.ui.authentication.AuthenticationActivity
 import com.example.kophi.presentation.ui.onboarding.adapter.AppIntroViewPager2Adapter
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AppIntroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppIntroBinding
 
+    private val appIntroViewModel: AppIntroViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                lifecycleScope.launch {
+                    val isOnboarding = appIntroViewModel.getOnboarding()
+                    if (!isOnboarding) {
+                        startActivity(
+                            Intent(
+                                this@AppIntroActivity,
+                                AuthenticationActivity::class.java
+                            )
+                        )
+                    }
+                }
+                false
+            }
+        }
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,34 +52,21 @@ class AppIntroActivity : AppCompatActivity() {
             insets
         }
 
-        val preference: SharedPreferences =
-            getSharedPreferences(PreferenceParameter.MY_PREF, MODE_PRIVATE)
-        val isOnboard: Boolean = preference.getBoolean(PreferenceParameter.IS_ONBOARDING, true)
-
-        if (!isOnboard) {
-            finish()
-            startActivity(
-                Intent(
-                    this@AppIntroActivity,
-                    AuthenticationActivity::class.java
-                )
-            )
-        }
-
         binding.viewPager2.adapter =
             AppIntroViewPager2Adapter(object : AppIntroViewPager2Adapter.IOnButton {
                 override fun onClick() {
-                    // get preference
-                    if (isOnboard) {
-                        preference.edit().putBoolean(PreferenceParameter.IS_ONBOARDING, false)
-                            .apply()
-                        finish()
-                        startActivity(
+                    lifecycleScope.launch {
+                        // get preference
+                        appIntroViewModel.setOnboarding(false)
+                        val intent =
                             Intent(
                                 this@AppIntroActivity,
                                 AuthenticationActivity::class.java
-                            )
-                        )
+                            ).apply {
+                                flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            }
+                        startActivity(intent)
                     }
                 }
             })
