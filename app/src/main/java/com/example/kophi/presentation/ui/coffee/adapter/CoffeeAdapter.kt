@@ -1,4 +1,4 @@
-package com.example.kophi.presentation.ui.coffee.coffee.adapter
+package com.example.kophi.presentation.ui.coffee.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

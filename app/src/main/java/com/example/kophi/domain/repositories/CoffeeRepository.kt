@@ -31,5 +31,13 @@ interface CoffeeRepository {
 
     suspend fun getAuthenticateUser(): Boolean
 
+    suspend fun setDarkMode(isDarkMode: Boolean)
+
+    fun getDarkMode(): Flow<Boolean>
+
+    suspend fun setLanguage(language: String)
+
+    fun getLanguage(): Flow<String>
+
     suspend fun logout()
 }

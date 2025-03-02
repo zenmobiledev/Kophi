@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kophi.R
 import com.example.kophi.databinding.ItemTransactionBinding
 import com.example.kophi.domain.model.Transaction
+import com.example.kophi.presentation.ui.transaction.StatusPayment
 import com.example.kophi.utils.IDRCurrency
-import com.example.kophi.utils.StatusPayment
 import com.example.kophi.utils.convertDate
 
 class OuterAdapter :

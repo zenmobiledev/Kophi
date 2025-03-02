@@ -5,7 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "kophi_pref")
 
@@ -18,7 +20,7 @@ class PreferenceDataStore(private val dataStore: DataStore<Preferences>) {
     }
 
     suspend fun getOnboarding(): Boolean {
-        return dataStore.data.first()[PreferenceParameter.IS_ONBOARDING] ?: false
+        return dataStore.data.first()[PreferenceParameter.IS_ONBOARDING] ?: true
     }
 
     // Authentication
@@ -33,12 +35,34 @@ class PreferenceDataStore(private val dataStore: DataStore<Preferences>) {
     }
 
     // Profile
+    suspend fun setDarkMode(isDarkMode: Boolean) {
+        dataStore.edit {
+            it[PreferenceParameter.IS_DARK_MODE] = isDarkMode
+        }
+    }
+
+    fun getDarkMode(): Flow<Boolean> {
+        return dataStore.data.map {
+            it[PreferenceParameter.IS_DARK_MODE] ?: false
+        }
+    }
+
+    suspend fun setLanguage(language: String) {
+        dataStore.edit {
+            it[PreferenceParameter.LANGUAGE] = language
+        }
+    }
+
+    fun getLanguage(): Flow<String> {
+        return dataStore.data.map {
+            it[PreferenceParameter.LANGUAGE] ?: "en"
+        }
+    }
+
+
     suspend fun logout() {
-        dataStore.edit { preferences ->
-            listOf(
-                PreferenceParameter.IS_AUTHENTICATION,
-                PreferenceParameter.NAME
-            ).forEach { preferences.remove(it) }
+        dataStore.edit {
+            it[PreferenceParameter.IS_AUTHENTICATION] = false
         }
     }
 }

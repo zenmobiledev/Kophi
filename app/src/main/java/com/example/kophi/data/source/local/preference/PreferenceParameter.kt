@@ -6,5 +6,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 object PreferenceParameter {
     val IS_ONBOARDING = booleanPreferencesKey("is_onboarding")
     val IS_AUTHENTICATION = booleanPreferencesKey("is_authentication")
-    val NAME = stringPreferencesKey("name")
+    val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode")
+    val LANGUAGE = stringPreferencesKey("language")
 }

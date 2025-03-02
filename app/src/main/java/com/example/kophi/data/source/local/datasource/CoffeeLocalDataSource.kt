@@ -1,6 +1,7 @@
 package com.example.kophi.data.source.local.datasource
 
 import com.example.kophi.data.source.local.entity.CoffeeCartEntity
+import kotlinx.coroutines.flow.Flow
 
 interface CoffeeLocalDataSource {
     suspend fun setOnboarding(isOnboarding: Boolean)
@@ -22,6 +23,14 @@ interface CoffeeLocalDataSource {
     suspend fun setAuthenticationUser(isAuthenticated: Boolean)
 
     suspend fun getAuthenticationUser(): Boolean
+
+    suspend fun setDarkMode(isDarkMode: Boolean)
+
+    fun getDarkMode(): Flow<Boolean>
+
+    suspend fun setLanguage(language: String)
+
+    fun getLanguage(): Flow<String>
 
     suspend fun logout()
 }

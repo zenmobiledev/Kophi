@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_coffee"
-        android:name="com.example.kophi.presentation.ui.coffee.coffee.CoffeeFragment"
+        android:name="com.example.kophi.presentation.ui.coffee.CoffeeFragment"
         android:label="@string/title_coffee"
         tools:layout="@layout/fragment_coffee" />
 

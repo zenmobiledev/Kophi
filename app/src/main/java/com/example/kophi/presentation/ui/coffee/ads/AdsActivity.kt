@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import coil3.load
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityAdsBinding
-import com.example.kophi.presentation.ui.coffee.coffee.CoffeeFragment
+import com.example.kophi.presentation.ui.coffee.CoffeeFragment
 
 class AdsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAdsBinding

@@ -21,6 +21,7 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.kophi.BuildConfig
 import com.example.kophi.R
 import com.example.kophi.databinding.ActivityAuthenticationBinding
 import com.example.kophi.presentation.ui.main.MainActivity
@@ -162,9 +163,10 @@ class AuthenticationActivity : AppCompatActivity() {
             val credentialManager =
                 CredentialManager.create(this) //import from androidx.CredentialManager
 
+            val token = BuildConfig.DEFAULT_WEB_CLIENT_ID
             val googleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(getString(R.string.default_web_client_id))
+                .setServerClientId(token)
                 .build()
 
             val request =

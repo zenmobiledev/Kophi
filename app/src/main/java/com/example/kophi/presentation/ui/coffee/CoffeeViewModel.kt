@@ -1,4 +1,4 @@
-package com.example.kophi.presentation.ui.coffee.coffee
+package com.example.kophi.presentation.ui.coffee
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -14,7 +14,7 @@ import com.example.kophi.R
 import com.example.kophi.databinding.ActivityCoffeeDetailBinding
 import com.example.kophi.domain.model.Coffee
 import com.example.kophi.domain.model.CoffeeCart
-import com.example.kophi.presentation.ui.coffee.coffee.CoffeeViewModel
+import com.example.kophi.presentation.ui.coffee.CoffeeViewModel
 import com.example.kophi.presentation.ui.main.MainActivity
 import com.example.kophi.utils.IDRCurrency
 import com.google.android.material.chip.Chip

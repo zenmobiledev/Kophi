@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.kophi.R
 import com.example.kophi.databinding.FragmentProfileBinding
 import com.example.kophi.presentation.ui.authentication.AuthenticationActivity
+import com.example.kophi.presentation.ui.profile.language.LanguageActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -50,16 +53,25 @@ class ProfileFragment : Fragment() {
         val user = auth.currentUser
         binding.tvProfileName.text = resources.getString(R.string.hello_name, user?.displayName)
 
-        binding.cardSettingsDarkMode.setOnClickListener {
-            // Handle dark mode settings
-            Toast.makeText(context, "Activated Dark Mode", Toast.LENGTH_SHORT).show()
-        }
+        setupObserver()
+        setupDarkMode()
+        setupLanguage()
+        setupLogout()
+    }
 
-        binding.cardSettingsLanguage.setOnClickListener {
-            // Handle language settings
-            Toast.makeText(context, "Language", Toast.LENGTH_SHORT).show()
+    private fun setupObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    profileViewModel.getDarkMode().collect {
+                        binding.materialSwitch.isChecked = it
+                    }
+                }
+            }
         }
+    }
 
+    private fun setupLogout() {
         binding.cardSettingsLogout.setOnClickListener {
             // Handle logout settings
             auth.signOut()
@@ -70,6 +82,26 @@ class ProfileFragment : Fragment() {
                 }
                 startActivity(intent)
                 requireActivity().finish()
+            }
+        }
+    }
+
+    private fun setupLanguage() {
+        binding.cardSettingsLanguage.setOnClickListener {
+            // Handle language settings
+            startActivity(Intent(requireContext(), LanguageActivity::class.java))
+        }
+    }
+
+    private fun setupDarkMode() {
+        binding.materialSwitch.setOnCheckedChangeListener { _, isChecked ->
+            lifecycleScope.launch {
+                profileViewModel.setDarkMode(isChecked)
+                if (isChecked) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
             }
         }
     }

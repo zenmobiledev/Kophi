@@ -91,6 +91,22 @@ class CoffeeRepositoryImpl @Inject constructor(
         return coffeeLocalDataSource.getAuthenticationUser()
     }
 
+    override suspend fun setDarkMode(isDarkMode: Boolean) {
+        coffeeLocalDataSource.setDarkMode(isDarkMode)
+    }
+
+    override fun getDarkMode(): Flow<Boolean> {
+        return coffeeLocalDataSource.getDarkMode()
+    }
+
+    override suspend fun setLanguage(language: String) {
+        coffeeLocalDataSource.setLanguage(language)
+    }
+
+    override fun getLanguage(): Flow<String> {
+        return coffeeLocalDataSource.getLanguage()
+    }
+
     override suspend fun logout() {
         coffeeLocalDataSource.logout()
     }

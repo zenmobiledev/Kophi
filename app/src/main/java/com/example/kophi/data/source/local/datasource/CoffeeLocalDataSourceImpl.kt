@@ -3,6 +3,7 @@ package com.example.kophi.data.source.local.datasource
 import com.example.kophi.data.source.local.dao.CoffeeCartDao
 import com.example.kophi.data.source.local.entity.CoffeeCartEntity
 import com.example.kophi.data.source.local.preference.PreferenceDataStore
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CoffeeLocalDataSourceImpl @Inject constructor(
@@ -62,6 +63,22 @@ class CoffeeLocalDataSourceImpl @Inject constructor(
 
     override suspend fun getAuthenticationUser(): Boolean {
         return preference.getAuthenticationUser()
+    }
+
+    override suspend fun setDarkMode(isDarkMode: Boolean) {
+        preference.setDarkMode(isDarkMode)
+    }
+
+    override fun getDarkMode(): Flow<Boolean> {
+        return preference.getDarkMode()
+    }
+
+    override suspend fun setLanguage(language: String) {
+        preference.setLanguage(language)
+    }
+
+    override fun getLanguage(): Flow<String> {
+        return preference.getLanguage()
     }
 
     override suspend fun logout() {

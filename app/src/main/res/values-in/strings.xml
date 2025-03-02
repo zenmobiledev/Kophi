@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_to_cart">Tambahkan ke Keranjang (%s)</string>
+    <string name="item_total">1</string>
+    <string name="total_price">Total: %s</string>
+    <string name="hello_name">Hai, %s</string>
+    <string name="language_setting">Pengaturan Bahasa</string>
+    <string name="text_english">Inggris</string>
+    <string name="text_bahasa_indonesia">Bahasa Indonesia</string>
+    <string name="text_welcome_to_kophi">Selamat datang di Kophi</string>
+    <string name="text_sign_in_or_register_to_start_your_coffee_journey">Masuk atau Daftar untuk memulai perjalanan kopimu!</string>
+    <string name="text_sign_in_with_google">Masuk dengan Google</string>
+    <string name="text_register">Daftar</string>
+    <string name="text_pickup">Ambil di Tempat</string>
+    <string name="text_order">Pesan</string>
+    <string name="text_select_payment">Pilih Pembayaran</string>
+    <string name="text_settings">Pengaturan</string>
+    <string name="text_dark_mode">Mode Gelap</string>
+    <string name="text_language">Bahasa</string>
+    <string name="text_log_out">Keluar</string>
+</resources>

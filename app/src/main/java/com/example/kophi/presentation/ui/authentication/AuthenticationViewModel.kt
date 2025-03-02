@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(private val authenticationUseCase: AuthenticationUseCase) :
     ViewModel() {
-    private val _isLoading = MutableStateFlow<Boolean>(false)
+    private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
     fun setAuthenticationUser(isAuthentication: Boolean) {

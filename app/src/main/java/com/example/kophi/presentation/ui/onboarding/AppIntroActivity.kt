@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,6 +16,7 @@ import com.example.kophi.presentation.ui.authentication.AuthenticationActivity
 import com.example.kophi.presentation.ui.onboarding.adapter.AppIntroViewPager2Adapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -52,6 +54,11 @@ class AppIntroActivity : AppCompatActivity() {
             insets
         }
 
+        setupObserver()
+        setupViewPager()
+    }
+
+    private fun setupViewPager() {
         binding.viewPager2.adapter =
             AppIntroViewPager2Adapter(object : AppIntroViewPager2Adapter.IOnButton {
                 override fun onClick() {
@@ -73,6 +80,16 @@ class AppIntroActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { _, _ ->
 
         }.attach()
+    }
+
+    private fun setupObserver() {
+        lifecycleScope.launch {
+            appIntroViewModel.getDarkMode().collectLatest {
+                AppCompatDelegate.setDefaultNightMode(
+                    if (it) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+                )
+            }
+        }
     }
 
     companion object {
