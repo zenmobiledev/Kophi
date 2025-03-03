@@ -13,7 +13,7 @@
     <string name="intro_title_3">Relax and Enjoy your coffee</string>
     <string name="intro_sub_title_3">Pick up your coffee hassle-free and enjoy a\nperfect brew, anytime, anywhere</string>
 
-    <string name="add_to_cart">Add to Cart (%s)</string>
+    <string name="add_to_cart">+ Cart %s</string>
     <string name="item_total">1</string>
     <string name="total_price">Total: %s</string>
     <string name="hello_name">Hi, %s</string>
