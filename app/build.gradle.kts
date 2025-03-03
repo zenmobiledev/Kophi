@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.kophi"
+    namespace = "com.mobbelldev.kophi"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.kophi"
+        applicationId = "com.mobbelldev.kophi"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,8 +35,8 @@ android {
         )
         buildConfigField(
             type = "String",
-            name = "CLIENT_KEY",
-            value = localProperties["CLIENTKEY"].toString()
+            name = "X_SECRET_APP",
+            value = localProperties["XSECRETAPP"].toString()
         )
     }
 
@@ -102,9 +102,6 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
-
-    // Mid trans
-    implementation(libs.uikit)
 
     // AndroidX
     implementation(libs.androidx.core.ktx)

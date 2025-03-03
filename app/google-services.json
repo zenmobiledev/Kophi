@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "529530527097",
-    "project_id": "kophi-app",
-    "storage_bucket": "kophi-app.firebasestorage.app"
+    "project_number": "1026952790284",
+    "project_id": "phincon-game-rps",
+    "storage_bucket": "phincon-game-rps.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:529530527097:android:edddab169399714cc7e3a8",
+        "mobilesdk_app_id": "1:1026952790284:android:8f2e666fbb4df55dda4929",
         "android_client_info": {
-          "package_name": "com.example.kophi"
+          "package_name": "com.mobbelldev.kophi"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1026952790284-ftsutt4reimc3pi0fbvdlbpnqbgsoogi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobbelldev.kophi",
+            "certificate_hash": "a39d8a777115dfa451384f55c768bab6aad4d3dd"
+          }
+        },
+        {
+          "client_id": "1026952790284-uumnb0j1qcvgddut1ptslr5adskmn17l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyD6i1xGOqYT-hsnnW085g9nX1cgdnPHwMU"
+          "current_key": "AIzaSyDC9hLJDfvLg_GTA6depEvoevrYYyJXDZo"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026952790284-uumnb0j1qcvgddut1ptslr5adskmn17l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

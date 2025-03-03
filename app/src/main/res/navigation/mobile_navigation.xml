@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_coffee"
-        android:name="com.example.kophi.presentation.ui.coffee.CoffeeFragment"
+        android:name="com.mobbelldev.kophi.presentation.ui.coffee.CoffeeFragment"
         android:label="@string/title_coffee"
         tools:layout="@layout/fragment_coffee" />
 
     <fragment
         android:id="@+id/navigation_transaction"
-        android:name="com.example.kophi.presentation.ui.transaction.TransactionFragment"
+        android:name="com.mobbelldev.kophi.presentation.ui.transaction.TransactionFragment"
         android:label="@string/title_transaction"
         tools:layout="@layout/fragment_transaction" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.kophi.presentation.ui.profile.ProfileFragment"
+        android:name="com.mobbelldev.kophi.presentation.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
