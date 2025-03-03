@@ -24,7 +24,6 @@ import com.mobbelldev.kophi.presentation.ui.coffee.checkout.CheckoutActivity
 import com.mobbelldev.kophi.presentation.ui.coffee.detail.CoffeeDetailActivity
 import com.mobbelldev.kophi.utils.IDRCurrency
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
@@ -118,11 +117,14 @@ class CoffeeFragment : Fragment() {
                 }
 
                 launch {
-                    coffeeViewModel.coffeeData.collectLatest {
+                    coffeeViewModel.coffeeData.collect {
                         coffeeList = it.data
                         categoryList =
                             coffeeList.map { data -> data.category }.distinct().toMutableList()
-                        coffeeAdapter.submitList(it.data.filter { data -> data.category == categoryList.first() })
+                        coffeeAdapter.submitList(it.data.filter { data ->
+                            data.category == categoryList.first()
+                        })
+
                         setupViewPager()
                     }
                 }
@@ -149,10 +151,14 @@ class CoffeeFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        binding.tabs.removeAllTabs()
+//        binding.tabs.removeAllTabs()
+
+//        binding.tabs.clearOnTabSelectedListeners()
+
         categoryList.forEach {
             binding.tabs.addTab(binding.tabs.newTab().setText(it))
         }
+
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 coffeeAdapter.submitList(coffeeList.filter {

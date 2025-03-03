@@ -20,18 +20,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCase) : ViewModel() {
-    private val _coffeeData = MutableStateFlow(
-        Coffee(
-            data = emptyList()
-        )
-    )
-    val coffeeData: StateFlow<Coffee> = _coffeeData.asStateFlow()
+//    private val _coffeeData = MutableStateFlow(
+//        Coffee(
+//            data = emptyList()
+//        )
+//    )
+//    val coffeeData: StateFlow<Coffee> = _coffeeData.asStateFlow()
 
-//    private val _coffeeData = MutableSharedFlow<Coffee>()
-//    val coffeeData: SharedFlow<Coffee> = _coffeeData
+    private val _coffeeData = MutableSharedFlow<Coffee>()
+    val coffeeData: SharedFlow<Coffee> = _coffeeData
 
-    private val _coffeeList = MutableStateFlow<List<CoffeeCart>>(emptyList())
-    val coffeeList: StateFlow<List<CoffeeCart>> = _coffeeList.asStateFlow()
+    private val _coffeeList = MutableSharedFlow<List<CoffeeCart>>()
+    val coffeeList: SharedFlow<List<CoffeeCart>> = _coffeeList
+
+//    private val _coffeeList = MutableStateFlow<List<CoffeeCart>>(emptyList())
+//    val coffeeList: StateFlow<List<CoffeeCart>> = _coffeeList.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -58,13 +61,13 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
                         is ResultResponse.Loading -> _isLoading.value = true
                         is ResultResponse.Success -> {
                             _isLoading.value = false
-                                result.data?.let {
-                                    _coffeeData.emit(
-                                        Coffee(
-                                            data = it.data
-                                        )
+                            result.data?.let {
+                                _coffeeData.emit(
+                                    Coffee(
+                                        data = it.data
                                     )
-                                }
+                                )
+                            }
                         }
                     }
                 }
@@ -83,7 +86,8 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
     fun getAllCartCoffees() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _coffeeList.value = coffeeUseCase.getAllCartCoffees()
+                _coffeeList.emit(coffeeUseCase.getAllCartCoffees())
+//                _coffeeList.value = coffeeUseCase.getAllCartCoffees()
             }
         }
     }

@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -35,14 +33,7 @@ class LanguageActivity : AppCompatActivity() {
         }
 
         binding.toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed().also {
-                lifecycleScope.launch {
-                    languageViewModel.getLanguage().collectLatest {
-                        val localeList = LocaleListCompat.forLanguageTags(it)
-                        AppCompatDelegate.setApplicationLocales(localeList)
-                    }
-                }
-            }
+            onBackPressedDispatcher.onBackPressed()
         }
         lifecycleScope.launch {
             languageViewModel.getLanguage().collectLatest {
@@ -51,21 +42,12 @@ class LanguageActivity : AppCompatActivity() {
             }
         }
 
-
         binding.rbEnglish.setOnClickListener {
-            setLocale(Languages.ENGLISH.language)
+            languageViewModel.setLanguage(Languages.ENGLISH.language)
         }
 
         binding.rbIndonesia.setOnClickListener {
-            setLocale(Languages.INDONESIAN.language)
-        }
-    }
-
-    private fun setLocale(language: String) {
-        lifecycleScope.launch {
-            languageViewModel.setLanguage(language)
-            val localeList = LocaleListCompat.forLanguageTags(language)
-            AppCompatDelegate.setApplicationLocales(localeList)
+            languageViewModel.setLanguage(Languages.INDONESIAN.language)
         }
     }
 }

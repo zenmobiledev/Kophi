@@ -31,5 +31,4 @@ class AuthenticationUseCase @Inject constructor(private val repository: CoffeeRe
     suspend fun getToken(): String {
         return repository.getToken()
     }
-
 }
