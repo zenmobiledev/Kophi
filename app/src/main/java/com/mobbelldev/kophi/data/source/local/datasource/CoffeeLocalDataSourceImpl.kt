@@ -83,6 +83,14 @@ class CoffeeLocalDataSourceImpl @Inject constructor(
         return preference.getAuthenticationUser()
     }
 
+    override suspend fun setEmail(email: String) {
+        preference.setEmail(email)
+    }
+
+    override suspend fun getEmail(): String {
+        return preference.getEmail()
+    }
+
     override suspend fun setDarkMode(isDarkMode: Boolean) {
         preference.setDarkMode(isDarkMode)
     }

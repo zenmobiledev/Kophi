@@ -6,14 +6,12 @@ import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.usecase.AuthenticationUseCase
 import com.mobbelldev.kophi.utils.ResultResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,15 +57,8 @@ class AuthenticationViewModel @Inject constructor(private val authenticationUseC
         return authenticationUseCase.getToken()
     }
 
-    fun saveTokenToDatabase(token: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            withContext(Dispatchers.IO) {
-                authenticationUseCase.saveTokenToDatabase(
-                    token
-                )
-                _isLoading.value = false
-            }
-        }
+    suspend fun setEmail(email: String) {
+        authenticationUseCase.setEmail(email)
     }
+
 }

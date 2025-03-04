@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.mobbelldev.kophi.R
+import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.databinding.ActivityCheckoutBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.AdapterCallback
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.CheckoutAdapter
@@ -60,10 +61,10 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                 checkoutViewModel.getAllCartCoffees()
 
                 launch {
-                    checkoutViewModel.coffeeList.collect {
-                        if (it.isNotEmpty()) {
+                    checkoutViewModel.coffeeList.collect { data ->
+                        if (data.isNotEmpty()) {
                             with(binding) {
-                                checkoutAdapter.submitList(it.toList())
+                                checkoutAdapter.submitList(data.toList())
                                 // Empty cart
                                 ivEmptyCart.isVisible = false
                                 tvEmptyCart.isVisible = false
@@ -71,19 +72,33 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
 
                                 scrollView.isVisible = true
                                 materialCardViewPayment.isVisible = true
-                                val totalPrice = it.sumOf { cartCoffee -> cartCoffee.subTotal }
+                                val totalPrice = data.sumOf { cartCoffee -> cartCoffee.subTotal }
                                 tvTotalPrice1.text = IDRCurrency.format(totalPrice)
                                 tvTotalPrice2.text = IDRCurrency.format(totalPrice)
 
-
-
                                 btnSelectPayment.setOnClickListener {
-                                    Toast.makeText(
-                                        this@CheckoutActivity,
-                                        "Navigato to Midtrans page",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                                    lifecycleScope.launch {
+
+                                        val userId = checkoutViewModel.getUsId()
+                                        val email = checkoutViewModel.getEmail()
+                                        val items = mutableListOf<OrderRequest.Item>()
+                                        for (cart in data) {
+                                            items.add(
+                                                OrderRequest.Item(
+                                                    id = cart.coffeeId,
+                                                    name = cart.name,
+                                                    price = cart.subTotal,
+                                                    quantity = cart.quantity
+                                                )
+                                            )
+                                        }
+                                        checkoutViewModel.createOrderSnap(
+                                            email = email,
+                                            price = totalPrice,
+                                            items = items,
+                                            userId = userId
+                                        )
+                                    }
                                 }
                             }
                         } else {
@@ -96,6 +111,19 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                                 materialCardViewPayment.isVisible = false
                             }
                         }
+                    }
+                }
+
+                launch {
+                    checkoutViewModel.isLoading.collect {
+                        binding.progressBar.isVisible = it
+                    }
+                }
+
+                launch {
+                    checkoutViewModel.errorMessage.collect {
+                        Toast.makeText(this@CheckoutActivity, "Error: $it", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

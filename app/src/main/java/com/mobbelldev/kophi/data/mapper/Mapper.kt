@@ -3,10 +3,12 @@ package com.mobbelldev.kophi.data.mapper
 import com.mobbelldev.kophi.data.source.local.entity.CoffeeCartEntity
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
+import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.TransactionResponse
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.model.Transaction
 import javax.inject.Inject
 
@@ -75,6 +77,29 @@ class Mapper @Inject constructor() {
                 subTotal = it.subTotal,
             )
         }
+    }
+
+    // SNAP
+    fun mapResponseToDomain(response: OrderSnapResponse): OrderSnap {
+        return OrderSnap(
+            data = mapResponseToDomain(response.data)
+        )
+    }
+
+    private fun mapResponseToDomain(response: OrderSnapResponse.Data): OrderSnap.Data {
+        return OrderSnap.Data(
+            orId = response.orId,
+            orUsId = response.orUsId,
+            orTotalPrice = response.orTotalPrice,
+            orCreatedOn = response.orCreatedOn,
+            transaction = mapResponseToDomain(response.transaction)
+        )
+    }
+
+    private fun mapResponseToDomain(response: OrderSnapResponse.Data.Transaction): OrderSnap.Data.Transaction {
+        return OrderSnap.Data.Transaction(
+            redirectUrl = response.redirectUrl
+        )
     }
 
     // TRANSACTION

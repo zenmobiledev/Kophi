@@ -32,6 +32,10 @@ interface CoffeeLocalDataSource {
 
     suspend fun getAuthenticationUser(): Boolean
 
+    suspend fun setEmail(email: String)
+
+    suspend fun getEmail(): String
+
     suspend fun setDarkMode(isDarkMode: Boolean)
 
     fun getDarkMode(): Flow<Boolean>

@@ -1,9 +1,11 @@
 package com.mobbelldev.kophi.domain.repositories
 
 import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
+import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.model.Transaction
 import com.mobbelldev.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
@@ -37,11 +39,20 @@ interface CoffeeRepository {
 
     suspend fun deleteCoffeeCart(cartId: String)
 
+    suspend fun createOrderSnap(
+        userId: Int,
+        orderRequest: OrderRequest,
+    ): Flow<ResultResponse<OrderSnap>>
+
     suspend fun getTransactionList(): Flow<ResultResponse<Transaction>>
 
     suspend fun setAuthenticateUser(isAuthenticated: Boolean)
 
     suspend fun getAuthenticateUser(): Boolean
+
+    suspend fun setEmail(email: String)
+
+    suspend fun getEmail(): String
 
     suspend fun setDarkMode(isDarkMode: Boolean)
 

@@ -11,4 +11,5 @@ object PreferenceParameter {
     val LANGUAGE = stringPreferencesKey("language")
     val TOKEN = stringPreferencesKey("token")
     val US_ID = intPreferencesKey("us_id")
+    val EMAIL = stringPreferencesKey("email")
 }

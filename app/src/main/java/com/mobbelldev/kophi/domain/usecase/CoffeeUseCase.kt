@@ -25,20 +25,4 @@ class CoffeeUseCase @Inject constructor(private val coffeeRepository: CoffeeRepo
     suspend fun getAllCartCoffees(): List<CoffeeCart> {
         return coffeeRepository.getAllCartCoffees()
     }
-
-    suspend fun updateQuantityAndSubtotal(cartId: String, newQuantity: Int) {
-        coffeeRepository.updateCoffeeCartQuantityAndSubtotal(cartId, newQuantity)
-    }
-
-    suspend fun incrementQuantity(cartId: String) {
-        coffeeRepository.incrementCoffeeCartQuantity(cartId)
-    }
-
-    suspend fun decrementQuantity(cartId: String) {
-        coffeeRepository.decrementCoffeeCartQuantity(cartId)
-    }
-
-    suspend fun deleteCoffeeCart(cartId: String) {
-        coffeeRepository.deleteCoffeeCart(cartId)
-    }
 }

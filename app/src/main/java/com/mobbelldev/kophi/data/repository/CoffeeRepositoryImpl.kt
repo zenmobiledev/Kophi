@@ -5,9 +5,11 @@ import com.mobbelldev.kophi.data.mapper.Mapper
 import com.mobbelldev.kophi.data.source.local.datasource.CoffeeLocalDataSource
 import com.mobbelldev.kophi.data.source.remote.datasource.CoffeeRemoteDataSource
 import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
+import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.model.Transaction
 import com.mobbelldev.kophi.domain.repositories.CoffeeRepository
 import com.mobbelldev.kophi.utils.ResultResponse
@@ -108,6 +110,30 @@ class CoffeeRepositoryImpl @Inject constructor(
         coffeeLocalDataSource.deleteCoffeeCart(cartId)
     }
 
+    override suspend fun createOrderSnap(
+        userId: Int,
+        orderRequest: OrderRequest,
+    ): Flow<ResultResponse<OrderSnap>> {
+        return flow {
+            emit(ResultResponse.Loading)
+            val response = coffeeRemoteDataSource.createOrderSnap(
+                orderRequest = orderRequest,
+                userId = userId
+            )
+            try {
+                if (response.isSuccessful) {
+                    val domainToResponse = response.body()?.let {
+                        mapper.mapResponseToDomain(it)
+                    }
+                    emit(ResultResponse.Success(domainToResponse))
+                }
+
+            } catch (e: Exception) {
+                emit(ResultResponse.Error(e.message.toString()))
+            }
+        }
+    }
+
     override suspend fun getTransactionList(): Flow<ResultResponse<Transaction>> {
         return flow {
             emit(ResultResponse.Loading)
@@ -131,6 +157,14 @@ class CoffeeRepositoryImpl @Inject constructor(
 
     override suspend fun getAuthenticateUser(): Boolean {
         return coffeeLocalDataSource.getAuthenticationUser()
+    }
+
+    override suspend fun setEmail(email: String) {
+        coffeeLocalDataSource.setEmail(email)
+    }
+
+    override suspend fun getEmail(): String {
+        return coffeeLocalDataSource.getEmail()
     }
 
     override suspend fun setDarkMode(isDarkMode: Boolean) {

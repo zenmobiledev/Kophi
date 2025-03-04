@@ -150,9 +150,13 @@ class AuthenticationActivity : AppCompatActivity() {
                                     token = tokenFirebase.toString()
                                 )
                             }
+
                         }
                     }
 
+                    lifecycleScope.launch {
+                        authenticationViewModel.setEmail(auth.currentUser?.email.toString())
+                    }
                     Log.d(TAG, "signInWithCredential:success")
                 } else {
                     // If sign in fails, display a message to the user

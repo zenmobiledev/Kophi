@@ -54,6 +54,16 @@ class PreferenceDataStore(private val dataStore: DataStore<Preferences>) {
         return dataStore.data.first()[PreferenceParameter.IS_AUTHENTICATION] ?: false
     }
 
+    suspend fun setEmail(email: String) {
+        dataStore.edit {
+            it[PreferenceParameter.EMAIL] = email
+        }
+    }
+
+    suspend fun getEmail(): String {
+        return dataStore.data.first()[PreferenceParameter.EMAIL] ?: ""
+    }
+
     // Profile
     suspend fun setDarkMode(isDarkMode: Boolean) {
         dataStore.edit {
