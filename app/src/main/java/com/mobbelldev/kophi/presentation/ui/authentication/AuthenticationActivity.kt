@@ -3,8 +3,6 @@ package com.mobbelldev.kophi.presentation.ui.authentication
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -27,7 +25,6 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingExcept
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.mobbelldev.kophi.BuildConfig
 import com.mobbelldev.kophi.R
@@ -45,23 +42,6 @@ class AuthenticationActivity : AppCompatActivity() {
     private lateinit var credentialManager: CredentialManager
 
     private val authenticationViewModel: AuthenticationViewModel by viewModels()
-
-    private val textWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            with(binding) {
-                val name = edtName.text.toString()
-                val email = edtEmail.text.toString()
-                val password = edtPassword.text.toString()
-
-                btnRegister.isEnabled =
-                    name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()
-            }
-        }
-
-        override fun afterTextChanged(s: Editable?) {}
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -209,57 +189,6 @@ class AuthenticationActivity : AppCompatActivity() {
                     handleSignIn(result)
                 } catch (e: GetCredentialException) { //import from androidx.CredentialManager
                     Log.d("Error", e.message.toString())
-                }
-            }
-        }
-
-        // SIGN UP
-        with(binding) {
-            edtName.addTextChangedListener(textWatcher)
-            edtEmail.addTextChangedListener(textWatcher)
-            edtPassword.addTextChangedListener(textWatcher)
-
-            // Navigate to Coffee Page
-            btnRegister.setOnClickListener {
-                val name = edtName.text.toString()
-                val email = edtEmail.text.toString()
-                val password = edtPassword.text.toString()
-                if (btnRegister.isEnabled) {
-                    auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(
-                                    this@AuthenticationActivity,
-                                    "Signup success",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                val user = auth.currentUser
-                                val profileUser = userProfileChangeRequest {
-                                    displayName = name
-                                }
-                                user?.updateProfile(profileUser)
-                                auth.currentUser?.getIdToken(true)?.addOnCompleteListener {
-                                    if (it.isSuccessful) {
-                                        val tokenFirebase = it.result?.token
-                                        Log.d(TAG, "idTokenManual: $tokenFirebase")
-                                        lifecycleScope.launch {
-                                            authenticationViewModel.saveTokenToDatabase(
-                                                tokenFirebase.toString()
-                                            )
-                                        }
-
-//                                        navigateToCoffeePage()
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(
-                                    this@AuthenticationActivity,
-                                    task.exception?.message.toString(),
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                            }
-                        }
                 }
             }
         }

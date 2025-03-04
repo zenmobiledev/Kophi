@@ -40,7 +40,6 @@ class CoffeeFragment : Fragment() {
         R.drawable.three, R.drawable.four, R.drawable.five
     )
 
-
     private val adsAdapter by lazy {
         AdsAdapter(adsList) {
             val intent = Intent(requireContext(), AdsActivity::class.java)
@@ -79,6 +78,10 @@ class CoffeeFragment : Fragment() {
 
         setupRecyclerView()
         setupObserver()
+
+        if (categoryList.isNotEmpty()) {
+            setupViewPager()
+        }
 
         binding.materialCardViewCart.setOnClickListener {
             val intent = Intent(requireContext(), CheckoutActivity::class.java)
@@ -124,8 +127,9 @@ class CoffeeFragment : Fragment() {
                         coffeeAdapter.submitList(it.data.filter { data ->
                             data.category == categoryList.first()
                         })
-
-                        setupViewPager()
+                        if (binding.tabs.tabCount == 0) {
+                            setupViewPager()
+                        }
                     }
                 }
 
@@ -151,9 +155,7 @@ class CoffeeFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-//        binding.tabs.removeAllTabs()
-
-//        binding.tabs.clearOnTabSelectedListeners()
+        binding.tabs.removeAllTabs()
 
         categoryList.forEach {
             binding.tabs.addTab(binding.tabs.newTab().setText(it))

@@ -1,35 +1,31 @@
 package com.mobbelldev.kophi.data.source.remote.datasource
 
-import android.util.Log
 import com.mobbelldev.kophi.data.source.remote.api.CoffeeService
 import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.TransactionResponse
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: CoffeeService) :
     CoffeeRemoteDataSource {
     override suspend fun getCoffeeList(usId: Int): Response<CoffeeResponse> {
-        try {
-            val response = coffeeService.getCoffeeList(
-                userId = usId
-            )
-            return when {
-                response.isSuccessful -> response
-                else -> throw Exception(response.code().toString())
-            }
-        } catch (e: CancellationException) {
-            withContext(NonCancellable) {
-                Log.d("CoffeeRemoteDataSourceImpl", "Operation was cancelled")
-            }
-            throw e
+        val response = coffeeService.getCoffeeList(
+            userId = usId
+        )
+        return try {
+            response
         } catch (e: Exception) {
-            throw Exception(e.message)
+            val responseCode = response.code()
+            val errorBody = response.errorBody()
+            Response.error(
+                responseCode,
+                errorBody ?: (e.message
+                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
+            )
         }
     }
 
@@ -45,7 +41,9 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
         }
     }
 
-    override suspend fun continueWithGoogle(continueWithGoogle: ContinueWithGoogleRequest): Response<AuthenticationResponse> {
+    override suspend fun continueWithGoogle(
+        continueWithGoogle: ContinueWithGoogleRequest,
+    ): Response<AuthenticationResponse> {
         try {
             val response = coffeeService.continueWithGoogle(continueWithGoogle)
             return when {
