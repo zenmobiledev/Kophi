@@ -30,8 +30,8 @@ class CheckoutUseCase @Inject constructor(private val repository: CoffeeReposito
         )
     }
 
-    suspend fun getUsId(): Int {
-        return repository.getUsId()
+    suspend fun getUserId(): Int {
+        return repository.getUserId()
     }
 
     suspend fun getAllCartCoffees(): List<CoffeeCart> {

@@ -1,12 +1,12 @@
 package com.mobbelldev.kophi.domain.repositories
 
-import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
 import com.mobbelldev.kophi.domain.model.OrderSnap
-import com.mobbelldev.kophi.domain.model.Transaction
+import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -15,17 +15,17 @@ interface CoffeeRepository {
 
     suspend fun getOnboarding(): Boolean
 
-    suspend fun continueWithGoogle(continueWithGoogle: ContinueWithGoogleRequest): Flow<ResultResponse<Authentication>>
+    suspend fun continueWithGoogle(continueWithGoogle: ContinueWithGoogle): Flow<ResultResponse<Authentication>>
 
     suspend fun saveTokenToDatabase(token: String)
 
     suspend fun getToken(): String
 
-    suspend fun getCoffeeList(usId: Int): Flow<ResultResponse<Coffee>>
+    suspend fun getCoffeeList(userId: Int): Flow<ResultResponse<Coffee>>
 
-    suspend fun saveUsId(usId: Int)
+    suspend fun saveUserId(userId: Int)
 
-    suspend fun getUsId(): Int
+    suspend fun getUserId(): Int
 
     suspend fun insertCoffeeCart(coffee: CoffeeCart)
 
@@ -44,7 +44,7 @@ interface CoffeeRepository {
         orderRequest: OrderRequest,
     ): Flow<ResultResponse<OrderSnap>>
 
-    suspend fun getTransactionList(): Flow<ResultResponse<Transaction>>
+    suspend fun getOrders(userId: Int): Flow<ResultResponse<Orders>>
 
     suspend fun setAuthenticateUser(isAuthenticated: Boolean)
 

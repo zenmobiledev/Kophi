@@ -6,7 +6,7 @@ import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
-import com.mobbelldev.kophi.data.source.remote.model.response.TransactionResponse
+import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
@@ -14,9 +14,9 @@ import javax.inject.Inject
 
 class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: CoffeeService) :
     CoffeeRemoteDataSource {
-    override suspend fun getCoffeeList(usId: Int): Response<CoffeeResponse> {
+    override suspend fun getCoffeeList(userId: Int): Response<CoffeeResponse> {
         val response = coffeeService.getCoffeeList(
-            userId = usId
+            userId = userId
         )
         return try {
             response
@@ -31,9 +31,11 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
         }
     }
 
-    override suspend fun getTransaction(): Response<TransactionResponse> {
+    override suspend fun getOrders(userId: Int): Response<OrdersResponse> {
         try {
-            val response = coffeeService.getTransaction()
+            val response = coffeeService.getOrders(
+                userId = userId,
+            )
             return when {
                 response.isSuccessful -> response
                 else -> throw Exception(response.code().toString())

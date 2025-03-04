@@ -38,7 +38,7 @@ class AuthenticationViewModel @Inject constructor(private val authenticationUseC
                         _isLoading.value = false
                         _dataUser.value = result.data?.data.also {
                             if (it != null) {
-                                authenticationUseCase.saveUsId(it.usId)
+                                authenticationUseCase.saveUserId(it.usId)
                                 authenticationUseCase.saveTokenToDatabase(it.token)
                             }
                         }

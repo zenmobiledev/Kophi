@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CoffeeUseCase @Inject constructor(private val coffeeRepository: CoffeeRepository) {
-    suspend operator fun invoke(usId: Int): Flow<ResultResponse<Coffee>> {
+    suspend operator fun invoke(userId: Int): Flow<ResultResponse<Coffee>> {
         return coffeeRepository.getCoffeeList(
-            usId = usId
+            userId = userId
         )
     }
 
-    suspend fun getUsId(): Int {
-        return coffeeRepository.getUsId()
+    suspend fun getUserId(): Int {
+        return coffeeRepository.getUserId()
     }
 
     suspend fun insertCoffeeCart(coffee: CoffeeCart) {

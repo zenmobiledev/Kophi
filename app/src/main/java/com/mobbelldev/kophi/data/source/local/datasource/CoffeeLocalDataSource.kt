@@ -12,9 +12,9 @@ interface CoffeeLocalDataSource {
 
     suspend fun getToken(): String
 
-    suspend fun saveUsId(usId: Int)
+    suspend fun saveUserId(userId: Int)
 
-    suspend fun getUsId(): Int
+    suspend fun getUserId(): Int
 
     suspend fun insertCoffeeCart(coffee: CoffeeCartEntity)
 

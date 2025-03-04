@@ -4,13 +4,13 @@ import android.util.Log
 import com.mobbelldev.kophi.data.mapper.Mapper
 import com.mobbelldev.kophi.data.source.local.datasource.CoffeeLocalDataSource
 import com.mobbelldev.kophi.data.source.remote.datasource.CoffeeRemoteDataSource
-import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
 import com.mobbelldev.kophi.domain.model.OrderSnap
-import com.mobbelldev.kophi.domain.model.Transaction
+import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.domain.repositories.CoffeeRepository
 import com.mobbelldev.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
@@ -31,10 +31,12 @@ class CoffeeRepositoryImpl @Inject constructor(
         return coffeeLocalDataSource.getOnboarding()
     }
 
-    override suspend fun continueWithGoogle(continueWithGoogle: ContinueWithGoogleRequest): Flow<ResultResponse<Authentication>> {
+    override suspend fun continueWithGoogle(continueWithGoogle: ContinueWithGoogle): Flow<ResultResponse<Authentication>> {
         return flow {
             emit(ResultResponse.Loading)
-            val response = coffeeRemoteDataSource.continueWithGoogle(continueWithGoogle)
+            val response = coffeeRemoteDataSource.continueWithGoogle(
+                mapper.mapDomainToRequest(continueWithGoogle)
+            )
             try {
                 if (response.isSuccessful) {
                     val authenticationResponse = response.body()?.let {
@@ -56,11 +58,11 @@ class CoffeeRepositoryImpl @Inject constructor(
         return coffeeLocalDataSource.getToken()
     }
 
-    override suspend fun getCoffeeList(usId: Int): Flow<ResultResponse<Coffee>> {
+    override suspend fun getCoffeeList(userId: Int): Flow<ResultResponse<Coffee>> {
         return flow {
             emit(ResultResponse.Loading)
             val response = coffeeRemoteDataSource.getCoffeeList(
-                usId = usId
+                userId = userId
             )
             try {
                 if (response.isSuccessful) {
@@ -78,12 +80,14 @@ class CoffeeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveUsId(usId: Int) {
-        coffeeLocalDataSource.saveUsId(usId)
+    override suspend fun saveUserId(userId: Int) {
+        coffeeLocalDataSource.saveUserId(
+            userId = userId
+        )
     }
 
-    override suspend fun getUsId(): Int {
-        return coffeeLocalDataSource.getUsId()
+    override suspend fun getUserId(): Int {
+        return coffeeLocalDataSource.getUserId()
     }
 
     override suspend fun insertCoffeeCart(coffee: CoffeeCart) {
@@ -134,10 +138,12 @@ class CoffeeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTransactionList(): Flow<ResultResponse<Transaction>> {
+    override suspend fun getOrders(userId: Int): Flow<ResultResponse<Orders>> {
         return flow {
             emit(ResultResponse.Loading)
-            val response = coffeeRemoteDataSource.getTransaction()
+            val response = coffeeRemoteDataSource.getOrders(
+                userId = userId
+            )
             try {
                 if (response.isSuccessful) {
                     val transactionResponse = response.body()?.let {

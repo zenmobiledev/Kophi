@@ -5,13 +5,11 @@ import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
-import com.mobbelldev.kophi.data.source.remote.model.response.TransactionResponse
+import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
 import retrofit2.Response
 
 interface CoffeeRemoteDataSource {
-    suspend fun getCoffeeList(usId: Int): Response<CoffeeResponse>
-
-    suspend fun getTransaction(): Response<TransactionResponse>
+    suspend fun getCoffeeList(userId: Int): Response<CoffeeResponse>
 
     suspend fun continueWithGoogle(continueWithGoogle: ContinueWithGoogleRequest): Response<AuthenticationResponse>
 
@@ -19,4 +17,6 @@ interface CoffeeRemoteDataSource {
         userId: Int,
         orderRequest: OrderRequest,
     ): Response<OrderSnapResponse>
+
+    suspend fun getOrders(userId: Int): Response<OrdersResponse>
 }

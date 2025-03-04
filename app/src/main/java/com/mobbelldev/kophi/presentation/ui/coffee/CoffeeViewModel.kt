@@ -34,14 +34,14 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
 
     init {
         viewModelScope.launch {
-            getCoffeeList(coffeeUseCase.getUsId())
+            getCoffeeList(coffeeUseCase.getUserId())
         }
     }
 
-    private fun getCoffeeList(usId: Int) {
+    private fun getCoffeeList(userId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                coffeeUseCase(usId).collect { result ->
+                coffeeUseCase(userId).collect { result ->
                     when (result) {
                         is ResultResponse.Error -> {
                             _isLoading.value = false

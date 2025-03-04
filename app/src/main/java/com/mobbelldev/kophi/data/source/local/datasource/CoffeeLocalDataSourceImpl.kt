@@ -29,12 +29,12 @@ class CoffeeLocalDataSourceImpl @Inject constructor(
         return preference.getToken()
     }
 
-    override suspend fun saveUsId(usId: Int) {
-        preference.saveUsId(usId)
+    override suspend fun saveUserId(userId: Int) {
+        preference.saveUserId(userId)
     }
 
-    override suspend fun getUsId(): Int {
-        return preference.getUsId()
+    override suspend fun getUserId(): Int {
+        return preference.getUserId()
     }
 
     override suspend fun insertCoffeeCart(coffee: CoffeeCartEntity) {

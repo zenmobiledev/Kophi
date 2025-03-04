@@ -22,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(private val checkoutUseCase: CheckoutUseCase) :
     ViewModel() {
-
     private val _coffeeList = MutableStateFlow<List<CoffeeCart>>(emptyList())
     val coffeeList: StateFlow<List<CoffeeCart>> = _coffeeList.asStateFlow()
 
@@ -34,6 +33,9 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
 
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage: SharedFlow<String> = _errorMessage.asSharedFlow()
+
+    private val _urlSnap = MutableStateFlow<String>("")
+    val urlSnap: StateFlow<String> = _urlSnap
 
     fun createOrderSnap(
         userId: Int,
@@ -61,6 +63,8 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
                             OrderSnap(
                                 data = it.data
                             )
+
+                            _urlSnap.value = it.data.transaction.redirectUrl
                         }
                     }
                 }
@@ -68,8 +72,8 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         }
     }
 
-    suspend fun getUsId(): Int {
-        return checkoutUseCase.getUsId()
+    suspend fun getUserId(): Int {
+        return checkoutUseCase.getUserId()
     }
 
     fun getAllCartCoffees() {
@@ -122,5 +126,9 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
 
     private suspend fun refreshCart() {
         _coffeeList.value = checkoutUseCase.getAllCartCoffees()
+    }
+
+    companion object {
+        var URL = "url"
     }
 }

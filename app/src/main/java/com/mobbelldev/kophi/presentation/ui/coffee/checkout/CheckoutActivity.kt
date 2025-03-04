@@ -1,5 +1,6 @@
 package com.mobbelldev.kophi.presentation.ui.coffee.checkout
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +17,7 @@ import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.databinding.ActivityCheckoutBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.AdapterCallback
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.CheckoutAdapter
+import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
 import com.mobbelldev.kophi.utils.IDRCurrency
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -78,16 +80,15 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
 
                                 btnSelectPayment.setOnClickListener {
                                     lifecycleScope.launch {
-
-                                        val userId = checkoutViewModel.getUsId()
+                                        val userId = checkoutViewModel.getUserId()
                                         val email = checkoutViewModel.getEmail()
                                         val items = mutableListOf<OrderRequest.Item>()
                                         for (cart in data) {
                                             items.add(
                                                 OrderRequest.Item(
                                                     id = cart.coffeeId,
-                                                    name = cart.name,
-                                                    price = cart.subTotal,
+                                                    name = "${cart.name} ${cart.temperature} ${cart.milkOption} ${cart.sweetness}",
+                                                    price = cart.price,
                                                     quantity = cart.quantity
                                                 )
                                             )
@@ -98,7 +99,19 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                                             items = items,
                                             userId = userId
                                         )
+
+                                        checkoutViewModel.urlSnap.collect { url ->
+                                            val intent = Intent(
+                                                this@CheckoutActivity,
+                                                PaymentActivity::class.java
+                                            ).apply {
+                                                putExtra(EXTRA_URL_SNAP, url)
+                                            }
+                                            startActivity(intent)
+                                        }
                                     }
+
+
                                 }
                             }
                         } else {
@@ -113,6 +126,12 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                         }
                     }
                 }
+
+//                launch {
+//                    checkoutViewModel.urlSnap.collectLatest {
+//                        val intent = Intent(this)
+//                    }
+//                }
 
                 launch {
                     checkoutViewModel.isLoading.collect {
@@ -148,5 +167,9 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
 
     override fun deleteItem(cartId: String) {
         checkoutViewModel.deleteCoffeeCart(cartId)
+    }
+
+    companion object {
+        const val EXTRA_URL_SNAP = "extra_url_snap"
     }
 }

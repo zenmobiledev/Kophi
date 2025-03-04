@@ -1,18 +1,28 @@
 package com.mobbelldev.kophi.data.mapper
 
 import com.mobbelldev.kophi.data.source.local.entity.CoffeeCartEntity
+import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
-import com.mobbelldev.kophi.data.source.remote.model.response.TransactionResponse
+import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
 import com.mobbelldev.kophi.domain.model.OrderSnap
-import com.mobbelldev.kophi.domain.model.Transaction
+import com.mobbelldev.kophi.domain.model.Orders
 import javax.inject.Inject
 
 class Mapper @Inject constructor() {
+    // Authentication
+    fun mapDomainToRequest(domain: ContinueWithGoogle): ContinueWithGoogleRequest {
+        return ContinueWithGoogleRequest(
+            rememberMe = domain.rememberMe,
+            token = domain.token
+        )
+    }
+
     // COFFEE
     fun mapResponseToDomain(response: CoffeeResponse): Coffee {
         return Coffee(
@@ -102,33 +112,40 @@ class Mapper @Inject constructor() {
         )
     }
 
-    // TRANSACTION
-    fun mapResponseToDomain(response: TransactionResponse): Transaction {
-        return Transaction(
+    // Orders
+    fun mapResponseToDomain(response: OrdersResponse): Orders {
+        return Orders(
             data = response.data.map { mapResponseToDomain(it) }
         )
     }
 
-    private fun mapResponseToDomain(response: TransactionResponse.Data): Transaction.Data {
-        return Transaction.Data(
-            items = response.items.map { mapResponseToDomain(it) },
-            location = response.location,
-            paymentStatus = response.paymentStatus,
-            time = response.time,
-            totalAmount = response.totalAmount,
-            transactionId = response.transactionId
+    private fun mapResponseToDomain(response: OrdersResponse.Data): Orders.Data {
+        return Orders.Data(
+            orCreatedOn = response.orCreatedOn,
+            orTotalPrice = response.orTotalPrice,
+            details = response.details.map { mapResponseToDomain(it) }
         )
     }
 
-    private fun mapResponseToDomain(response: TransactionResponse.Data.Item): Transaction.Data.Item {
-        return Transaction.Data.Item(
+    private fun mapResponseToDomain(response: OrdersResponse.Data.Detail): Orders.Data.Detail {
+        return Orders.Data.Detail(
+            odProducts = response.odProducts.map { mapResponseToDomain(it) }
+        )
+    }
+
+    private fun mapResponseToDomain(response: OrdersResponse.Data.Detail.OdProduct): Orders.Data.Detail.OdProduct {
+        return Orders.Data.Detail.OdProduct(
             id = response.id,
-            image = response.image,
+            imageUrl = mapResponseToDomain(response.imageUrl),
             name = response.name,
-            description = response.description,
             price = response.price,
-            quantity = response.quantity,
-            subTotal = response.subTotal
+            quantity = response.quantity
+        )
+    }
+
+    private fun mapResponseToDomain(response: OrdersResponse.Data.Detail.OdProduct.ImageUrl): Orders.Data.Detail.OdProduct.ImageUrl {
+        return Orders.Data.Detail.OdProduct.ImageUrl(
+            pdImageUrl = response.pdImageUrl
         )
     }
 }

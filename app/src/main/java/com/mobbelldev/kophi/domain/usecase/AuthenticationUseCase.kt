@@ -1,7 +1,7 @@
 package com.mobbelldev.kophi.domain.usecase
 
-import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.domain.model.Authentication
+import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
 import com.mobbelldev.kophi.domain.repositories.CoffeeRepository
 import com.mobbelldev.kophi.utils.ResultResponse
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ class AuthenticationUseCase @Inject constructor(private val repository: CoffeeRe
         token: String,
     ): Flow<ResultResponse<Authentication>> {
         return repository.continueWithGoogle(
-            ContinueWithGoogleRequest(
+            ContinueWithGoogle(
                 rememberMe = rememberMe,
                 token = token
             )
@@ -24,8 +24,8 @@ class AuthenticationUseCase @Inject constructor(private val repository: CoffeeRe
         repository.saveTokenToDatabase(token)
     }
 
-    suspend fun saveUsId(usId: Int) {
-        repository.saveUsId(usId)
+    suspend fun saveUserId(usId: Int) {
+        repository.saveUserId(usId)
     }
 
     suspend fun getToken(): String {

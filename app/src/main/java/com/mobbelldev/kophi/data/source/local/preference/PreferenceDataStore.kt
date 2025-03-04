@@ -34,14 +34,14 @@ class PreferenceDataStore(private val dataStore: DataStore<Preferences>) {
         return dataStore.data.first()[PreferenceParameter.TOKEN] ?: ""
     }
 
-    suspend fun saveUsId(usId: Int) {
+    suspend fun saveUserId(userId: Int) {
         dataStore.edit {
-            it[PreferenceParameter.US_ID] = usId
+            it[PreferenceParameter.USER_ID] = userId
         }
     }
 
-    suspend fun getUsId(): Int {
-        return dataStore.data.first()[PreferenceParameter.US_ID] ?: 0
+    suspend fun getUserId(): Int {
+        return dataStore.data.first()[PreferenceParameter.USER_ID] ?: 0
     }
 
     suspend fun setAuthenticationUser(isAuthentication: Boolean) {

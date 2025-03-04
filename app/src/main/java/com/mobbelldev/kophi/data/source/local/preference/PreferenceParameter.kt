@@ -10,6 +10,6 @@ object PreferenceParameter {
     val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode")
     val LANGUAGE = stringPreferencesKey("language")
     val TOKEN = stringPreferencesKey("token")
-    val US_ID = intPreferencesKey("us_id")
+    val USER_ID = intPreferencesKey("user_id")
     val EMAIL = stringPreferencesKey("email")
 }
