@@ -2,8 +2,8 @@ package com.mobbelldev.kophi.presentation.ui.coffee.checkout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.usecase.CheckoutUseCase
 import com.mobbelldev.kophi.utils.ResultResponse
@@ -41,7 +41,7 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         userId: Int,
         email: String,
         price: Int,
-        items: MutableList<OrderRequest.Item>,
+        items: MutableList<Order.Item>,
     ) {
         viewModelScope.launch {
             checkoutUseCase(
@@ -126,9 +126,5 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
 
     private suspend fun refreshCart() {
         _coffeeList.value = checkoutUseCase.getAllCartCoffees()
-    }
-
-    companion object {
-        var URL = "url"
     }
 }

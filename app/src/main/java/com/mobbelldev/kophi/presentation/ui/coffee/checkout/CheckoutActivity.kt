@@ -13,8 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.mobbelldev.kophi.R
-import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.databinding.ActivityCheckoutBinding
+import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.AdapterCallback
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.CheckoutAdapter
 import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
@@ -82,10 +82,10 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                                     lifecycleScope.launch {
                                         val userId = checkoutViewModel.getUserId()
                                         val email = checkoutViewModel.getEmail()
-                                        val items = mutableListOf<OrderRequest.Item>()
+                                        val items = mutableListOf<Order.Item>()
                                         for (cart in data) {
                                             items.add(
-                                                OrderRequest.Item(
+                                                Order.Item(
                                                     id = cart.coffeeId,
                                                     name = "${cart.name} ${cart.temperature} ${cart.milkOption} ${cart.sweetness}",
                                                     price = cart.price,

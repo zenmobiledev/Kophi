@@ -4,11 +4,11 @@ import android.util.Log
 import com.mobbelldev.kophi.data.mapper.Mapper
 import com.mobbelldev.kophi.data.source.local.datasource.CoffeeLocalDataSource
 import com.mobbelldev.kophi.data.source.remote.datasource.CoffeeRemoteDataSource
-import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
+import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.domain.repositories.CoffeeRepository
@@ -116,12 +116,12 @@ class CoffeeRepositoryImpl @Inject constructor(
 
     override suspend fun createOrderSnap(
         userId: Int,
-        orderRequest: OrderRequest,
+        orderRequest: Order,
     ): Flow<ResultResponse<OrderSnap>> {
         return flow {
             emit(ResultResponse.Loading)
             val response = coffeeRemoteDataSource.createOrderSnap(
-                orderRequest = orderRequest,
+                orderRequest = mapper.mapDomainToRequest(orderRequest),
                 userId = userId
             )
             try {

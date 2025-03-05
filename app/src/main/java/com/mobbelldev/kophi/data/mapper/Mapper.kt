@@ -2,6 +2,7 @@ package com.mobbelldev.kophi.data.mapper
 
 import com.mobbelldev.kophi.data.source.local.entity.CoffeeCartEntity
 import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
+import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
@@ -10,6 +11,7 @@ import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
+import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.model.Orders
 import javax.inject.Inject
@@ -147,6 +149,32 @@ class Mapper @Inject constructor() {
     private fun mapResponseToDomain(response: OrdersResponse.Data.Detail.OdProduct.ImageUrl): Orders.Data.Detail.OdProduct.ImageUrl {
         return Orders.Data.Detail.OdProduct.ImageUrl(
             pdImageUrl = response.pdImageUrl
+        )
+    }
+
+    fun mapDomainToRequest(domain: Order): OrderRequest {
+        return OrderRequest(
+            amount = domain.amount,
+            callbacks = mapDomainToRequest(domain.callbacks),
+            email = domain.email,
+            items = domain.items.map { mapDomainToRequest(it) },
+            promoCodes = domain.promoCodes
+        )
+    }
+
+    private fun mapDomainToRequest(domain: Order.Callbacks): OrderRequest.Callbacks {
+        return OrderRequest.Callbacks(
+            error = domain.error,
+            finish = domain.finish
+        )
+    }
+
+    private fun mapDomainToRequest(domain: Order.Item): OrderRequest.Item {
+        return OrderRequest.Item(
+            id = domain.id,
+            name = domain.name,
+            price = domain.price,
+            quantity = domain.quantity
         )
     }
 }

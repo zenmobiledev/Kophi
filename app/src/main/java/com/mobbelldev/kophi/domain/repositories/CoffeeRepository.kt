@@ -1,10 +1,10 @@
 package com.mobbelldev.kophi.domain.repositories
 
-import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
+import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.utils.ResultResponse
@@ -41,7 +41,7 @@ interface CoffeeRepository {
 
     suspend fun createOrderSnap(
         userId: Int,
-        orderRequest: OrderRequest,
+        orderRequest: Order,
     ): Flow<ResultResponse<OrderSnap>>
 
     suspend fun getOrders(userId: Int): Flow<ResultResponse<Orders>>

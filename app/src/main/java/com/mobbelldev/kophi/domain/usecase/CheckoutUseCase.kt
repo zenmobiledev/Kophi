@@ -1,7 +1,7 @@
 package com.mobbelldev.kophi.domain.usecase
 
-import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.domain.model.CoffeeCart
+import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.repositories.CoffeeRepository
 import com.mobbelldev.kophi.utils.ResultResponse
@@ -13,12 +13,12 @@ class CheckoutUseCase @Inject constructor(private val repository: CoffeeReposito
         userId: Int,
         email: String,
         price: Int,
-        items: List<OrderRequest.Item>,
+        items: List<Order.Item>,
     ): Flow<ResultResponse<OrderSnap>> {
         return repository.createOrderSnap(
-            orderRequest = OrderRequest(
+            orderRequest = Order(
                 amount = price,
-                callbacks = OrderRequest.Callbacks(
+                callbacks = Order.Callbacks(
                     error = toString(),
                     finish = toString()
                 ),
