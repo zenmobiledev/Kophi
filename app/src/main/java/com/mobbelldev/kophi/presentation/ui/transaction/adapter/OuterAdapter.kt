@@ -25,7 +25,7 @@ class OuterAdapter :
         fun bind(orders: Orders.Data) {
             with(binding) {
                 tvDate.text = orders.orCreatedOn.convertDate()
-                tvLocationOn.text = "Gandaria City 8"
+                tvLocationOn.text = "Gandaria City"
 //                tvStatus.text = transaction.paymentStatus.also {
 //                    when (transaction.paymentStatus) {
 //                        StatusPayment.PAID.status -> {
