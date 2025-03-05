@@ -8,6 +8,7 @@ data class Orders(
     val `data`: List<Data>,
 ) {
     data class Data(
+        val orId: Int,
         val orCreatedOn: String,
         val orTotalPrice: Int,
         val details: List<Detail>,

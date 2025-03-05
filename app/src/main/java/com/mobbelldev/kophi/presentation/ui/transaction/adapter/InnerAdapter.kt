@@ -7,18 +7,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import com.mobbelldev.kophi.databinding.ItemDetailTransactionBinding
-import com.mobbelldev.kophi.domain.model.Transaction
+import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.utils.IDRCurrency
 
 class InnerAdapter :
-    ListAdapter<Transaction.Data.Item, InnerAdapter.InnerViewHolder>(DIFF_UTIL) {
+    ListAdapter<Orders.Data.Detail, InnerAdapter.InnerViewHolder>(DIFF_UTIL) {
     class InnerViewHolder(private val binding: ItemDetailTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Transaction.Data.Item) {
+        fun bind(item: Orders.Data.Detail) {
             with(binding) {
-                ivCoffee.load(item.image)
-                tvCoffeeName.text = "${item.name}, ${item.description} x${item.quantity}"
-                tvSubTotal.text = IDRCurrency.format(item.subTotal)
+                item.odProducts.forEach {
+                    ivCoffee.load(it.imageUrl.pdImageUrl)
+                    tvCoffeeName.text = "${it.name} x ${it.quantity}"
+                    tvSubTotal.text = IDRCurrency.format(it.price)
+                }
             }
         }
     }
@@ -33,16 +35,16 @@ class InnerAdapter :
     }
 
     companion object {
-        val DIFF_UTIL = object : DiffUtil.ItemCallback<Transaction.Data.Item>() {
+        val DIFF_UTIL = object : DiffUtil.ItemCallback<Orders.Data.Detail>() {
             override fun areItemsTheSame(
-                oldItem: Transaction.Data.Item,
-                newItem: Transaction.Data.Item,
+                oldItem: Orders.Data.Detail,
+                newItem: Orders.Data.Detail,
             ): Boolean =
-                oldItem.id == newItem.id
+                oldItem.odProducts == newItem.odProducts
 
             override fun areContentsTheSame(
-                oldItem: Transaction.Data.Item,
-                newItem: Transaction.Data.Item,
+                oldItem: Orders.Data.Detail,
+                newItem: Orders.Data.Detail,
             ): Boolean =
                 oldItem == newItem
         }

@@ -121,9 +121,10 @@ class Mapper @Inject constructor() {
 
     private fun mapResponseToDomain(response: OrdersResponse.Data): Orders.Data {
         return Orders.Data(
+            orId = response.orId,
             orCreatedOn = response.orCreatedOn,
             orTotalPrice = response.orTotalPrice,
-            details = response.details.map { mapResponseToDomain(it) }
+            details = response.details.map { mapResponseToDomain(it) },
         )
     }
 

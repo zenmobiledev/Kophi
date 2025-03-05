@@ -48,16 +48,19 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
     override suspend fun continueWithGoogle(
         continueWithGoogle: ContinueWithGoogleRequest,
     ): Response<AuthenticationResponse> {
-        try {
-            val response = coffeeService.continueWithGoogle(
-                continueWithGoogle = continueWithGoogle
-            )
-            return when {
-                response.isSuccessful -> response
-                else -> throw Exception(response.code().toString())
-            }
+        val response = coffeeService.continueWithGoogle(
+            continueWithGoogle = continueWithGoogle
+        )
+        return try {
+            response
         } catch (e: Exception) {
-            throw Exception(e.message)
+            val responseCode = response.code()
+            val errorBody = response.errorBody()
+            Response.error(
+                responseCode,
+                errorBody ?: (e.message
+                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
+            )
         }
     }
 

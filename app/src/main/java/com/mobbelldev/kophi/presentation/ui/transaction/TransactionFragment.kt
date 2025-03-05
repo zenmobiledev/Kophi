@@ -65,7 +65,7 @@ class TransactionFragment : Fragment() {
                 }
 
                 launch {
-                    transactionViewModel.transactionList.collect {
+                    transactionViewModel.orders.collect {
                         if (it != null) {
                             transactionAdapter.submitList(it.data)
                         } else {
