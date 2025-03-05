@@ -7,13 +7,18 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TransactionUseCase @Inject constructor(private val coffeeRepository: CoffeeRepository) {
-    suspend operator fun invoke(userId: Int): Flow<ResultResponse<Orders>> {
+    suspend operator fun invoke(token: String, userId: Int): Flow<ResultResponse<Orders>> {
         return coffeeRepository.getOrders(
-            userId = userId
+            userId = userId,
+            token = token
         )
     }
 
     suspend fun getUserId(): Int {
         return coffeeRepository.getUserId()
+    }
+
+    suspend fun getToken(): String {
+        return coffeeRepository.getToken()
     }
 }

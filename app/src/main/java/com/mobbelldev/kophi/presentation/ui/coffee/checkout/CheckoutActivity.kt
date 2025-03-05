@@ -80,6 +80,7 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
 
                                 btnSelectPayment.setOnClickListener {
                                     lifecycleScope.launch {
+                                        val token = checkoutViewModel.getToken()
                                         val userId = checkoutViewModel.getUserId()
                                         val email = checkoutViewModel.getEmail()
                                         val items = mutableListOf<Order.Item>()
@@ -97,7 +98,8 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                                             email = email,
                                             price = totalPrice,
                                             items = items,
-                                            userId = userId
+                                            userId = userId,
+                                            token = token
                                         )
 
                                         checkoutViewModel.urlSnap.collect { url ->
@@ -110,10 +112,13 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                                             startActivity(intent)
                                         }
                                     }
-
-
+                                    data.forEach {
+                                        checkoutViewModel.deleteAllOrders(it)
+                                    }
                                 }
                             }
+
+
                         } else {
                             with(binding) {
                                 ivEmptyCart.isVisible = true
@@ -126,12 +131,6 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                         }
                     }
                 }
-
-//                launch {
-//                    checkoutViewModel.urlSnap.collectLatest {
-//                        val intent = Intent(this)
-//                    }
-//                }
 
                 launch {
                     checkoutViewModel.isLoading.collect {

@@ -38,6 +38,7 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     val urlSnap: StateFlow<String> = _urlSnap
 
     fun createOrderSnap(
+        token: String,
         userId: Int,
         email: String,
         price: Int,
@@ -49,6 +50,7 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
                 price = price,
                 items = items,
                 userId = userId,
+                token = token,
             ).collect { result ->
                 when (result) {
                     is ResultResponse.Error -> {
@@ -64,7 +66,8 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
                                 data = it.data
                             )
 
-                            _urlSnap.value = it.data.transaction.redirectUrl
+                            _urlSnap.value =
+                                it.data.transaction.redirectUrl
                         }
                     }
                 }
@@ -120,8 +123,21 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         }
     }
 
+    fun deleteAllOrders(orders: CoffeeCart) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                checkoutUseCase.deleteAllOrders(orders)
+                refreshCart()
+            }
+        }
+    }
+
     suspend fun getEmail(): String {
         return checkoutUseCase.getEmail()
+    }
+
+    suspend fun getToken(): String {
+        return checkoutUseCase.getToken()
     }
 
     private suspend fun refreshCart() {

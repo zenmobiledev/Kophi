@@ -18,4 +18,6 @@
     <string name="text_dark_mode">Mode Gelap</string>
     <string name="text_language">Bahasa</string>
     <string name="text_log_out">Keluar</string>
+    <string name="text_cancel">Batal</string>
+    <string name="text_pay">Bayar</string>
 </resources>

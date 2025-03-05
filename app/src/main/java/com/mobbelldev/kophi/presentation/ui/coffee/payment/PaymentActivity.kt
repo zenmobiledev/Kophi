@@ -4,22 +4,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.mobbelldev.kophi.BuildConfig
 import com.mobbelldev.kophi.R
 import com.mobbelldev.kophi.databinding.ActivityPaymentBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.CheckoutActivity
+import com.mobbelldev.kophi.presentation.ui.main.MainActivity
+import com.mobbelldev.kophi.presentation.ui.transaction.TransactionFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PaymentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaymentBinding
 
-    private val paymentViewModel: PaymentViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,7 +51,11 @@ class PaymentActivity : AppCompatActivity() {
 
         // WebView Client untuk menangani navigasi dalam aplikasi
         webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
 
+                println("FINISH: $url")
+            }
         }
 
         // WebChromeClient untuk mendukung fitur tambahan seperti dialog JavaScript
@@ -57,15 +63,17 @@ class PaymentActivity : AppCompatActivity() {
 
         // Load URL dari DataStore
         val snapUrl = intent.getStringExtra(CheckoutActivity.EXTRA_URL_SNAP)
-        if (snapUrl != "") {
-            webView.loadUrl(snapUrl.toString())
+        val snapUrlTokenId = intent.getStringExtra(TransactionFragment.SNAP_URL_TOKEN_ID)
+        when {
+            snapUrl?.isNotEmpty() == true -> webView.loadUrl(snapUrl)
+            snapUrlTokenId?.isNotEmpty() == true -> webView.loadUrl("${BuildConfig.SNAP_URL}$snapUrlTokenId")
         }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
-        val intent = Intent(this, CheckoutActivity::class.java)
+//        findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_transaction)
+        val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
         finish()

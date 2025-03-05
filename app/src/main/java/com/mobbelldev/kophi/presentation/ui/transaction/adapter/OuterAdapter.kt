@@ -2,18 +2,21 @@ package com.mobbelldev.kophi.presentation.ui.transaction.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mobbelldev.kophi.R
 import com.mobbelldev.kophi.databinding.ItemTransactionBinding
 import com.mobbelldev.kophi.domain.model.Orders
+import com.mobbelldev.kophi.presentation.ui.transaction.StatusPayment
 import com.mobbelldev.kophi.utils.IDRCurrency
 import com.mobbelldev.kophi.utils.convertDate
 
-class OuterAdapter :
+class OuterAdapter(private val listener: OnItemClickListener) :
     ListAdapter<Orders.Data, OuterAdapter.OuterViewHolder>(DIFF_UTIL) {
-    class OuterViewHolder(val binding: ItemTransactionBinding) :
+
+    inner class OuterViewHolder(val binding: ItemTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val innerAdapter = InnerAdapter()
 
@@ -25,34 +28,44 @@ class OuterAdapter :
         fun bind(orders: Orders.Data) {
             with(binding) {
                 tvDate.text = orders.orCreatedOn.convertDate()
-                tvLocationOn.text = "Gandaria City 8"
-//                tvStatus.text = transaction.paymentStatus.also {
-//                    when (transaction.paymentStatus) {
-//                        StatusPayment.PAID.status -> {
-//                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.green))
-//                                .toString()
-//                        }
-//
-//                        StatusPayment.FAILED.status -> {
-//                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.red))
-//                                .toString()
-//                        }
-//
-//                        StatusPayment.EXPIRED.status -> {
-//                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.yellow))
-//                                .toString()
-//                        }
-//
-//                        else -> {
-//                        }
-//                    }
-//                }
+                tvLocationOn.text = "Gandaria City"
+                tvStatus.text = orders.orStatus.also {
+                    when (orders.orStatus) {
+                        StatusPayment.PAID.status -> {
+                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.green))
+                                .toString()
+                        }
+
+                        StatusPayment.EXPIRED.status -> {
+                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.red))
+                                .toString()
+                        }
+
+                        StatusPayment.PENDING.status -> {
+                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.yellow))
+                                .toString()
+                            btnPay.apply {
+                                val tokenId = orders.orTokenId
+                                isVisible = true
+                                setOnClickListener {
+                                    listener.onClickPay(orderTokenId = tokenId)
+                                }
+                            }
+                            btnCancel.apply {
+                                isVisible = true
+                            }
+                        }
+
+                        else -> {
+                        }
+                    }
+                }
                 tvTotalPrice.text = itemView.context.resources.getString(
                     R.string.total_price,
                     IDRCurrency.format(orders.orTotalPrice)
                 )
 
-                innerAdapter.submitList(orders.details)
+                innerAdapter.submitList(orders.details.first().odProducts)
             }
         }
     }

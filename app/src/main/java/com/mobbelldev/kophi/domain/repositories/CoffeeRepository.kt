@@ -21,7 +21,7 @@ interface CoffeeRepository {
 
     suspend fun getToken(): String
 
-    suspend fun getCoffeeList(userId: Int): Flow<ResultResponse<Coffee>>
+    suspend fun getCoffeeList(token: String, userId: Int): Flow<ResultResponse<Coffee>>
 
     suspend fun saveUserId(userId: Int)
 
@@ -39,12 +39,15 @@ interface CoffeeRepository {
 
     suspend fun deleteCoffeeCart(cartId: String)
 
+    suspend fun deleteAllOrders(orders: CoffeeCart)
+
     suspend fun createOrderSnap(
+        token: String,
         userId: Int,
         orderRequest: Order,
     ): Flow<ResultResponse<OrderSnap>>
 
-    suspend fun getOrders(userId: Int): Flow<ResultResponse<Orders>>
+    suspend fun getOrders(token: String, userId: Int): Flow<ResultResponse<Orders>>
 
     suspend fun setAuthenticateUser(isAuthenticated: Boolean)
 

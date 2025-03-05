@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 class CheckoutUseCase @Inject constructor(private val repository: CoffeeRepository) {
     suspend operator fun invoke(
+        token: String,
         userId: Int,
         email: String,
         price: Int,
@@ -26,8 +27,13 @@ class CheckoutUseCase @Inject constructor(private val repository: CoffeeReposito
                 items = items,
                 promoCodes = emptyList()
             ),
-            userId = userId
+            userId = userId,
+            token = token
         )
+    }
+
+    suspend fun getToken(): String {
+        return repository.getToken()
     }
 
     suspend fun getUserId(): Int {
@@ -52,6 +58,12 @@ class CheckoutUseCase @Inject constructor(private val repository: CoffeeReposito
 
     suspend fun deleteCoffeeCart(cartId: String) {
         repository.deleteCoffeeCart(cartId)
+    }
+
+    suspend fun deleteAllOrders(orders: CoffeeCart) {
+        return repository.deleteAllOrders(
+            orders = orders
+        )
     }
 
     suspend fun getEmail(): String {

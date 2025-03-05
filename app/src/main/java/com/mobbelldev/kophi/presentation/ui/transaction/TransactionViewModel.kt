@@ -35,15 +35,19 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
 
     init {
         viewModelScope.launch {
-            getOrders(getUserId())
+            getOrders(
+                userId = getUserId(),
+                token = getToken(),
+            )
         }
     }
 
-    private fun getOrders(userId: Int) {
+    private fun getOrders(token: String, userId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 transactionUseCase(
-                    userId = userId
+                    userId = userId,
+                    token = token
                 ).collect { result ->
                     when (result) {
                         is ResultResponse.Error -> {
@@ -68,5 +72,9 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
 
     private suspend fun getUserId(): Int {
         return transactionUseCase.getUserId()
+    }
+
+    private suspend fun getToken(): String {
+        return transactionUseCase.getToken()
     }
 }

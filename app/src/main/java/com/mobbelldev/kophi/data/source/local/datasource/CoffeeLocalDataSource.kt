@@ -28,6 +28,8 @@ interface CoffeeLocalDataSource {
 
     suspend fun deleteCoffeeCart(cartId: String)
 
+    suspend fun deleteAllOrders(orders: CoffeeCartEntity)
+
     suspend fun setAuthenticationUser(isAuthenticated: Boolean)
 
     suspend fun getAuthenticationUser(): Boolean

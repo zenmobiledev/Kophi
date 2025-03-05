@@ -9,14 +9,15 @@ import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
 import retrofit2.Response
 
 interface CoffeeRemoteDataSource {
-    suspend fun getCoffeeList(userId: Int): Response<CoffeeResponse>
+    suspend fun getCoffeeList(token: String, userId: Int): Response<CoffeeResponse>
 
     suspend fun continueWithGoogle(continueWithGoogle: ContinueWithGoogleRequest): Response<AuthenticationResponse>
 
     suspend fun createOrderSnap(
+        token: String,
         userId: Int,
         orderRequest: OrderRequest,
     ): Response<OrderSnapResponse>
 
-    suspend fun getOrders(userId: Int): Response<OrdersResponse>
+    suspend fun getOrders(token: String, userId: Int): Response<OrdersResponse>
 }

@@ -58,11 +58,12 @@ class CoffeeRepositoryImpl @Inject constructor(
         return coffeeLocalDataSource.getToken()
     }
 
-    override suspend fun getCoffeeList(userId: Int): Flow<ResultResponse<Coffee>> {
+    override suspend fun getCoffeeList(token: String, userId: Int): Flow<ResultResponse<Coffee>> {
         return flow {
             emit(ResultResponse.Loading)
             val response = coffeeRemoteDataSource.getCoffeeList(
-                userId = userId
+                userId = userId,
+                token = token
             )
             try {
                 if (response.isSuccessful) {
@@ -114,7 +115,16 @@ class CoffeeRepositoryImpl @Inject constructor(
         coffeeLocalDataSource.deleteCoffeeCart(cartId)
     }
 
+    override suspend fun deleteAllOrders(orders: CoffeeCart) {
+        coffeeLocalDataSource.deleteAllOrders(
+            orders = mapper.mapDomainToEntities(
+                domain = orders
+            )
+        )
+    }
+
     override suspend fun createOrderSnap(
+        token: String,
         userId: Int,
         orderRequest: Order,
     ): Flow<ResultResponse<OrderSnap>> {
@@ -122,7 +132,8 @@ class CoffeeRepositoryImpl @Inject constructor(
             emit(ResultResponse.Loading)
             val response = coffeeRemoteDataSource.createOrderSnap(
                 orderRequest = mapper.mapDomainToRequest(orderRequest),
-                userId = userId
+                userId = userId,
+                token = token
             )
             try {
                 if (response.isSuccessful) {
@@ -138,11 +149,12 @@ class CoffeeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getOrders(userId: Int): Flow<ResultResponse<Orders>> {
+    override suspend fun getOrders(token: String, userId: Int): Flow<ResultResponse<Orders>> {
         return flow {
             emit(ResultResponse.Loading)
             val response = coffeeRemoteDataSource.getOrders(
-                userId = userId
+                userId = userId,
+                token = token
             )
             try {
                 if (response.isSuccessful) {
