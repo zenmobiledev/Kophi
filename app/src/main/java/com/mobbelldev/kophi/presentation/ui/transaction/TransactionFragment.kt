@@ -1,5 +1,6 @@
 package com.mobbelldev.kophi.presentation.ui.transaction
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.mobbelldev.kophi.databinding.FragmentTransactionBinding
+import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
+import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OnItemClickListener
 import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OuterAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TransactionFragment : Fragment() {
+class TransactionFragment : Fragment(), OnItemClickListener {
 
     private var _binding: FragmentTransactionBinding? = null
 
@@ -29,7 +32,7 @@ class TransactionFragment : Fragment() {
     private val transactionViewModel: TransactionViewModel by viewModels()
 
     private val transactionAdapter by lazy {
-        OuterAdapter()
+        OuterAdapter(this)
     }
 
     override fun onCreateView(
@@ -55,6 +58,7 @@ class TransactionFragment : Fragment() {
                 launch {
                     transactionViewModel.isLoading.collect {
                         binding.progressBar.isVisible = it
+                        binding.swipeRefresh.isRefreshing = it
                     }
                 }
 
@@ -85,5 +89,16 @@ class TransactionFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClickPay(orderTokenId: String) {
+        val intent = Intent(requireContext(), PaymentActivity::class.java).apply {
+            putExtra(SNAP_URL_TOKEN_ID, orderTokenId)
+        }
+        startActivity(intent)
+    }
+
+    companion object {
+        const val SNAP_URL_TOKEN_ID = "snap_url_token_id"
     }
 }

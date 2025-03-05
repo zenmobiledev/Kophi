@@ -11,6 +11,9 @@ data class Orders(
         val orId: Int,
         val orCreatedOn: String,
         val orTotalPrice: Int,
+        val orStatus: String,
+        val orTokenId: String,
+        val orPlatformId: String,
         val details: List<Detail>,
     ) {
         data class Detail(

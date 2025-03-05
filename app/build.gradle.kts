@@ -38,6 +38,11 @@ android {
             name = "X_SECRET_APP",
             value = localProperties["XSECRETAPP"].toString()
         )
+        buildConfigField(
+            type = "String",
+            name = "SNAP_URL",
+            value = localProperties["SNAPURL"].toString()
+        )
     }
 
     buildTypes {
@@ -75,6 +80,9 @@ dependencies {
 
     // Shimmer
     implementation(libs.shimmer)
+
+    // Swipe Refresh
+    implementation(libs.androidx.swiperefreshlayout)
 
     // Data Store - Preference
     implementation(libs.androidx.datastore.preferences)

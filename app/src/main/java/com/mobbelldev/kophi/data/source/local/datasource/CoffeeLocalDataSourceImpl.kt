@@ -75,6 +75,12 @@ class CoffeeLocalDataSourceImpl @Inject constructor(
         coffeeCartDao.deleteCoffeeCart(cartId)
     }
 
+    override suspend fun deleteAllOrders(orders: CoffeeCartEntity) {
+        coffeeCartDao.deleteAllOrders(
+            orders = orders
+        )
+    }
+
     override suspend fun setAuthenticationUser(isAuthenticated: Boolean) {
         preference.setAuthenticationUser(isAuthenticated)
     }

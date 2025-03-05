@@ -126,7 +126,10 @@ class Mapper @Inject constructor() {
             orId = response.orId,
             orCreatedOn = response.orCreatedOn,
             orTotalPrice = response.orTotalPrice,
+            orStatus = response.orStatus,
             details = response.details.map { mapResponseToDomain(it) },
+            orTokenId = response.orTokenId,
+            orPlatformId = response.orPlatformId,
         )
     }
 

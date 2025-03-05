@@ -1,6 +1,7 @@
 package com.mobbelldev.kophi.data.source.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -35,4 +36,7 @@ interface CoffeeCartDao {
 
     @Query("DELETE FROM coffeecartentity WHERE id = :cartId AND quantity == 1")
     suspend fun deleteCoffeeCart(cartId: String)
+
+    @Delete
+    suspend fun deleteAllOrders(orders: CoffeeCartEntity)
 }

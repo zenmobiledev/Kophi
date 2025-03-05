@@ -32,4 +32,6 @@
     <string name="text_dark_mode">Dark Mode</string>
     <string name="text_language">Language</string>
     <string name="text_log_out">Log out</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_pay">Pay</string>
 </resources>

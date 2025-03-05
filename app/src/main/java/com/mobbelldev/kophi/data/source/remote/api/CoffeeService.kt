@@ -16,6 +16,7 @@ import retrofit2.http.POST
 interface CoffeeService {
     @GET("api/kophi/menu/items")
     suspend fun getCoffeeList(
+        @Header("x-token") token: String,
         @Header("x-user-id") userId: Int,
         @Header("x-secret-app") secretApp: String = BuildConfig.X_SECRET_APP,
     ): Response<CoffeeResponse>
@@ -28,6 +29,7 @@ interface CoffeeService {
 
     @POST("api/kophi/order/snap")
     suspend fun createOrderSnap(
+        @Header("x-token") token: String,
         @Header("x-user-id") userId: Int,
         @Header("x-secret-app") secretApp: String = BuildConfig.X_SECRET_APP,
         @Body orderRequest: OrderRequest,
@@ -35,7 +37,15 @@ interface CoffeeService {
 
     @GET("api/kophi/orders")
     suspend fun getOrders(
+        @Header("x-token") token: String,
         @Header("x-user-id") userId: Int,
         @Header("x-secret-app") secretApp: String = BuildConfig.X_SECRET_APP,
     ): Response<OrdersResponse>
+
+    @POST("api/kophi/order/cancel/PHINAC-1731232370463")
+    suspend fun cancelOrder(
+        @Header("x-user-id") userId: Int,
+        @Header("x-secret-app") secretApp: String = BuildConfig.X_SECRET_APP,
+    ): Response<Unit>
+
 }

@@ -14,9 +14,10 @@ import javax.inject.Inject
 
 class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: CoffeeService) :
     CoffeeRemoteDataSource {
-    override suspend fun getCoffeeList(userId: Int): Response<CoffeeResponse> {
+    override suspend fun getCoffeeList(token: String, userId: Int): Response<CoffeeResponse> {
         val response = coffeeService.getCoffeeList(
-            userId = userId
+            userId = userId,
+            token = token
         )
         return try {
             response
@@ -31,10 +32,11 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
         }
     }
 
-    override suspend fun getOrders(userId: Int): Response<OrdersResponse> {
+    override suspend fun getOrders(token: String, userId: Int): Response<OrdersResponse> {
         try {
             val response = coffeeService.getOrders(
                 userId = userId,
+                token = token
             )
             return when {
                 response.isSuccessful -> response
@@ -65,12 +67,14 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
     }
 
     override suspend fun createOrderSnap(
+        token: String,
         userId: Int,
         orderRequest: OrderRequest,
     ): Response<OrderSnapResponse> {
         val response = coffeeService.createOrderSnap(
             orderRequest = orderRequest,
-            userId = userId
+            userId = userId,
+            token = token
         )
         return try {
             response

@@ -25,6 +25,7 @@ navigationUiKtx = "2.8.6"
 retrofit = "2.11.0"
 roomKtx = "2.6.1"
 shimmer = "0.5.0"
+swiperefreshlayout = "1.1.0"
 viewpager2 = "1.1.0"
 activity = "1.10.0"
 googleGmsGoogleServices = "4.4.2"
@@ -38,6 +39,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomKtx" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }

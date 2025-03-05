@@ -31,7 +31,7 @@ data class OrdersResponse(
         @SerializedName("or_status")
         val orStatus: String,
         @SerializedName("or_token_id")
-        val orTokenId: Any,
+        val orTokenId: String,
         @SerializedName("or_total_price")
         val orTotalPrice: Int,
         @SerializedName("promos")
