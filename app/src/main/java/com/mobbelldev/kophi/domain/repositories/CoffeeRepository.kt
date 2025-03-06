@@ -1,6 +1,7 @@
 package com.mobbelldev.kophi.domain.repositories
 
 import com.mobbelldev.kophi.domain.model.Authentication
+import com.mobbelldev.kophi.domain.model.CancelOrder
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
@@ -48,6 +49,12 @@ interface CoffeeRepository {
     ): Flow<ResultResponse<OrderSnap>>
 
     suspend fun getOrders(token: String, userId: Int): Flow<ResultResponse<Orders>>
+
+    suspend fun cancelOrder(
+        userId: Int,
+        token: String,
+        transactionId: String,
+    ): Flow<ResultResponse<CancelOrder>>
 
     suspend fun setAuthenticateUser(isAuthenticated: Boolean)
 

@@ -4,6 +4,7 @@ import com.mobbelldev.kophi.data.source.remote.api.CoffeeService
 import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
+import com.mobbelldev.kophi.data.source.remote.model.response.CancelOrderResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
@@ -33,17 +34,43 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
     }
 
     override suspend fun getOrders(token: String, userId: Int): Response<OrdersResponse> {
-        try {
-            val response = coffeeService.getOrders(
-                userId = userId,
-                token = token
-            )
-            return when {
-                response.isSuccessful -> response
-                else -> throw Exception(response.code().toString())
-            }
+        val response = coffeeService.getOrders(
+            userId = userId,
+            token = token
+        )
+        return try {
+            response
         } catch (e: Exception) {
-            throw Exception(e.message)
+            val responseCode = response.code()
+            val errorBody = response.errorBody()
+            Response.error(
+                responseCode,
+                errorBody ?: (e.message
+                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
+            )
+        }
+    }
+
+    override suspend fun cancelOrder(
+        userId: Int,
+        token: String,
+        transactionId: String,
+    ): Response<CancelOrderResponse> {
+        val response = coffeeService.cancelOrder(
+            userId = userId,
+            transactionId = transactionId,
+            token = token,
+        )
+        return try {
+            response
+        } catch (e: Exception) {
+            val responseCode = response.code()
+            val errorBody = response.errorBody()
+            Response.error(
+                responseCode,
+                errorBody ?: (e.message
+                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
+            )
         }
     }
 

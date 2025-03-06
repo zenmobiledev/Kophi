@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView
 import com.mobbelldev.kophi.databinding.FragmentTransactionBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
 import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OnItemClickListener
@@ -50,17 +51,25 @@ class TransactionFragment : Fragment(), OnItemClickListener {
 
         setupRecyclerView()
         setupObserver()
+        setupSwipeRefresh()
+    }
+
+    private fun setupSwipeRefresh() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val userId = transactionViewModel.getUserId()
+            val token = transactionViewModel.getToken()
+            binding.swipeRefresh.setOnRefreshListener {
+                transactionViewModel.getOrders(
+                    token = token,
+                    userId = userId
+                )
+            }
+        }
     }
 
     private fun setupObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    transactionViewModel.isLoading.collect {
-                        binding.progressBar.isVisible = it
-                        binding.swipeRefresh.isRefreshing = it
-                    }
-                }
 
                 launch {
                     transactionViewModel.errorMessage.filterNotNull().collect {
@@ -70,12 +79,24 @@ class TransactionFragment : Fragment(), OnItemClickListener {
 
                 launch {
                     transactionViewModel.orders.collect {
-                        if (it != null) {
+                        if (it == null) {
+                            binding.shimmer.isVisible = true
+                            return@collect
+                        }
+
+                        if (it.data.isNotEmpty()) { // jika data tidak kosong
+                            binding.rvCoffees.isVisible = true
+                            binding.ivTransactionCart.isVisible = false
+                            binding.textNoTransaction.isVisible = false
                             transactionAdapter.submitList(it.data)
-                        } else {
+                        } else { // jika data kosong
+                            binding.rvCoffees.isVisible = false
                             binding.ivTransactionCart.isVisible = true
                             binding.textNoTransaction.isVisible = true
                         }
+
+                        binding.swipeRefresh.isRefreshing = false
+                        binding.shimmer.isVisible = false
                     }
                 }
             }
@@ -83,7 +104,14 @@ class TransactionFragment : Fragment(), OnItemClickListener {
     }
 
     private fun setupRecyclerView() {
-        binding.rvCoffees.adapter = transactionAdapter
+        with(binding) {
+            rvCoffees.adapter = transactionAdapter
+            rvCoffees.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    swipeRefresh.isEnabled = !rvCoffees.canScrollVertically(-1)
+                }
+            })
+        }
     }
 
     override fun onDestroyView() {
@@ -96,6 +124,19 @@ class TransactionFragment : Fragment(), OnItemClickListener {
             putExtra(SNAP_URL_TOKEN_ID, orderTokenId)
         }
         startActivity(intent)
+    }
+
+    override fun onCancelClick(transactionId: String) {
+        lifecycleScope.launch {
+            val userId = transactionViewModel.getUserId()
+            val token = transactionViewModel.getToken()
+            transactionViewModel.cancelOrder(
+                userId = userId,
+                token = token,
+                transactionId = transactionId
+
+            )
+        }
     }
 
     companion object {
