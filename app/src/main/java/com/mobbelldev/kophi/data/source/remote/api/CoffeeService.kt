@@ -4,6 +4,7 @@ import com.mobbelldev.kophi.BuildConfig
 import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
+import com.mobbelldev.kophi.data.source.remote.model.response.CancelOrderResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
@@ -12,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface CoffeeService {
     @GET("api/kophi/menu/items")
@@ -42,10 +44,12 @@ interface CoffeeService {
         @Header("x-secret-app") secretApp: String = BuildConfig.X_SECRET_APP,
     ): Response<OrdersResponse>
 
-    @POST("api/kophi/order/cancel/PHINAC-1731232370463")
+    @POST("api/kophi/order/cancel/{transaction_id}")
     suspend fun cancelOrder(
         @Header("x-user-id") userId: Int,
+        @Header("x-token") token: String,
         @Header("x-secret-app") secretApp: String = BuildConfig.X_SECRET_APP,
-    ): Response<Unit>
+        @Path("transaction_id") transactionId: String,
+    ): Response<CancelOrderResponse>
 
 }

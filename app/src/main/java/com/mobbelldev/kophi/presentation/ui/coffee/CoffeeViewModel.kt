@@ -20,11 +20,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCase) : ViewModel() {
-    private val _coffeeData = MutableSharedFlow<Coffee>()
-    val coffeeData: SharedFlow<Coffee> = _coffeeData
+    private val _coffeeData = MutableStateFlow<Coffee?>(null)
+    val coffeeData: StateFlow<Coffee?> = _coffeeData.asStateFlow()
 
-    private val _coffeeList = MutableSharedFlow<List<CoffeeCart>>()
-    val coffeeList: SharedFlow<List<CoffeeCart>> = _coffeeList
+    private val _coffeeList = MutableStateFlow<List<CoffeeCart>>(emptyList())
+    val coffeeList: StateFlow<List<CoffeeCart>> = _coffeeList.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -34,10 +34,13 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
 
     init {
         viewModelScope.launch {
-            getCoffeeList(
-                userId = coffeeUseCase.getUserId(),
-                token = coffeeUseCase.getToken(),
-            )
+            val token = getToken()
+            val userId = getUserId()
+
+            if (_coffeeData.value == null) {
+                getCoffeeList(token, userId)
+            }
+            getAllCartCoffees()
         }
     }
 
@@ -57,18 +60,20 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
                         is ResultResponse.Loading -> _isLoading.value = true
                         is ResultResponse.Success -> {
                             _isLoading.value = false
-                            result.data?.let {
-                                _coffeeData.emit(
-                                    Coffee(
-                                        data = it.data
-                                    )
-                                )
-                            }
+                            result.data?.let { _coffeeData.value = it }
                         }
                     }
                 }
             }
         }
+    }
+
+    suspend fun getUserId(): Int {
+        return coffeeUseCase.getUserId()
+    }
+
+    suspend fun getToken(): String {
+        return coffeeUseCase.getToken()
     }
 
     fun insertCoffeeCart(coffee: CoffeeCart) {

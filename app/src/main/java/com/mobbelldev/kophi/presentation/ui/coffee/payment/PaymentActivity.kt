@@ -54,7 +54,7 @@ class PaymentActivity : AppCompatActivity() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
 
-                println("FINISH: $url")
+
             }
         }
 

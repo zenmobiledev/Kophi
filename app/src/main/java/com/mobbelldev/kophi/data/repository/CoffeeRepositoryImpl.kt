@@ -1,10 +1,10 @@
 package com.mobbelldev.kophi.data.repository
 
-import android.util.Log
 import com.mobbelldev.kophi.data.mapper.Mapper
 import com.mobbelldev.kophi.data.source.local.datasource.CoffeeLocalDataSource
 import com.mobbelldev.kophi.data.source.remote.datasource.CoffeeRemoteDataSource
 import com.mobbelldev.kophi.domain.model.Authentication
+import com.mobbelldev.kophi.domain.model.CancelOrder
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
@@ -73,8 +73,7 @@ class CoffeeRepositoryImpl @Inject constructor(
                     emit(ResultResponse.Success(coffeeResponse))
                 }
             } catch (e: CancellationException) {
-                Log.d("Repository", "Flow cancelled")
-                throw e
+                emit(ResultResponse.Error(e.message.toString()))
             } catch (e: Exception) {
                 emit(ResultResponse.Error(e.message.toString()))
             }
@@ -162,6 +161,31 @@ class CoffeeRepositoryImpl @Inject constructor(
                         mapper.mapResponseToDomain(it)
                     }
                     emit(ResultResponse.Success(transactionResponse))
+                }
+            } catch (e: Exception) {
+                emit(ResultResponse.Error(e.message.toString()))
+            }
+        }
+    }
+
+    override suspend fun cancelOrder(
+        userId: Int,
+        token: String,
+        transactionId: String,
+    ): Flow<ResultResponse<CancelOrder>> {
+        return flow {
+            emit(ResultResponse.Loading)
+            val response = coffeeRemoteDataSource.cancelOrder(
+                userId = userId,
+                transactionId = transactionId,
+                token = token
+            )
+            try {
+                if (response.isSuccessful) {
+                    val cancelOrderResponse = response.body()?.let {
+                        mapper.mapResponseToDomain(it)
+                    }
+                    emit(ResultResponse.Success(cancelOrderResponse))
                 }
             } catch (e: Exception) {
                 emit(ResultResponse.Error(e.message.toString()))

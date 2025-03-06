@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -53,22 +51,9 @@ class ProfileFragment : Fragment() {
         val user = auth.currentUser
         binding.tvProfileName.text = resources.getString(R.string.hello_name, user?.displayName)
 
-        setupObserver()
         setupDarkMode()
         setupLanguage()
         setupLogout()
-    }
-
-    private fun setupObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    profileViewModel.getDarkMode().collect {
-                        binding.materialSwitch.isChecked = it
-                    }
-                }
-            }
-        }
     }
 
     private fun setupLogout() {
@@ -94,14 +79,22 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupDarkMode() {
+        lifecycleScope.launch {
+            profileViewModel.getDarkMode().collect {
+                binding.materialSwitch.isChecked = it
+            }
+        }
+
         binding.materialSwitch.setOnCheckedChangeListener { _, isChecked ->
             lifecycleScope.launch {
                 profileViewModel.setDarkMode(isChecked)
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                val nightMode = if (isChecked) {
+                    AppCompatDelegate.MODE_NIGHT_YES
                 } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    AppCompatDelegate.MODE_NIGHT_NO
                 }
+
+                AppCompatDelegate.setDefaultNightMode(nightMode)
             }
         }
     }

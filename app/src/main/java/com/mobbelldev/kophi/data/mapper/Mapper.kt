@@ -4,10 +4,12 @@ import com.mobbelldev.kophi.data.source.local.entity.CoffeeCartEntity
 import com.mobbelldev.kophi.data.source.remote.model.request.ContinueWithGoogleRequest
 import com.mobbelldev.kophi.data.source.remote.model.request.OrderRequest
 import com.mobbelldev.kophi.data.source.remote.model.response.AuthenticationResponse
+import com.mobbelldev.kophi.data.source.remote.model.response.CancelOrderResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.CoffeeResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
 import com.mobbelldev.kophi.domain.model.Authentication
+import com.mobbelldev.kophi.domain.model.CancelOrder
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.ContinueWithGoogle
@@ -178,6 +180,40 @@ class Mapper @Inject constructor() {
             name = domain.name,
             price = domain.price,
             quantity = domain.quantity
+        )
+    }
+
+    fun mapResponseToDomain(response: CancelOrderResponse): CancelOrder {
+        return CancelOrder(
+            data = mapResponseToDomain(response.data)
+        )
+    }
+
+    private fun mapResponseToDomain(response: CancelOrderResponse.Data): CancelOrder.Data {
+        return CancelOrder.Data(
+            details = response.details.map { mapResponseToDomain(it) },
+            orId = response.orId,
+            orPaymentStatus = response.orPaymentStatus,
+            orPlatformId = response.orPlatformId,
+            orStatus = response.orStatus,
+            orTotalPrice = response.orTotalPrice,
+            orUpdatedBy = response.orUpdatedBy,
+            orUpdatedOn = response.orUpdatedOn
+        )
+    }
+
+    private fun mapResponseToDomain(response: CancelOrderResponse.Data.Detail): CancelOrder.Data.Detail {
+        return CancelOrder.Data.Detail(
+            odProducts = response.odProducts.map { mapResponseToDomain(it) }
+        )
+    }
+
+    private fun mapResponseToDomain(response: CancelOrderResponse.Data.Detail.OdProduct): CancelOrder.Data.Detail.OdProduct {
+        return CancelOrder.Data.Detail.OdProduct(
+            id = response.id,
+            name = response.name,
+            price = response.price,
+            quantity = response.quantity
         )
     }
 }

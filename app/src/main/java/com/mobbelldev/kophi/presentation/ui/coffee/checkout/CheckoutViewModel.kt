@@ -127,7 +127,7 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 checkoutUseCase.deleteAllOrders(orders)
-                refreshCart()
+//                refreshCart()
             }
         }
     }

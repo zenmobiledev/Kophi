@@ -1,5 +1,6 @@
 package com.mobbelldev.kophi.domain.usecase
 
+import com.mobbelldev.kophi.domain.model.CancelOrder
 import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.domain.repositories.CoffeeRepository
 import com.mobbelldev.kophi.utils.ResultResponse
@@ -11,6 +12,18 @@ class TransactionUseCase @Inject constructor(private val coffeeRepository: Coffe
         return coffeeRepository.getOrders(
             userId = userId,
             token = token
+        )
+    }
+
+    suspend operator fun invoke(
+        userId: Int,
+        token: String,
+        transactionId: String,
+    ): Flow<ResultResponse<CancelOrder>> {
+        return coffeeRepository.cancelOrder(
+            userId = userId,
+            token = token,
+            transactionId = transactionId
         )
     }
 

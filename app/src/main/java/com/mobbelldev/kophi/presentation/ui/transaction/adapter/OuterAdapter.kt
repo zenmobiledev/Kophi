@@ -11,6 +11,7 @@ import com.mobbelldev.kophi.databinding.ItemTransactionBinding
 import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.presentation.ui.transaction.StatusPayment
 import com.mobbelldev.kophi.utils.IDRCurrency
+import com.mobbelldev.kophi.utils.capitalizeFirst
 import com.mobbelldev.kophi.utils.convertDate
 
 class OuterAdapter(private val listener: OnItemClickListener) :
@@ -29,16 +30,37 @@ class OuterAdapter(private val listener: OnItemClickListener) :
             with(binding) {
                 tvDate.text = orders.orCreatedOn.convertDate()
                 tvLocationOn.text = "Gandaria City"
-                tvStatus.text = orders.orStatus.also {
+                tvStatus.text = orders.orStatus.capitalizeFirst().also {
                     when (orders.orStatus) {
                         StatusPayment.PAID.status -> {
-                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.green))
-                                .toString()
+                            tvStatus.background.setTint(
+                                itemView.context.resources.getColor(
+                                    R.color.green,
+                                    itemView.context.resources.newTheme()
+                                )
+                            ).toString()
+                            with(binding) {
+                                btnCancel.isVisible = false
+                                btnPay.isVisible = false
+                            }
                         }
 
                         StatusPayment.EXPIRED.status -> {
                             tvStatus.background.setTint(itemView.context.resources.getColor(R.color.red))
                                 .toString()
+                            with(binding) {
+                                btnCancel.isVisible = false
+                                btnPay.isVisible = false
+                            }
+                        }
+
+                        StatusPayment.CANCELLED.status -> {
+                            tvStatus.background.setTint(itemView.context.resources.getColor(R.color.gray))
+                                .toString()
+                            with(binding) {
+                                btnCancel.isVisible = false
+                                btnPay.isVisible = false
+                            }
                         }
 
                         StatusPayment.PENDING.status -> {
@@ -52,11 +74,14 @@ class OuterAdapter(private val listener: OnItemClickListener) :
                                 }
                             }
                             btnCancel.apply {
+                                val transactionId = orders.orPlatformId
                                 isVisible = true
+                                setOnClickListener {
+                                    listener.onCancelClick(
+                                        transactionId = transactionId
+                                    )
+                                }
                             }
-                        }
-
-                        else -> {
                         }
                     }
                 }

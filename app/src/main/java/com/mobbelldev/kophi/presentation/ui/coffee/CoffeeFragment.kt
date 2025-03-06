@@ -24,7 +24,6 @@ import com.mobbelldev.kophi.presentation.ui.coffee.checkout.CheckoutActivity
 import com.mobbelldev.kophi.presentation.ui.coffee.detail.CoffeeDetailActivity
 import com.mobbelldev.kophi.utils.IDRCurrency
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -76,6 +75,7 @@ class CoffeeFragment : Fragment() {
         // ADS
         CarouselSnapHelper().attachToRecyclerView(binding.rvAds)
 
+
         setupRecyclerView()
         setupObserver()
 
@@ -114,40 +114,39 @@ class CoffeeFragment : Fragment() {
                 }
 
                 launch {
-                    coffeeViewModel.errorMessage.filterNotNull().collect {
+                    coffeeViewModel.errorMessage.collect {
                         Toast.makeText(view?.context, "Error: $it", Toast.LENGTH_LONG).show()
                     }
                 }
 
                 launch {
-                    coffeeViewModel.coffeeData.collect {
-                        coffeeList = it.data
-                        categoryList =
-                            coffeeList.map { data -> data.category }.distinct().toMutableList()
-                        coffeeAdapter.submitList(it.data.filter { data ->
-                            data.category == categoryList.first()
-                        })
-                        if (binding.tabs.tabCount == 0) {
-                            setupViewPager()
+                    coffeeViewModel.coffeeData.collect { coffee ->
+                        coffee?.let {
+                            coffeeList = it.data
+                            categoryList =
+                                coffeeList.map { data -> data.category }.distinct().toMutableList()
+                            coffeeAdapter.submitList(coffeeList.filter { data ->
+                                data.category == categoryList.firstOrNull()
+                            })
+
+                            if (binding.tabs.tabCount == 0) {
+                                setupViewPager()
+                            }
                         }
                     }
                 }
 
                 launch {
-                    coffeeViewModel.getAllCartCoffees()
-
-                    coffeeViewModel.coffeeList.collect {
-                        binding.materialCardViewCart.isVisible = it.isNotEmpty()
-                        val bottomPadding = if (it.isNotEmpty()) 240 else 0
+                    coffeeViewModel.coffeeList.collect { cartList ->
+                        binding.materialCardViewCart.isVisible = cartList.isNotEmpty()
+                        val bottomPadding = if (cartList.isNotEmpty()) 240 else 0
                         binding.rvCoffee.setPadding(0, 0, 0, bottomPadding)
 
-                        binding.tvTotalItems.text = it.sumOf { data ->
-                            data.quantity
-                        }.toString()
+                        binding.tvTotalItems.text = cartList.sumOf { it.quantity }.toString()
+                        binding.tvTotalPrice.text =
+                            IDRCurrency.format(cartList.sumOf { it.subTotal })
 
-                        val totalPrice =
-                            it.sumOf { cartCoffee -> cartCoffee.subTotal }
-                        binding.tvTotalPrice.text = IDRCurrency.format(totalPrice)
+                        coffeeViewModel.getAllCartCoffees()
                     }
                 }
             }
