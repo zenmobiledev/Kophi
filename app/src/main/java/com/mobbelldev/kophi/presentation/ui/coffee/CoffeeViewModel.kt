@@ -5,6 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.usecase.CoffeeUseCase
+import com.mobbelldev.kophi.domain.usecase.GetAllCartCoffeesUseCase
+import com.mobbelldev.kophi.domain.usecase.GetTokenUseCase
+import com.mobbelldev.kophi.domain.usecase.GetUserIdUseCase
+import com.mobbelldev.kophi.domain.usecase.InsertCoffeeCartUseCase
 import com.mobbelldev.kophi.utils.ResultResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +23,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCase) : ViewModel() {
+class CoffeeViewModel @Inject constructor(
+    private val coffeeUseCase: CoffeeUseCase,
+    private val getUserIdUseCase: GetUserIdUseCase,
+    private val getTokenUseCase: GetTokenUseCase,
+    private val insertCoffeeCartUseCase: InsertCoffeeCartUseCase,
+    private val getAllCartCoffeesUseCase: GetAllCartCoffeesUseCase,
+) : ViewModel() {
     private val _coffeeData = MutableStateFlow<Coffee?>(null)
     val coffeeData: StateFlow<Coffee?> = _coffeeData.asStateFlow()
 
@@ -68,18 +78,16 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
         }
     }
 
-    suspend fun getUserId(): Int {
-        return coffeeUseCase.getUserId()
-    }
+    suspend fun getUserId(): Int = getUserIdUseCase()
 
-    suspend fun getToken(): String {
-        return coffeeUseCase.getToken()
-    }
+    suspend fun getToken(): String = getTokenUseCase()
 
     fun insertCoffeeCart(coffee: CoffeeCart) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                coffeeUseCase.insertCoffeeCart(coffee)
+                insertCoffeeCartUseCase(
+                    coffee = coffee
+                )
             }
         }
     }
@@ -87,7 +95,7 @@ class CoffeeViewModel @Inject constructor(private val coffeeUseCase: CoffeeUseCa
     fun getAllCartCoffees() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _coffeeList.emit(coffeeUseCase.getAllCartCoffees())
+                _coffeeList.emit(getAllCartCoffeesUseCase())
             }
         }
     }

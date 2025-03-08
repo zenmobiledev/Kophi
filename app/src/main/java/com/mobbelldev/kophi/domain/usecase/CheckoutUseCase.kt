@@ -1,6 +1,5 @@
 package com.mobbelldev.kophi.domain.usecase
 
-import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.domain.model.OrderSnap
 import com.mobbelldev.kophi.domain.repositories.CoffeeRepository
@@ -30,43 +29,5 @@ class CheckoutUseCase @Inject constructor(private val repository: CoffeeReposito
             userId = userId,
             token = token
         )
-    }
-
-    suspend fun getToken(): String {
-        return repository.getToken()
-    }
-
-    suspend fun getUserId(): Int {
-        return repository.getUserId()
-    }
-
-    suspend fun getAllCartCoffees(): List<CoffeeCart> {
-        return repository.getAllCartCoffees()
-    }
-
-    suspend fun updateQuantityAndSubtotal(cartId: String, newQuantity: Int) {
-        repository.updateCoffeeCartQuantityAndSubtotal(cartId, newQuantity)
-    }
-
-    suspend fun incrementQuantity(cartId: String) {
-        repository.incrementCoffeeCartQuantity(cartId)
-    }
-
-    suspend fun decrementQuantity(cartId: String) {
-        repository.decrementCoffeeCartQuantity(cartId)
-    }
-
-    suspend fun deleteCoffeeCart(cartId: String) {
-        repository.deleteCoffeeCart(cartId)
-    }
-
-    suspend fun deleteAllOrders(orders: CoffeeCart) {
-        return repository.deleteAllOrders(
-            orders = orders
-        )
-    }
-
-    suspend fun getEmail(): String {
-        return repository.getEmail()
     }
 }

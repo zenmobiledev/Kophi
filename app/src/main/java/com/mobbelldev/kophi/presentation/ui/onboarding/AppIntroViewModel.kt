@@ -1,23 +1,29 @@
 package com.mobbelldev.kophi.presentation.ui.onboarding
 
 import androidx.lifecycle.ViewModel
-import com.mobbelldev.kophi.domain.usecase.OnBoardingUseCase
+import com.mobbelldev.kophi.domain.usecase.GetDarkModeUseCase
+import com.mobbelldev.kophi.domain.usecase.GetLanguageUseCase
+import com.mobbelldev.kophi.domain.usecase.GetOnBoardingUseCase
+import com.mobbelldev.kophi.domain.usecase.SetOnBoardingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class AppIntroViewModel @Inject constructor(private val onBoardingUseCase: OnBoardingUseCase) :
+class AppIntroViewModel @Inject constructor(
+    private val getDarkModeUseCase: GetDarkModeUseCase,
+    private val getLanguageUseCase: GetLanguageUseCase,
+    private val setOnBoardingUseCase: SetOnBoardingUseCase,
+    private val getOnBoardingUseCase: GetOnBoardingUseCase,
+) :
     ViewModel() {
-    fun getDarkMode(): Flow<Boolean> = onBoardingUseCase.getDarkMode()
+    suspend fun getDarkMode(): Flow<Boolean> = getDarkModeUseCase()
 
-    fun getLanguage(): Flow<String> = onBoardingUseCase.getLanguage()
+    suspend fun getLanguage(): Flow<String> = getLanguageUseCase()
 
-    suspend fun setOnboarding(isOnboarding: Boolean) {
-        onBoardingUseCase.setOnboarding(isOnboarding)
-    }
+    suspend fun setOnboarding(isOnboarding: Boolean) = setOnBoardingUseCase(
+        isOnboarding = isOnboarding
+    )
 
-    suspend fun getOnboarding(): Boolean {
-        return onBoardingUseCase.getOnboarding()
-    }
+    suspend fun getOnboarding(): Boolean = getOnBoardingUseCase()
 }

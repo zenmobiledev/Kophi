@@ -4,24 +4,28 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobbelldev.kophi.domain.usecase.LanguageUseCase
+import com.mobbelldev.kophi.domain.usecase.GetLanguageUseCase
+import com.mobbelldev.kophi.domain.usecase.SetLanguageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class LanguageViewModel @Inject constructor(private val languageUseCase: LanguageUseCase) :
-    ViewModel() {
+class LanguageViewModel @Inject constructor(
+    private val setLanguageUseCase: SetLanguageUseCase,
+    private val getLanguageUseCase: GetLanguageUseCase,
+) : ViewModel() {
 
     fun setLanguage(language: String) {
         viewModelScope.launch {
-            languageUseCase.setLanguage(language)
-
+            setLanguageUseCase(
+                language = language
+            )
             val locales = LocaleListCompat.create(Locale(language))
             AppCompatDelegate.setApplicationLocales(locales)
         }
     }
 
-    fun getLanguage() = languageUseCase.getLanguage()
+    suspend fun getLanguage() = getLanguageUseCase()
 }

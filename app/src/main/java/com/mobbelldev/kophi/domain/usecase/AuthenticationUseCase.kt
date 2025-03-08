@@ -19,20 +19,4 @@ class AuthenticationUseCase @Inject constructor(private val repository: CoffeeRe
             )
         )
     }
-
-    suspend fun saveTokenToDatabase(token: String) {
-        repository.saveTokenToDatabase(token)
-    }
-
-    suspend fun saveUserId(usId: Int) {
-        repository.saveUserId(usId)
-    }
-
-    suspend fun getToken(): String {
-        return repository.getToken()
-    }
-
-    suspend fun setEmail(email: String) {
-        repository.setEmail(email)
-    }
 }

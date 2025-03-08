@@ -2,10 +2,10 @@ package com.mobbelldev.kophi.presentation.ui.coffee.checkout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobbelldev.kophi.domain.interactor.CheckoutInteractor
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.domain.model.OrderSnap
-import com.mobbelldev.kophi.domain.usecase.CheckoutUseCase
 import com.mobbelldev.kophi.utils.ResultResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +20,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CheckoutViewModel @Inject constructor(private val checkoutUseCase: CheckoutUseCase) :
-    ViewModel() {
+class CheckoutViewModel @Inject constructor(
+    private val checkoutInteractor: CheckoutInteractor,
+) : ViewModel() {
     private val _coffeeList = MutableStateFlow<List<CoffeeCart>>(emptyList())
     val coffeeList: StateFlow<List<CoffeeCart>> = _coffeeList.asStateFlow()
 
@@ -45,7 +46,7 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         items: MutableList<Order.Item>,
     ) {
         viewModelScope.launch {
-            checkoutUseCase(
+            checkoutInteractor.checkoutUseCase(
                 email = email,
                 price = price,
                 items = items,
@@ -75,14 +76,12 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         }
     }
 
-    suspend fun getUserId(): Int {
-        return checkoutUseCase.getUserId()
-    }
+    suspend fun getUserId(): Int = checkoutInteractor.getUserIdUseCase()
 
     fun getAllCartCoffees() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _coffeeList.value = checkoutUseCase.getAllCartCoffees()
+                _coffeeList.value = checkoutInteractor.getAllCartCoffeesUseCase()
             }
         }
     }
@@ -90,7 +89,9 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     fun incrementQuantity(cartId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                checkoutUseCase.incrementQuantity(cartId)
+                checkoutInteractor.incrementQuantityUseCase(
+                    cartId = cartId
+                )
                 refreshCart()
             }
         }
@@ -99,7 +100,9 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     fun decrementQuantity(cartId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                checkoutUseCase.decrementQuantity(cartId)
+                checkoutInteractor.decrementQuantityUseCase(
+                    cartId = cartId
+                )
                 refreshCart()
             }
         }
@@ -108,7 +111,10 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     fun updateQuantityAndSubtotal(cartId: String, newQuantity: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                checkoutUseCase.updateQuantityAndSubtotal(cartId, newQuantity)
+                checkoutInteractor.updateQuantityAndSubtotalUseCase(
+                    cartId = cartId,
+                    newQuantity = newQuantity
+                )
                 refreshCart()
             }
         }
@@ -117,7 +123,9 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     fun deleteCoffeeCart(cartId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                checkoutUseCase.deleteCoffeeCart(cartId)
+                checkoutInteractor.deleteCoffeeCartUseCase(
+                    cartId = cartId
+                )
                 refreshCart()
             }
         }
@@ -126,20 +134,18 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     fun deleteAllOrders(orders: CoffeeCart) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                checkoutUseCase.deleteAllOrders(orders)
+                checkoutInteractor.deleteAllOrdersUseCase(
+                    orders = orders
+                )
             }
         }
     }
 
-    suspend fun getEmail(): String {
-        return checkoutUseCase.getEmail()
-    }
+    suspend fun getEmail(): String = checkoutInteractor.getEmailUseCase()
 
-    suspend fun getToken(): String {
-        return checkoutUseCase.getToken()
-    }
+    suspend fun getToken(): String = checkoutInteractor.getTokenUseCase()
 
     private suspend fun refreshCart() {
-        _coffeeList.value = checkoutUseCase.getAllCartCoffees()
+        _coffeeList.value = checkoutInteractor.getAllCartCoffeesUseCase()
     }
 }
