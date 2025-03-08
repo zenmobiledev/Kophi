@@ -79,10 +79,6 @@ class CoffeeFragment : Fragment() {
         setupRecyclerView()
         setupObserver()
 
-        if (categoryList.isNotEmpty()) {
-            setupViewPager()
-        }
-
         binding.materialCardViewCart.setOnClickListener {
             val intent = Intent(requireContext(), CheckoutActivity::class.java)
             startActivity(intent)
@@ -109,7 +105,7 @@ class CoffeeFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     coffeeViewModel.isLoading.collect {
-                        binding.shimmer.isVisible = it
+                        binding.shimmerCoffee.isVisible = it
                     }
                 }
 
@@ -125,13 +121,14 @@ class CoffeeFragment : Fragment() {
                             coffeeList = it.data
                             categoryList =
                                 coffeeList.map { data -> data.category }.distinct().toMutableList()
+
+                            if (categoryList.isNotEmpty()) {
+                                setupViewPager()
+                            }
                             coffeeAdapter.submitList(coffeeList.filter { data ->
                                 data.category == categoryList.firstOrNull()
                             })
 
-                            if (binding.tabs.tabCount == 0) {
-                                setupViewPager()
-                            }
                         }
                     }
                 }
@@ -172,6 +169,7 @@ class CoffeeFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
 
         })
+        binding.shimmerTabs.isVisible = false
     }
 
     companion object {
