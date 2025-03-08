@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.mobbelldev.kophi.R
 import com.mobbelldev.kophi.databinding.FragmentTransactionBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
 import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OnItemClickListener
@@ -72,6 +74,12 @@ class TransactionFragment : Fragment(), OnItemClickListener {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 launch {
+                    transactionViewModel.isLoading.collect {
+                        binding.progressBar.isVisible = it
+                    }
+                }
+
+                launch {
                     transactionViewModel.errorMessage.filterNotNull().collect {
                         Toast.makeText(view?.context, "Error: $it", Toast.LENGTH_LONG).show()
                     }
@@ -127,16 +135,25 @@ class TransactionFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onCancelClick(transactionId: String) {
-        lifecycleScope.launch {
-            val userId = transactionViewModel.getUserId()
-            val token = transactionViewModel.getToken()
-            transactionViewModel.cancelOrder(
-                userId = userId,
-                token = token,
-                transactionId = transactionId
+        AlertDialog.Builder(requireContext())
+            .setTitle(resources.getString(R.string.text_cancel_order))
+            .setMessage(resources.getString(R.string.text_are_you_sure_cancel_order))
+            .setPositiveButton(resources.getString(R.string.text_yes)) { _, _ ->
+                lifecycleScope.launch {
+                    val userId = transactionViewModel.getUserId()
+                    val token = transactionViewModel.getToken()
+                    transactionViewModel.cancelOrder(
+                        userId = userId,
+                        token = token,
+                        transactionId = transactionId
+                    )
+                }
+            }
+            .setNegativeButton(resources.getString(R.string.text_no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
 
-            )
-        }
     }
 
     companion object {

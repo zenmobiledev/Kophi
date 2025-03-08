@@ -5,8 +5,6 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +14,6 @@ import com.mobbelldev.kophi.databinding.ActivityAppIntroBinding
 import com.mobbelldev.kophi.presentation.ui.authentication.AuthenticationActivity
 import com.mobbelldev.kophi.presentation.ui.onboarding.adapter.AppIntroViewPager2Adapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,23 +23,8 @@ class AppIntroActivity : AppCompatActivity() {
     private val appIntroViewModel: AppIntroViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        lifecycleScope.launch {
-            val isOnboarding = appIntroViewModel.getOnboarding()
-            if (!isOnboarding) {
-                startActivity(
-                    Intent(
-                        this@AppIntroActivity,
-                        AuthenticationActivity::class.java
-                    )
-                )
-                finish()
-            }
-        }
 
         binding = ActivityAppIntroBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -53,7 +35,6 @@ class AppIntroActivity : AppCompatActivity() {
             insets
         }
 
-        setupObserver()
         setupViewPager()
     }
 
@@ -79,16 +60,6 @@ class AppIntroActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { _, _ ->
 
         }.attach()
-    }
-
-    private fun setupObserver() {
-        lifecycleScope.launch {
-            appIntroViewModel.getDarkMode().collectLatest {
-                AppCompatDelegate.setDefaultNightMode(
-                    if (it) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-                )
-            }
-        }
     }
 
     companion object {

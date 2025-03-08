@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Kophi</string>
+
+    <string name="title_coffee">Kopi</string>
+    <string name="title_transaction">Transaksi</string>
+    <string name="title_profile">Profil</string>
+
+    <string name="intro_title_1">Pilih kopi terbaik</string>
+    <string name="intro_sub_title_1">Jelajahi dan pilih dari berbagai pilihan\nkopi premium yang sesuai dengan\nseleramu.</string>
+
+    <string name="intro_title_2">Transfer online</string>
+    <string name="intro_sub_title_2">Gunakan berbagai metode pembayaran seperti\nkartu debit, kartu kredit, dan dompet digital.</string>
+
+    <string name="intro_title_3">Santai dan nikmati kopimu</string>
+    <string name="intro_sub_title_3">Ambil kopimu dengan mudah dan nikmati\nseduhan sempurna kapan saja, di mana saja.</string>
+
     <string name="add_to_cart">+ Keranjang %s</string>
     <string name="item_total">1</string>
     <string name="total_price">Total: %s</string>
@@ -20,4 +35,8 @@
     <string name="text_log_out">Keluar</string>
     <string name="text_cancel">Batal</string>
     <string name="text_pay">Bayar</string>
+    <string name="text_cancel_order">Batalkan Pesanan</string>
+    <string name="text_are_you_sure_cancel_order">Apakah kamu yakin ingin membatalkan pesanan ini?</string>
+    <string name="text_yes">Ya</string>
+    <string name="text_no">Tidak</string>
 </resources>

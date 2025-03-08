@@ -45,15 +45,15 @@ class AuthenticationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        lifecycleScope.launch {
+//            val token = authenticationViewModel.getToken()
+//            println("Token: $token")
+//            if (token.isNotEmpty()) {
+//                navigateToCoffeePage()
+//            }
+//        }
 
-        lifecycleScope.launch {
-            val token = authenticationViewModel.getToken()
-            println("Token: $token")
-            if (token != "") {
-                navigateToCoffeePage()
-            }
-        }
+        enableEdgeToEdge()
 
         binding = ActivityAuthenticationBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -76,6 +76,8 @@ class AuthenticationActivity : AppCompatActivity() {
                 launch {
                     authenticationViewModel.isLoading.collect { isLoading ->
                         binding.progressBar.isVisible = isLoading
+                        binding.btnSignInWithGoogle.isClickable = !isLoading
+                        binding.btnSignInWithGoogle.isEnabled = !isLoading
                     }
                 }
 

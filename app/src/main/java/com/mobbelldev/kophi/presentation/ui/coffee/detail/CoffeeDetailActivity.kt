@@ -1,6 +1,5 @@
 package com.mobbelldev.kophi.presentation.ui.coffee.detail
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +16,6 @@ import com.mobbelldev.kophi.databinding.ActivityCoffeeDetailBinding
 import com.mobbelldev.kophi.domain.model.Coffee
 import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.presentation.ui.coffee.CoffeeViewModel
-import com.mobbelldev.kophi.presentation.ui.main.MainActivity
 import com.mobbelldev.kophi.utils.IDRCurrency
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
@@ -113,13 +111,7 @@ class CoffeeDetailActivity : AppCompatActivity() {
 
                         // Insert to Database
                         coffeeViewModel.insertCoffeeCart(coffee = coffeeCart).also {
-                            val intent =
-                                Intent(this@CoffeeDetailActivity, MainActivity::class.java).apply {
-                                    intent.putExtra(TOTAL_ITEM, number)
-                                    flags =
-                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                }
-                            startActivity(intent)
+                           finish()
                         }
                     }
                 }
@@ -160,6 +152,5 @@ class CoffeeDetailActivity : AppCompatActivity() {
 
     companion object {
         const val COFFEE_DETAIL = "coffee_detail"
-        const val TOTAL_ITEM = "total_item"
     }
 }

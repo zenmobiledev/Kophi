@@ -34,7 +34,7 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage: SharedFlow<String> = _errorMessage.asSharedFlow()
 
-    private val _urlSnap = MutableStateFlow<String>("")
+    private val _urlSnap = MutableStateFlow("")
     val urlSnap: StateFlow<String> = _urlSnap
 
     fun createOrderSnap(
@@ -127,7 +127,6 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 checkoutUseCase.deleteAllOrders(orders)
-//                refreshCart()
             }
         }
     }

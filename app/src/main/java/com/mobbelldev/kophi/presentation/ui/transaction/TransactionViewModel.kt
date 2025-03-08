@@ -26,6 +26,9 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
     )
     val orders: StateFlow<Orders?> = _orders.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage: SharedFlow<String> = _errorMessage
 
@@ -73,14 +76,23 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
                     transactionId = transactionId
                 ).collect { result ->
                     when (result) {
-                        is ResultResponse.Error -> _errorMessage.emit(result.message)
-                        is ResultResponse.Loading -> {}
+                        is ResultResponse.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.emit(result.message)
+                        }
+
+                        is ResultResponse.Loading -> _isLoading.value = true
                         is ResultResponse.Success -> {
                             result.data?.let {
                                 CancelOrder(
                                     data = it.data
                                 )
                             }
+                            getOrders(
+                                token = token,
+                                userId = userId
+                            )
+                            _isLoading.value = false
                         }
                     }
                 }

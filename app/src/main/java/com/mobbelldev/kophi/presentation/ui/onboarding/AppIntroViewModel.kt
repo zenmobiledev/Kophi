@@ -11,6 +11,8 @@ class AppIntroViewModel @Inject constructor(private val onBoardingUseCase: OnBoa
     ViewModel() {
     fun getDarkMode(): Flow<Boolean> = onBoardingUseCase.getDarkMode()
 
+    fun getLanguage(): Flow<String> = onBoardingUseCase.getLanguage()
+
     suspend fun setOnboarding(isOnboarding: Boolean) {
         onBoardingUseCase.setOnboarding(isOnboarding)
     }

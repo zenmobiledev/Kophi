@@ -33,4 +33,8 @@
     <string name="text_log_out">Log out</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_pay">Pay</string>
+    <string name="text_cancel_order">Cancel Order</string>
+    <string name="text_are_you_sure_cancel_order">Are you sure you want to cancel this order?</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
 </resources>
