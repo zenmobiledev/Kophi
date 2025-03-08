@@ -81,6 +81,8 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
 
                                 btnSelectPayment.setOnClickListener {
                                     processPayment(data)
+                                    checkoutAdapter.isPaymentSelected = true
+                                    binding.btnSelectPayment.isEnabled = false
                                 }
                             }
 
@@ -134,36 +136,31 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
     }
 
     private fun processPayment(data: List<CoffeeCart>) {
-        binding.btnSelectPayment.isEnabled = false
         lifecycleScope.launch {
-            try {
-                val token = checkoutViewModel.getToken()
-                val userId = checkoutViewModel.getUserId()
-                val email = checkoutViewModel.getEmail()
-                val items = mutableListOf<Order.Item>()
-                for (cart in data) {
-                    items.add(
-                        Order.Item(
-                            id = cart.coffeeId,
-                            name = "${cart.name} ${cart.temperature} ${cart.milkOption} ${cart.sweetness}",
-                            price = cart.price,
-                            quantity = cart.quantity
-                        )
+            val token = checkoutViewModel.getToken()
+            val userId = checkoutViewModel.getUserId()
+            val email = checkoutViewModel.getEmail()
+            val items = mutableListOf<Order.Item>()
+            for (cart in data) {
+                items.add(
+                    Order.Item(
+                        id = cart.coffeeId,
+                        name = "${cart.name} ${cart.temperature} ${cart.milkOption} ${cart.sweetness}",
+                        price = cart.price,
+                        quantity = cart.quantity
                     )
-                }
-
-                checkoutViewModel.createOrderSnap(
-                    email = email,
-                    price = data.sumOf { it.subTotal },
-                    items = items,
-                    userId = userId,
-                    token = token
                 )
-
-                data.forEach { checkoutViewModel.deleteAllOrders(it) }
-            } finally {
-                binding.btnSelectPayment.isEnabled = true
             }
+
+            checkoutViewModel.createOrderSnap(
+                email = email,
+                price = data.sumOf { it.subTotal },
+                items = items,
+                userId = userId,
+                token = token
+            )
+
+            data.forEach { checkoutViewModel.deleteAllOrders(it) }
         }
     }
 

@@ -15,6 +15,8 @@ class CheckoutAdapter(private val adapterCallback: AdapterCallback) :
         DIFF_CALLBACK
     ) {
 
+    var isPaymentSelected = false
+
     inner class CheckoutViewHolder(private val binding: ItemCoffeeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(coffeeCart: CoffeeCart) {
@@ -28,23 +30,28 @@ class CheckoutAdapter(private val adapterCallback: AdapterCallback) :
                 tvCoffeePrice.text = IDRCurrency.format(coffeeCart.subTotal)
                 tvQuantity.text = coffeeCart.quantity.toString()
 
-
+                btnMinus.isEnabled = !isPaymentSelected
+                btnPlus.isEnabled = !isPaymentSelected
 
                 btnMinus.setOnClickListener {
-                    if (quantity > 1) {
-                        quantity--
-                        tvQuantity.text = quantity.toString()
-                        adapterCallback.onDecrementQuantity(coffeeCart.id)
-                    } else {
-                        // Delete item
-                        adapterCallback.deleteItem(coffeeCart.id)
+                    if (!isPaymentSelected) {
+                        if (quantity > 1) {
+                            quantity--
+                            tvQuantity.text = quantity.toString()
+                            adapterCallback.onDecrementQuantity(coffeeCart.id)
+                        } else {
+                            // Delete item
+                            adapterCallback.deleteItem(coffeeCart.id)
+                        }
                     }
                 }
 
                 btnPlus.setOnClickListener {
-                    quantity++
-                    tvQuantity.text = quantity.toString()
-                    adapterCallback.onIncrementQuantity(coffeeCart.id)
+                    if (!isPaymentSelected) {
+                        quantity++
+                        tvQuantity.text = quantity.toString()
+                        adapterCallback.onIncrementQuantity(coffeeCart.id)
+                    }
                 }
 
                 adapterCallback.onUpdateQuantity(
