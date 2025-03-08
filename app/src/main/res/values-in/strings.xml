@@ -39,4 +39,5 @@
     <string name="text_are_you_sure_cancel_order">Apakah kamu yakin ingin membatalkan pesanan ini?</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
+    <string name="text_please_wait">Mohon Tunggu…</string>
 </resources>
