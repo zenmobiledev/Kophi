@@ -45,15 +45,8 @@ class AuthenticationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
-        lifecycleScope.launch {
-            val token = authenticationViewModel.getToken()
-            println("Token: $token")
-            if (token != "") {
-                navigateToCoffeePage()
-            }
-        }
+        enableEdgeToEdge()
 
         binding = ActivityAuthenticationBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -193,6 +186,8 @@ class AuthenticationActivity : AppCompatActivity() {
                     handleSignIn(result)
                 } catch (e: GetCredentialException) { //import from androidx.CredentialManager
                     Log.d("Error", e.message.toString())
+                } finally {
+                    binding.btnSignInWithGoogle.isEnabled = false
                 }
             }
         }

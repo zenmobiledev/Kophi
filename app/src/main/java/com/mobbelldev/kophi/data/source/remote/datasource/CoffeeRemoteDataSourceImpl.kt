@@ -10,44 +10,34 @@ import com.mobbelldev.kophi.data.source.remote.model.response.OrderSnapResponse
 import com.mobbelldev.kophi.data.source.remote.model.response.OrdersResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.IOException
 import retrofit2.Response
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: CoffeeService) :
     CoffeeRemoteDataSource {
     override suspend fun getCoffeeList(token: String, userId: Int): Response<CoffeeResponse> {
-        val response = coffeeService.getCoffeeList(
-            userId = userId,
-            token = token
-        )
         return try {
-            response
+            coffeeService.getCoffeeList(userId = userId, token = token)
+        } catch (e: SocketTimeoutException) {
+            createErrorResponse(408, "Request Timeout, silakan coba lagi.")
+        } catch (e: IOException) {
+            createErrorResponse(503, "Koneksi internet bermasalah.")
         } catch (e: Exception) {
-            val responseCode = response.code()
-            val errorBody = response.errorBody()
-            Response.error(
-                responseCode,
-                errorBody ?: (e.message
-                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
-            )
+            createErrorResponse(500, e.message ?: "Terjadi kesalahan.")
         }
     }
 
     override suspend fun getOrders(token: String, userId: Int): Response<OrdersResponse> {
-        val response = coffeeService.getOrders(
-            userId = userId,
-            token = token
-        )
         return try {
-            response
+            coffeeService.getOrders(userId = userId, token = token)
+        } catch (e: SocketTimeoutException) {
+            createErrorResponse(408, "Request Timeout, silakan coba lagi.")
+        } catch (e: IOException) {
+            createErrorResponse(503, "Koneksi internet bermasalah.")
         } catch (e: Exception) {
-            val responseCode = response.code()
-            val errorBody = response.errorBody()
-            Response.error(
-                responseCode,
-                errorBody ?: (e.message
-                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
-            )
+            createErrorResponse(500, e.message ?: "Terjadi kesalahan.")
         }
     }
 
@@ -56,40 +46,28 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
         token: String,
         transactionId: String,
     ): Response<CancelOrderResponse> {
-        val response = coffeeService.cancelOrder(
-            userId = userId,
-            transactionId = transactionId,
-            token = token,
-        )
         return try {
-            response
+            coffeeService.cancelOrder(userId = userId, transactionId = transactionId, token = token)
+        } catch (e: SocketTimeoutException) {
+            createErrorResponse(408, "Request Timeout, silakan coba lagi.")
+        } catch (e: IOException) {
+            createErrorResponse(503, "Koneksi internet bermasalah.")
         } catch (e: Exception) {
-            val responseCode = response.code()
-            val errorBody = response.errorBody()
-            Response.error(
-                responseCode,
-                errorBody ?: (e.message
-                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
-            )
+            createErrorResponse(500, e.message ?: "Terjadi kesalahan.")
         }
     }
 
     override suspend fun continueWithGoogle(
         continueWithGoogle: ContinueWithGoogleRequest,
     ): Response<AuthenticationResponse> {
-        val response = coffeeService.continueWithGoogle(
-            continueWithGoogle = continueWithGoogle
-        )
         return try {
-            response
+            coffeeService.continueWithGoogle(continueWithGoogle)
+        } catch (e: SocketTimeoutException) {
+            createErrorResponse(408, "Request Timeout, silakan coba lagi.")
+        } catch (e: IOException) {
+            createErrorResponse(503, "Koneksi internet bermasalah.")
         } catch (e: Exception) {
-            val responseCode = response.code()
-            val errorBody = response.errorBody()
-            Response.error(
-                responseCode,
-                errorBody ?: (e.message
-                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
-            )
+            createErrorResponse(500, e.message ?: "Terjadi kesalahan.")
         }
     }
 
@@ -98,21 +76,25 @@ class CoffeeRemoteDataSourceImpl @Inject constructor(private val coffeeService: 
         userId: Int,
         orderRequest: OrderRequest,
     ): Response<OrderSnapResponse> {
-        val response = coffeeService.createOrderSnap(
-            orderRequest = orderRequest,
-            userId = userId,
-            token = token
-        )
         return try {
-            response
-        } catch (e: Exception) {
-            val responseCode = response.code()
-            val errorBody = response.errorBody()
-            Response.error(
-                responseCode,
-                errorBody ?: (e.message
-                    ?: "Unknown Error").toResponseBody("application/json".toMediaTypeOrNull())
+            coffeeService.createOrderSnap(
+                orderRequest = orderRequest,
+                userId = userId,
+                token = token
             )
+        } catch (e: SocketTimeoutException) {
+            createErrorResponse(408, "Request Timeout, silakan coba lagi.")
+        } catch (e: IOException) {
+            createErrorResponse(503, "Koneksi internet bermasalah.")
+        } catch (e: Exception) {
+            createErrorResponse(500, e.message ?: "Terjadi kesalahan.")
         }
+    }
+
+    private fun <T> createErrorResponse(code: Int, message: String): Response<T> {
+        return Response.error(
+            code,
+            message.toResponseBody("application/json".toMediaTypeOrNull())
+        )
     }
 }

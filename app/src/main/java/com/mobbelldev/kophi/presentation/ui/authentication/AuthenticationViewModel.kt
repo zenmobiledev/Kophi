@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobbelldev.kophi.domain.model.Authentication
 import com.mobbelldev.kophi.domain.usecase.AuthenticationUseCase
+import com.mobbelldev.kophi.domain.usecase.GetTokenUseCase
+import com.mobbelldev.kophi.domain.usecase.SaveTokenUseCase
+import com.mobbelldev.kophi.domain.usecase.SaveUserIdUseCase
+import com.mobbelldev.kophi.domain.usecase.SetEmailUseCase
 import com.mobbelldev.kophi.utils.ResultResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +21,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthenticationViewModel @Inject constructor(private val authenticationUseCase: AuthenticationUseCase) :
-    ViewModel() {
+class AuthenticationViewModel @Inject constructor(
+    private val authenticationUseCase: AuthenticationUseCase,
+    private val saveUserIdUseCase: SaveUserIdUseCase,
+    private val saveTokenUseCase: SaveTokenUseCase,
+    private val setEmailUseCase: SetEmailUseCase,
+    private val getTokenUseCase: GetTokenUseCase,
+) : ViewModel() {
     private val _dataUser = MutableStateFlow<Authentication.Data?>(null)
     val dataUser: StateFlow<Authentication.Data?> = _dataUser
 
@@ -46,10 +55,10 @@ class AuthenticationViewModel @Inject constructor(private val authenticationUseC
                             _isLoading.value = false
                             _dataUser.value = result.data?.data.also { data ->
                                 if (data != null) {
-                                    authenticationUseCase.saveUserId(
-                                        usId = data.usId
+                                    saveUserIdUseCase.invoke(
+                                        userId = data.usId
                                     )
-                                    authenticationUseCase.saveTokenToDatabase(
+                                    saveTokenUseCase.invoke(
                                         token = data.token
                                     )
                                 }
@@ -61,11 +70,9 @@ class AuthenticationViewModel @Inject constructor(private val authenticationUseC
         }
     }
 
-    suspend fun getToken(): String {
-        return authenticationUseCase.getToken()
-    }
+    suspend fun getToken(): String = getTokenUseCase.invoke()
 
-    suspend fun setEmail(email: String) {
-        authenticationUseCase.setEmail(email)
-    }
+    suspend fun setEmail(email: String) = setEmailUseCase.invoke(
+        email = email
+    )
 }

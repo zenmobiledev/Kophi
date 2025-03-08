@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.mobbelldev.kophi.R
 import com.mobbelldev.kophi.databinding.ActivityCheckoutBinding
+import com.mobbelldev.kophi.domain.model.CoffeeCart
 import com.mobbelldev.kophi.domain.model.Order
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.AdapterCallback
 import com.mobbelldev.kophi.presentation.ui.coffee.checkout.adapter.CheckoutAdapter
@@ -48,6 +49,8 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
         setupRecyclerView()
         setupObserver()
 
+        checkoutViewModel.getAllCartCoffees()
+
         binding.toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -60,8 +63,6 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
     private fun setupObserver() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                checkoutViewModel.getAllCartCoffees()
-
                 launch {
                     checkoutViewModel.coffeeList.collect { data ->
                         if (data.isNotEmpty()) {
@@ -79,42 +80,9 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                                 tvTotalPrice2.text = IDRCurrency.format(totalPrice)
 
                                 btnSelectPayment.setOnClickListener {
-                                    lifecycleScope.launch {
-                                        val token = checkoutViewModel.getToken()
-                                        val userId = checkoutViewModel.getUserId()
-                                        val email = checkoutViewModel.getEmail()
-                                        val items = mutableListOf<Order.Item>()
-                                        for (cart in data) {
-                                            items.add(
-                                                Order.Item(
-                                                    id = cart.coffeeId,
-                                                    name = "${cart.name} ${cart.temperature} ${cart.milkOption} ${cart.sweetness}",
-                                                    price = cart.price,
-                                                    quantity = cart.quantity
-                                                )
-                                            )
-                                        }
-                                        checkoutViewModel.createOrderSnap(
-                                            email = email,
-                                            price = totalPrice,
-                                            items = items,
-                                            userId = userId,
-                                            token = token
-                                        )
-
-                                        checkoutViewModel.urlSnap.collect { url ->
-                                            val intent = Intent(
-                                                this@CheckoutActivity,
-                                                PaymentActivity::class.java
-                                            ).apply {
-                                                putExtra(EXTRA_URL_SNAP, url)
-                                            }
-                                            startActivity(intent)
-                                        }
-                                    }
-                                    data.forEach {
-                                        checkoutViewModel.deleteAllOrders(it)
-                                    }
+                                    processPayment(data)
+                                    checkoutAdapter.isPaymentSelected = true
+                                    binding.btnSelectPayment.isEnabled = false
                                 }
                             }
 
@@ -144,12 +112,56 @@ class CheckoutActivity : AppCompatActivity(), AdapterCallback {
                             .show()
                     }
                 }
+
+                launch {
+                    checkoutViewModel.urlSnap.collect { url ->
+                        if (url.isNotEmpty()) {
+                            val intent = Intent(
+                                this@CheckoutActivity,
+                                PaymentActivity::class.java
+                            ).apply {
+                                putExtra(EXTRA_URL_SNAP, url)
+                            }
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+                }
             }
         }
     }
 
     private fun setupRecyclerView() {
         binding.rvOrder.adapter = checkoutAdapter
+    }
+
+    private fun processPayment(data: List<CoffeeCart>) {
+        lifecycleScope.launch {
+            val token = checkoutViewModel.getToken()
+            val userId = checkoutViewModel.getUserId()
+            val email = checkoutViewModel.getEmail()
+            val items = mutableListOf<Order.Item>()
+            for (cart in data) {
+                items.add(
+                    Order.Item(
+                        id = cart.coffeeId,
+                        name = "${cart.name} ${cart.temperature} ${cart.milkOption} ${cart.sweetness}",
+                        price = cart.price,
+                        quantity = cart.quantity
+                    )
+                )
+            }
+
+            checkoutViewModel.createOrderSnap(
+                email = email,
+                price = data.sumOf { it.subTotal },
+                items = items,
+                userId = userId,
+                token = token
+            )
+
+            data.forEach { checkoutViewModel.deleteAllOrders(it) }
+        }
     }
 
     override fun onUpdateQuantity(cartId: String, newQuantity: Int) {

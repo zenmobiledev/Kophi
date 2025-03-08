@@ -31,13 +31,13 @@
             android:name=".presentation.ui.coffee.ads.AdsActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.ui.onboarding.AppIntroActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.ui.authentication.AuthenticationActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.main.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.ui.onboarding.AppIntroActivity"
             android:exported="true"
             android:theme="@style/Theme.Kophi.Starting">
             <intent-filter>

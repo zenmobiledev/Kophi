@@ -1,11 +1,14 @@
 package com.mobbelldev.kophi.presentation.ui.transaction
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,10 +16,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.mobbelldev.kophi.R
 import com.mobbelldev.kophi.databinding.FragmentTransactionBinding
+import com.mobbelldev.kophi.databinding.ItemDialogLoadingBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
+import com.mobbelldev.kophi.presentation.ui.transaction.adapter.ItemTransactionAdapter
 import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OnItemClickListener
-import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OuterAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -33,8 +38,10 @@ class TransactionFragment : Fragment(), OnItemClickListener {
     private val transactionViewModel: TransactionViewModel by viewModels()
 
     private val transactionAdapter by lazy {
-        OuterAdapter(this)
+        ItemTransactionAdapter(this)
     }
+
+    private var progressDialog: AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +79,16 @@ class TransactionFragment : Fragment(), OnItemClickListener {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 launch {
+                    transactionViewModel.isLoading.collect { isLoading ->
+                        if (isLoading) {
+                            showLoading()
+                        } else {
+                            hideLoading()
+                        }
+                    }
+                }
+
+                launch {
                     transactionViewModel.errorMessage.filterNotNull().collect {
                         Toast.makeText(view?.context, "Error: $it", Toast.LENGTH_LONG).show()
                     }
@@ -84,12 +101,12 @@ class TransactionFragment : Fragment(), OnItemClickListener {
                             return@collect
                         }
 
-                        if (it.data.isNotEmpty()) { // jika data tidak kosong
+                        if (it.data.isNotEmpty()) {
                             binding.rvCoffees.isVisible = true
                             binding.ivTransactionCart.isVisible = false
                             binding.textNoTransaction.isVisible = false
                             transactionAdapter.submitList(it.data)
-                        } else { // jika data kosong
+                        } else {
                             binding.rvCoffees.isVisible = false
                             binding.ivTransactionCart.isVisible = true
                             binding.textNoTransaction.isVisible = true
@@ -114,6 +131,22 @@ class TransactionFragment : Fragment(), OnItemClickListener {
         }
     }
 
+    private fun showLoading() {
+        if (progressDialog == null) {
+            val binding = ItemDialogLoadingBinding.inflate(LayoutInflater.from(requireContext()))
+            progressDialog = AlertDialog.Builder(requireContext())
+                .setView(binding.root)
+                .setCancelable(false)
+                .create()
+        }
+        progressDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog?.show()
+    }
+
+    private fun hideLoading() {
+        progressDialog?.dismiss()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -124,19 +157,30 @@ class TransactionFragment : Fragment(), OnItemClickListener {
             putExtra(SNAP_URL_TOKEN_ID, orderTokenId)
         }
         startActivity(intent)
+        transactionAdapter.isClicked = true
     }
 
     override fun onCancelClick(transactionId: String) {
-        lifecycleScope.launch {
-            val userId = transactionViewModel.getUserId()
-            val token = transactionViewModel.getToken()
-            transactionViewModel.cancelOrder(
-                userId = userId,
-                token = token,
-                transactionId = transactionId
+        AlertDialog.Builder(requireContext())
+            .setTitle(resources.getString(R.string.text_cancel_order))
+            .setMessage(resources.getString(R.string.text_are_you_sure_cancel_order))
+            .setPositiveButton(resources.getString(R.string.text_yes)) { _, _ ->
+                lifecycleScope.launch {
+                    val userId = transactionViewModel.getUserId()
+                    val token = transactionViewModel.getToken()
+                    transactionViewModel.cancelOrder(
+                        userId = userId,
+                        token = token,
+                        transactionId = transactionId
+                    )
+                }
+                transactionAdapter.isClicked = true
+            }
+            .setNegativeButton(resources.getString(R.string.text_no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
 
-            )
-        }
     }
 
     companion object {

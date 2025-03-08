@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobbelldev.kophi.domain.model.CancelOrder
 import com.mobbelldev.kophi.domain.model.Orders
-import com.mobbelldev.kophi.domain.usecase.TransactionUseCase
+import com.mobbelldev.kophi.domain.usecase.CancelOrderUseCase
+import com.mobbelldev.kophi.domain.usecase.GetOrdersUseCase
+import com.mobbelldev.kophi.domain.usecase.GetTokenUseCase
+import com.mobbelldev.kophi.domain.usecase.GetUserIdUseCase
 import com.mobbelldev.kophi.utils.ResultResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,13 +21,20 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class TransactionViewModel @Inject constructor(private val transactionUseCase: TransactionUseCase) :
-    ViewModel() {
+class TransactionViewModel @Inject constructor(
+    private val getOrdersUseCase: GetOrdersUseCase,
+    private val cancelOrderUseCase: CancelOrderUseCase,
+    private val getTokenUseCase: GetTokenUseCase,
+    private val getUserIdUseCase: GetUserIdUseCase,
+) : ViewModel() {
 
     private val _orders = MutableStateFlow<Orders?>(
         null
     )
     val orders: StateFlow<Orders?> = _orders.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage: SharedFlow<String> = _errorMessage
@@ -41,7 +51,7 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
     fun getOrders(token: String, userId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                transactionUseCase(
+                getOrdersUseCase(
                     userId = userId,
                     token = token
                 ).collect { result ->
@@ -67,20 +77,29 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
     fun cancelOrder(userId: Int, token: String, transactionId: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                transactionUseCase(
+                cancelOrderUseCase(
                     userId = userId,
                     token = token,
                     transactionId = transactionId
                 ).collect { result ->
                     when (result) {
-                        is ResultResponse.Error -> _errorMessage.emit(result.message)
-                        is ResultResponse.Loading -> {}
+                        is ResultResponse.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.emit(result.message)
+                        }
+
+                        is ResultResponse.Loading -> _isLoading.value = true
                         is ResultResponse.Success -> {
                             result.data?.let {
                                 CancelOrder(
                                     data = it.data
                                 )
                             }
+                            getOrders(
+                                token = token,
+                                userId = userId
+                            )
+                            _isLoading.value = false
                         }
                     }
                 }
@@ -88,11 +107,7 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
         }
     }
 
-    suspend fun getUserId(): Int {
-        return transactionUseCase.getUserId()
-    }
+    suspend fun getUserId(): Int = getUserIdUseCase()
 
-    suspend fun getToken(): String {
-        return transactionUseCase.getToken()
-    }
+    suspend fun getToken(): String = getTokenUseCase()
 }

@@ -34,4 +34,5 @@
     <string name="text_log_out">Log out</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_pay">Pay</string>
+    <string name="text_please_wait">Please Wait...</string>
 </resources>
