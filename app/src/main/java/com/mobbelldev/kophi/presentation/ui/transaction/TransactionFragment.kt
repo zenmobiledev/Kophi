@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobbelldev.kophi.R
 import com.mobbelldev.kophi.databinding.FragmentTransactionBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
+import com.mobbelldev.kophi.presentation.ui.transaction.adapter.ItemTransactionAdapter
 import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OnItemClickListener
-import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OuterAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -35,7 +35,7 @@ class TransactionFragment : Fragment(), OnItemClickListener {
     private val transactionViewModel: TransactionViewModel by viewModels()
 
     private val transactionAdapter by lazy {
-        OuterAdapter(this)
+        ItemTransactionAdapter(this)
     }
 
     override fun onCreateView(
@@ -92,12 +92,12 @@ class TransactionFragment : Fragment(), OnItemClickListener {
                             return@collect
                         }
 
-                        if (it.data.isNotEmpty()) { // jika data tidak kosong
+                        if (it.data.isNotEmpty()) {
                             binding.rvCoffees.isVisible = true
                             binding.ivTransactionCart.isVisible = false
                             binding.textNoTransaction.isVisible = false
                             transactionAdapter.submitList(it.data)
-                        } else { // jika data kosong
+                        } else {
                             binding.rvCoffees.isVisible = false
                             binding.ivTransactionCart.isVisible = true
                             binding.textNoTransaction.isVisible = true
@@ -132,6 +132,7 @@ class TransactionFragment : Fragment(), OnItemClickListener {
             putExtra(SNAP_URL_TOKEN_ID, orderTokenId)
         }
         startActivity(intent)
+        transactionAdapter.isClicked = true
     }
 
     override fun onCancelClick(transactionId: String) {
@@ -148,6 +149,7 @@ class TransactionFragment : Fragment(), OnItemClickListener {
                         transactionId = transactionId
                     )
                 }
+                transactionAdapter.isClicked = true
             }
             .setNegativeButton(resources.getString(R.string.text_no)) { dialog, _ ->
                 dialog.dismiss()

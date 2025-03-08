@@ -10,8 +10,10 @@ import com.mobbelldev.kophi.databinding.ItemDetailTransactionBinding
 import com.mobbelldev.kophi.domain.model.Orders
 import com.mobbelldev.kophi.utils.IDRCurrency
 
-class InnerAdapter :
-    ListAdapter<Orders.Data.Detail.OdProduct, InnerAdapter.InnerViewHolder>(DIFF_UTIL) {
+class ItemDetailTransactionAdapter :
+    ListAdapter<Orders.Data.Detail.OdProduct, ItemDetailTransactionAdapter.InnerViewHolder>(
+        DIFF_UTIL
+    ) {
     class InnerViewHolder(private val binding: ItemDetailTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Orders.Data.Detail.OdProduct) {

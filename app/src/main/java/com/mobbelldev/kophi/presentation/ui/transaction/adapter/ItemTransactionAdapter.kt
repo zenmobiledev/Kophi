@@ -14,15 +14,17 @@ import com.mobbelldev.kophi.utils.IDRCurrency
 import com.mobbelldev.kophi.utils.capitalizeFirst
 import com.mobbelldev.kophi.utils.convertDate
 
-class OuterAdapter(private val listener: OnItemClickListener) :
-    ListAdapter<Orders.Data, OuterAdapter.OuterViewHolder>(DIFF_UTIL) {
+class ItemTransactionAdapter(private val listener: OnItemClickListener) :
+    ListAdapter<Orders.Data, ItemTransactionAdapter.OuterViewHolder>(DIFF_UTIL) {
+
+    var isClicked = false
 
     inner class OuterViewHolder(val binding: ItemTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val innerAdapter = InnerAdapter()
+        private val itemDetailTransactionAdapter = ItemDetailTransactionAdapter()
 
         init {
-            binding.rvDetailItem.adapter = innerAdapter
+            binding.rvDetailItem.adapter = itemDetailTransactionAdapter
             binding.rvDetailItem.setHasFixedSize(true)
         }
 
@@ -64,22 +66,28 @@ class OuterAdapter(private val listener: OnItemClickListener) :
                         }
 
                         StatusPayment.PENDING.status -> {
+                            btnCancel.isEnabled = !isClicked
+                            btnPay.isEnabled = !isClicked
                             tvStatus.background.setTint(itemView.context.resources.getColor(R.color.yellow))
                                 .toString()
                             btnPay.apply {
                                 val tokenId = orders.orTokenId
                                 isVisible = true
                                 setOnClickListener {
-                                    listener.onClickPay(orderTokenId = tokenId)
+                                    if (!isClicked) {
+                                        listener.onClickPay(orderTokenId = tokenId)
+                                    }
                                 }
                             }
                             btnCancel.apply {
                                 val transactionId = orders.orPlatformId
                                 isVisible = true
                                 setOnClickListener {
-                                    listener.onCancelClick(
-                                        transactionId = transactionId
-                                    )
+                                    if (!isClicked) {
+                                        listener.onCancelClick(
+                                            transactionId = transactionId
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -90,7 +98,7 @@ class OuterAdapter(private val listener: OnItemClickListener) :
                     IDRCurrency.format(orders.orTotalPrice)
                 )
 
-                innerAdapter.submitList(orders.details.first().odProducts)
+                itemDetailTransactionAdapter.submitList(orders.details.first().odProducts)
             }
         }
     }
