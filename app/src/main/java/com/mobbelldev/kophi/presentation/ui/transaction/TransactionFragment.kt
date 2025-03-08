@@ -1,6 +1,8 @@
 package com.mobbelldev.kophi.presentation.ui.transaction
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.mobbelldev.kophi.R
 import com.mobbelldev.kophi.databinding.FragmentTransactionBinding
+import com.mobbelldev.kophi.databinding.ItemDialogLoadingBinding
 import com.mobbelldev.kophi.presentation.ui.coffee.payment.PaymentActivity
 import com.mobbelldev.kophi.presentation.ui.transaction.adapter.ItemTransactionAdapter
 import com.mobbelldev.kophi.presentation.ui.transaction.adapter.OnItemClickListener
@@ -37,6 +40,8 @@ class TransactionFragment : Fragment(), OnItemClickListener {
     private val transactionAdapter by lazy {
         ItemTransactionAdapter(this)
     }
+
+    private var progressDialog: AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,8 +79,12 @@ class TransactionFragment : Fragment(), OnItemClickListener {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 launch {
-                    transactionViewModel.isLoading.collect {
-                        binding.progressBar.isVisible = it
+                    transactionViewModel.isLoading.collect { isLoading ->
+                        if (isLoading) {
+                            showLoading()
+                        } else {
+                            hideLoading()
+                        }
                     }
                 }
 
@@ -120,6 +129,22 @@ class TransactionFragment : Fragment(), OnItemClickListener {
                 }
             })
         }
+    }
+
+    private fun showLoading() {
+        if (progressDialog == null) {
+            val binding = ItemDialogLoadingBinding.inflate(LayoutInflater.from(requireContext()))
+            progressDialog = AlertDialog.Builder(requireContext())
+                .setView(binding.root)
+                .setCancelable(false)
+                .create()
+        }
+        progressDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog?.show()
+    }
+
+    private fun hideLoading() {
+        progressDialog?.dismiss()
     }
 
     override fun onDestroyView() {
