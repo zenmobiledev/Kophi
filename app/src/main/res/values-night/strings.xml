@@ -14,7 +14,7 @@
     <string name="intro_title_3">Relax and Enjoy your coffee</string>
     <string name="intro_sub_title_3">Pick up your coffee hassle-free and enjoy a\nperfect brew, anytime, anywhere</string>
 
-    <string name="add_to_cart">Add to Cart (%s)</string>
+    <string name="add_to_cart">+ Cart %s</string>
     <string name="item_total">1</string>
     <string name="total_price">Total: %s</string>
     <string name="hello_name">Hi, %s</string>
@@ -34,5 +34,11 @@
     <string name="text_log_out">Log out</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_pay">Pay</string>
+    <string name="text_cancel_order">Cancel Order</string>
+    <string name="text_are_you_sure_cancel_order">Are you sure you want to cancel this order?</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
     <string name="text_please_wait">Please Wait...</string>
+    <string name="text_logout">Logout</string>
+    <string name="text_are_you_sure_you_want_to_logout">Are you sure you want to log out?</string>
 </resources>

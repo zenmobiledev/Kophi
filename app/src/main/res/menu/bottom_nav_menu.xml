@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_coffee"
-        android:icon="@drawable/outline_coffee_24"
+        android:icon="@drawable/coffee_selector"
         android:title="@string/title_coffee" />
 
     <item
         android:id="@+id/navigation_transaction"
-        android:icon="@drawable/outline_receipt_long_24"
+        android:icon="@drawable/transaction_selector"
         android:title="@string/title_transaction" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/outline_person_24"
+        android:icon="@drawable/profile_selector"
         android:title="@string/title_profile" />
 
 </menu>
