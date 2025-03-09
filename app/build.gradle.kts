@@ -44,16 +44,17 @@ android {
             name = "SNAP_URL",
             value = localProperties["SNAPURL"].toString()
         )
-    }
 
-    signingConfigs {
-        create("release") {
-            storeFile = file(rootProject.file(properties["KEYSTORE_FILE"] ?: ""))
-            storePassword = properties["KEYSTORE_PASSWORD"] as String?
-            keyAlias = properties["KEY_ALIAS"] as String?
-            keyPassword = properties["KEY_PASSWORD"] as String?
+        signingConfigs {
+            create("release") {
+                storeFile = file(rootProject.file(localProperties["KEYSTORE_FILE"] ?: ""))
+                storePassword = localProperties["KEYSTORE_PASSWORD"] as String?
+                keyAlias = localProperties["KEY_ALIAS"] as String?
+                keyPassword = localProperties["KEY_PASSWORD"] as String?
+            }
         }
     }
+
 
     buildTypes {
         release {
