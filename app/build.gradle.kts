@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -45,9 +46,19 @@ android {
         )
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(rootProject.file(properties["KEYSTORE_FILE"] ?: ""))
+            storePassword = properties["KEYSTORE_PASSWORD"] as String?
+            keyAlias = properties["KEY_ALIAS"] as String?
+            keyPassword = properties["KEY_PASSWORD"] as String?
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -90,7 +101,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.crashlytics)
 
     // Credential
     implementation(libs.androidx.credentials)
