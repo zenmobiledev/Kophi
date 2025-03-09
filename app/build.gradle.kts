@@ -1,5 +1,11 @@
 import java.util.Properties
 
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) localPropertiesFile.inputStream().use {
+    localProperties.load(it)
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -23,12 +29,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val localProperties = Properties()
-        val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) localPropertiesFile.inputStream().use {
-            localProperties.load(it)
-        }
-
         buildConfigField(
             type = "String",
             name = "DEFAULT_WEB_CLIENT_ID",
@@ -44,17 +44,16 @@ android {
             name = "SNAP_URL",
             value = localProperties["SNAPURL"].toString()
         )
-
-        signingConfigs {
-            create("release") {
-                storeFile = file(rootProject.file(localProperties["KEYSTORE_FILE"] ?: ""))
-                storePassword = localProperties["KEYSTORE_PASSWORD"] as String?
-                keyAlias = localProperties["KEY_ALIAS"] as String?
-                keyPassword = localProperties["KEY_PASSWORD"] as String?
-            }
-        }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(rootProject.file(localProperties["KEYSTORE_FILE"] ?: ""))
+            storePassword = localProperties["KEYSTORE_PASSWORD"] as String?
+            keyAlias = localProperties["KEY_ALIAS"] as String?
+            keyPassword = localProperties["KEY_PASSWORD"] as String?
+        }
+    }
 
     buildTypes {
         release {
