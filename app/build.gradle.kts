@@ -1,5 +1,11 @@
 import java.util.Properties
 
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) localPropertiesFile.inputStream().use {
+    localProperties.load(it)
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,6 +13,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -21,12 +28,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        val localProperties = Properties()
-        val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) localPropertiesFile.inputStream().use {
-            localProperties.load(it)
-        }
 
         buildConfigField(
             type = "String",
@@ -45,9 +46,19 @@ android {
         )
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(rootProject.file(localProperties["KEYSTORE_FILE"] ?: ""))
+            storePassword = localProperties["KEYSTORE_PASSWORD"] as String?
+            keyAlias = localProperties["KEY_ALIAS"] as String?
+            keyPassword = localProperties["KEY_PASSWORD"] as String?
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -90,7 +101,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.crashlytics)
 
     // Credential
     implementation(libs.androidx.credentials)

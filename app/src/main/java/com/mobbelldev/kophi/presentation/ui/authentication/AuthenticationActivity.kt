@@ -150,10 +150,12 @@ class AuthenticationActivity : AppCompatActivity() {
                     lifecycleScope.launch {
                         authenticationViewModel.setEmail(auth.currentUser?.email.toString())
                     }
+                    binding.btnSignInWithGoogle.isEnabled = false
                     Log.d(TAG, "signInWithCredential:success")
                 } else {
                     // If sign in fails, display a message to the user
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    binding.btnSignInWithGoogle.isEnabled = true
                 }
             }
     }
@@ -163,7 +165,7 @@ class AuthenticationActivity : AppCompatActivity() {
         // SIGN IN
         binding.btnSignInWithGoogle.setOnClickListener {
             val credentialManager =
-                CredentialManager.create(this) //import from androidx.CredentialManager
+                CredentialManager.create(this)
 
             val token = BuildConfig.DEFAULT_WEB_CLIENT_ID
             val googleIdOption = GetGoogleIdOption.Builder()
@@ -172,7 +174,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 .build()
 
             val request =
-                GetCredentialRequest.Builder() //import from androidx.CredentialManager
+                GetCredentialRequest.Builder()
                     .addCredentialOption(googleIdOption)
                     .build()
 
@@ -184,10 +186,8 @@ class AuthenticationActivity : AppCompatActivity() {
                         context = this@AuthenticationActivity,
                     )
                     handleSignIn(result)
-                } catch (e: GetCredentialException) { //import from androidx.CredentialManager
+                } catch (e: GetCredentialException) {
                     Log.d("Error", e.message.toString())
-                } finally {
-                    binding.btnSignInWithGoogle.isEnabled = false
                 }
             }
         }

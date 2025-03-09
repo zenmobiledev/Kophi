@@ -40,4 +40,6 @@
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
     <string name="text_please_wait">Mohon Tunggu…</string>
+    <string name="text_logout">Keluar</string>
+    <string name="text_are_you_sure_you_want_to_logout">Apakah Anda yakin ingin keluar?</string>
 </resources>
