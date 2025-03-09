@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -59,15 +60,26 @@ class ProfileFragment : Fragment() {
     private fun setupLogout() {
         binding.cardSettingsLogout.setOnClickListener {
             // Handle logout settings
-            auth.signOut()
-            lifecycleScope.launch {
-                profileViewModel.logout()
-                val intent = Intent(requireContext(), AuthenticationActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            AlertDialog.Builder(requireContext())
+                .setTitle(resources.getString(R.string.text_logout))
+                .setMessage(resources.getString(R.string.text_are_you_sure_you_want_to_logout))
+                .setPositiveButton(resources.getString(R.string.text_yes)) { _, _ ->
+                    auth.signOut()
+                    lifecycleScope.launch {
+                        profileViewModel.logout()
+                        val intent =
+                            Intent(requireContext(), AuthenticationActivity::class.java).apply {
+                                flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            }
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
                 }
-                startActivity(intent)
-                requireActivity().finish()
-            }
+                .setNegativeButton(resources.getString(R.string.text_no)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 

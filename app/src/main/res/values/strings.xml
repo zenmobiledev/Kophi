@@ -38,4 +38,6 @@
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
     <string name="text_please_wait">Please Wait...</string>
+    <string name="text_logout">Logout</string>
+    <string name="text_are_you_sure_you_want_to_logout">Are you sure you want to log out?</string>
 </resources>
