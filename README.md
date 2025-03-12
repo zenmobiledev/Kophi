@@ -25,6 +25,7 @@
 
 - [Technology Used / Tech Stack](#technology-used--tech-stack)
 - [Preview](#preview)
+- [Demo](#demo)
 - [Features](#features)
 - [Installation (How to run the project)](#installation-how-to-run-the-project)
 - [Tree / Folder Structure](#tree--folder-structure)
@@ -34,7 +35,6 @@
 - [Done](#done)
 - [Bugs](#bugs)
 - [Flowchart](#flowchart)
-- [Demo](#demo)
 - [Credit / Contributor(s)](#credit--contributors)
 
 
@@ -48,6 +48,9 @@ kategori dan memesan kopi dengan preferensi pengguna.
 
 Aplikasi **KOPHI** menyediakan sistem pembayaran yang fleksibel, mendukung berbagai metode transaksi
 termasuk debit maupun kredit.
+
+## Demo
+https://github.com/user-attachments/assets/a4a2a258-883c-4b8f-a467-27f1461e3459
 
 ## Features
 
@@ -294,9 +297,6 @@ After the build process completes successfully:
 ## Flowchart
 
 :exclamation: **COMING SOON**
-
-## Demo
-https://github.com/user-attachments/assets/ba2879c5-c465-4967-a529-de127780592a
 
 ## Credit / Contributor(s)
 
