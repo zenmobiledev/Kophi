@@ -237,14 +237,13 @@ After the build process completes successfully:
 
 ## Architecture
 
-| Architecture                              |
-|-------------------------------------------|
-| ![Architecture](assets/architecture.webp) |
+| Architecture                             |
+|------------------------------------------|
+| ![Architecture](assets/architecture.png) |
 
 ## Design Pattern
 
-*[Design Pattern](https://www.kodeco.com/18409174-common-design-patterns-and-app-architectures-for-android#toc-anchor-001)
-**
+**[Design Pattern](https://www.kodeco.com/18409174-common-design-patterns-and-app-architectures-for-android#toc-anchor-001)**
 >- Clean Architecture Pattern: Data Layer, Domain Layer, Presentation Layer
 >- Repository Pattern
 >- Dependency Injection Pattern
