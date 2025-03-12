@@ -21,17 +21,10 @@
 [![View Pager 2](https://img.shields.io/badge/View_Pager_2-1.1.0-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/jetpack/androidx/releases/viewpager2)
 [![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 
-# KOPHI
-
-**KOPHI** adalah aplikasi untuk pecinta kopi yang memudahkan pengguna menemukan kopi berdasarkan
-kategori dan memesan kopi dengan preferensi pengguna.
-
-Aplikasi **KOPHI** menyediakan sistem pembayaran yang fleksibel, mendukung berbagai metode transaksi
-termasuk debit maupun kredit.
-
 ## Table of Contents
 
 - [Technology Used / Tech Stack](#technology-used--tech-stack)
+- [Preview](#preview)
 - [Features](#features)
 - [Installation (How to run the project)](#installation-how-to-run-the-project)
 - [Tree / Folder Structure](#tree--folder-structure)
@@ -41,9 +34,20 @@ termasuk debit maupun kredit.
 - [Done](#done)
 - [Bugs](#bugs)
 - [Flowchart](#flowchart)
-- [Preview](#preview)
 - [Demo](#demo)
 - [Credit / Contributor(s)](#credit--contributors)
+
+
+## Preview
+| App Introduction                            |
+|---------------------------------------------|
+| ![App Introduction](assets/preview_app.png) |
+
+**KOPHI** adalah aplikasi untuk pecinta kopi yang memudahkan pengguna menemukan kopi berdasarkan
+kategori dan memesan kopi dengan preferensi pengguna.
+
+Aplikasi **KOPHI** menyediakan sistem pembayaran yang fleksibel, mendukung berbagai metode transaksi
+termasuk debit maupun kredit.
 
 ## Features
 
@@ -291,15 +295,7 @@ After the build process completes successfully:
 
 :exclamation: **COMING SOON**
 
-## Preview
-| App Introduction                            |
-|---------------------------------------------|
-| ![App Introduction](assets/preview_app.png) |
-
-
-
 ## Demo
-
 https://github.com/user-attachments/assets/ba2879c5-c465-4967-a529-de127780592a
 
 ## Credit / Contributor(s)
