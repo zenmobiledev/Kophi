@@ -36,6 +36,9 @@ class TransactionViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _isSwipeRefresh = MutableSharedFlow<Boolean>()
+    val isSwipeRefresh: SharedFlow<Boolean> = _isSwipeRefresh
+
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage: SharedFlow<String> = _errorMessage
 
@@ -57,11 +60,13 @@ class TransactionViewModel @Inject constructor(
                 ).collect { result ->
                     when (result) {
                         is ResultResponse.Error -> {
+                            _isSwipeRefresh.emit(false)
                             _errorMessage.emit(result.message)
                         }
 
                         is ResultResponse.Loading -> {}
                         is ResultResponse.Success -> {
+                            _isSwipeRefresh.emit(false)
                             result.data.let {
                                 _orders.value = Orders(
                                     data = it?.data ?: emptyList()

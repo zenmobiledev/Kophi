@@ -89,6 +89,12 @@ class TransactionFragment : Fragment(), OnItemClickListener {
                 }
 
                 launch {
+                    transactionViewModel.isSwipeRefresh.collect {
+                        binding.swipeRefresh.isRefreshing = it
+                    }
+                }
+
+                launch {
                     transactionViewModel.errorMessage.filterNotNull().collect {
                         Toast.makeText(view?.context, "Error: $it", Toast.LENGTH_LONG).show()
                     }
