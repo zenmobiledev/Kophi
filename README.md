@@ -251,7 +251,7 @@ After the build process completes successfully:
 >- MVVM (Model-View-ViewModel) Pattern
 >- Adapter Pattern
 >- Data Source Pattern
->- DAO (Data Access Object) Patern
+>- DAO (Data Access Object) Pattern
 >- Factory Pattern
 >- Observer Pattern
 >- Mapper Pattern
