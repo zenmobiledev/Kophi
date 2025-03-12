@@ -243,8 +243,10 @@ After the build process completes successfully:
 
 ## Design Pattern
 
-**[Design Pattern](https://www.kodeco.com/18409174-common-design-patterns-and-app-architectures-for-android#toc-anchor-001)**
->- Clean Architecture Pattern: Data Layer, Domain Layer, Presentation Layer
+*
+*[Design Pattern](https://www.kodeco.com/18409174-common-design-patterns-and-app-architectures-for-android#toc-anchor-001)
+**
+> - Clean Architecture Pattern: Data Layer, Domain Layer, Presentation Layer
 >- Repository Pattern
 >- Dependency Injection Pattern
 >- Use Case Pattern
@@ -259,12 +261,12 @@ After the build process completes successfully:
 
 ## Todos
 
->- [ ] Unit Testing
+> - [ ] Unit Testing
 
 ## Done
 
 **Point Penilaian**:
->- [x] Local Storage CRUD
+> - [x] Local Storage CRUD
 >- [x] API Integration
 >- [x] Payment Integration
 >- [x] State Management
@@ -278,7 +280,7 @@ After the build process completes successfully:
 >- [x] App Distribution
 
 **Fitur Aplikasi**:
->- [x]  Preferensi
+> - [x]  Preferensi
 >- [x]  Pembayaran
 >- [x]  Transaksi
 >- [x]  Pengaturan
@@ -293,23 +295,20 @@ After the build process completes successfully:
 
 ## Preview
 
-| Splash Screen                              | On Boarding / Walkthrough App                        | Authentication                               |
-|--------------------------------------------|------------------------------------------------------|----------------------------------------------|
-| ![Splash Screen](assets/splash_screen.png) | ![On Boarding / Walkthrough](assets/on_boarding.png) | ![Authentication](assets/authentication.png) |
+| Splash Screen                              | On Boarding / Walkthrough App                        | Authentication                               | Coffee Page 1                            |
+|--------------------------------------------|------------------------------------------------------|----------------------------------------------|------------------------------------------|
+| ![Splash Screen](assets/splash_screen.png) | ![On Boarding / Walkthrough](assets/on_boarding.png) | ![Authentication](assets/authentication.png) | ![Coffee Page 1](assets/coffee_page.png) |
 
-| Coffee Page 1                            | Coffee Detail Page                                   | Coffee Page 2                              |
-|------------------------------------------|------------------------------------------------------|--------------------------------------------|
-| ![Coffee Page 1](assets/coffee_page.png) | ![Coffee Detail Page](assets/coffee_detail_page.png) | ![Coffee Page 2](assets/coffee_page_2.png) |
+| Coffee Page 2                              | Checkout Page                              | Payment Page                             |
+|--------------------------------------------|--------------------------------------------|------------------------------------------|
+| ![Coffee Page 2](assets/coffee_page_2.png) | ![Checkout Page](assets/checkout_page.png) | ![Payment Page](assets/payment_page.png) |
 
-| Checkout Page                              | Payment Page                             | Transaction Page                                 |
-|--------------------------------------------|------------------------------------------|--------------------------------------------------|
-| ![Checkout Page](assets/checkout_page.png) | ![Payment Page](assets/payment_page.png) | ![Transaction Page](assets/transaction_page.png) |
-
-| Profile Page                             | 
-|------------------------------------------|
-| ![Profile Page](assets/profile_page.png) | 
+| Transaction Page                                 | Profile Page                             |
+|--------------------------------------------------|------------------------------------------|
+| ![Transaction Page](assets/transaction_page.png) | ![Profile Page](assets/profile_page.png) |
 
 ## Demo
+
 https://github.com/user-attachments/assets/ba2879c5-c465-4967-a529-de127780592a
 
 ## Credit / Contributor(s)
