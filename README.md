@@ -310,8 +310,7 @@ After the build process completes successfully:
 | ![Profile Page](assets/profile_page.png) | 
 
 ## Demo
-
-:exclamation: **COMING SOON**
+https://github.com/user-attachments/assets/ba2879c5-c465-4967-a529-de127780592a
 
 ## Credit / Contributor(s)
 
