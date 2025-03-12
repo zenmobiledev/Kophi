@@ -47,8 +47,8 @@ termasuk debit maupun kredit.
 
 ## Features
 
-> - **Preferensi**: Pengguna bisa menyesuaikan pemesanan kopi dimulai dari penyajian, jenis susu dan
-    tingkat kemanisan.
+>- **Preferensi**: Pengguna bisa menyesuaikan pemesanan kopi dimulai dari penyajian, jenis susu dan
+   tingkat kemanisan.
 >- **Pembayaran**: Pengguna bisa membayar tagihan dengan berbagai metode pembayaran yang tersedia.
 >- **Transaksi**: Pengguna bisa melihat daftar transaksi dari berbagai status(*Expired*,
    *Cancelled*, *Paid* dan *Pending*), pengguna juga bisa melanjutkan pembayaran apabila status
@@ -61,22 +61,22 @@ To run the project locally, follow these steps:
 
 ### 1. Clone the repository
 
-> - ```https://github.com/zenmobiledev/kophi.git```
+>- ```https://github.com/zenmobiledev/kophi.git```
 >- ```cd kophi```
 
 ### 2. Open the project
 
-> - Launch your preferred Integrated Development Environment (IDE), such as Android Studio or
-    IntelliJ IDEA. Then, open the ```kophi``` project directory within the IDE.
+>- Launch your preferred Integrated Development Environment (IDE), such as Android Studio or
+   IntelliJ IDEA. Then, open the ```kophi``` project directory within the IDE.
 
 ### 3. Build the project
 
 Ensure that all necessary dependencies are installed. In Android Studio or IntelliJ IDEA, you can
 typically do this by:
 
-> - **Syncing the Project**: The IDE should automatically prompt you to sync the project with the
-    Gradle files. If not, you can manually sync by clicking on the "Sync Project with Gradle Files"
-    button.
+>- **Syncing the Project**: The IDE should automatically prompt you to sync the project with the
+   Gradle files. If not, you can manually sync by clicking on the "Sync Project with Gradle Files"
+   button.
 >- **Building the Project:** Navigate to the ```Build``` menu and select ```Build Project```. This
    process will compile the code and prepare the application for running.
 
@@ -84,12 +84,12 @@ typically do this by:
 
 After the build process completes successfully:
 
-> - **Select a Device**: Choose an emulator or a physical device connected to your computer where
-    you want to run the application.
+>- **Select a Device**: Choose an emulator or a physical device connected to your computer where
+   you want to run the application.
 
-> - **Launch the App**: Click on the green 'Run' button (usually depicted as a play icon) in the IDE
-    toolbar, or navigate to ```Run``` > ```Run 'app'```. This action will install and start the
-    application on the selected device.
+>- **Launch the App**: Click on the green 'Run' button (usually depicted as a play icon) in the IDE
+   toolbar, or navigate to ```Run``` > ```Run 'app'```. This action will install and start the
+   application on the selected device.
 
 ## Tree / Folder Structure
 
@@ -243,10 +243,8 @@ After the build process completes successfully:
 
 ## Design Pattern
 
-*
-*[Design Pattern](https://www.kodeco.com/18409174-common-design-patterns-and-app-architectures-for-android#toc-anchor-001)
-**
-> - Clean Architecture Pattern: Data Layer, Domain Layer, Presentation Layer
+**[Design Pattern](https://www.kodeco.com/18409174-common-design-patterns-and-app-architectures-for-android#toc-anchor-001)**
+>- Clean Architecture Pattern: Data Layer, Domain Layer, Presentation Layer
 >- Repository Pattern
 >- Dependency Injection Pattern
 >- Use Case Pattern
@@ -261,12 +259,12 @@ After the build process completes successfully:
 
 ## Todos
 
-> - [ ] Unit Testing
+>- [ ] Unit Testing
 
 ## Done
 
 **Point Penilaian**:
-> - [x] Local Storage CRUD
+>- [x] Local Storage CRUD
 >- [x] API Integration
 >- [x] Payment Integration
 >- [x] State Management
@@ -280,32 +278,25 @@ After the build process completes successfully:
 >- [x] App Distribution
 
 **Fitur Aplikasi**:
-> - [x]  Preferensi
+>- [x]  Preferensi
 >- [x]  Pembayaran
 >- [x]  Transaksi
 >- [x]  Pengaturan
 
 ## Bugs
 
-> - [ ] Network Handling
+>- [ ] Network Handling
 
 ## Flowchart
 
 :exclamation: **COMING SOON**
 
 ## Preview
+| App Introduction                            |
+|---------------------------------------------|
+| ![App Introduction](assets/preview_app.png) |
 
-| Splash Screen                              | On Boarding / Walkthrough App                        | Authentication                               | Coffee Page 1                            |
-|--------------------------------------------|------------------------------------------------------|----------------------------------------------|------------------------------------------|
-| ![Splash Screen](assets/splash_screen.png) | ![On Boarding / Walkthrough](assets/on_boarding.png) | ![Authentication](assets/authentication.png) | ![Coffee Page 1](assets/coffee_page.png) |
 
-| Coffee Page 2                              | Checkout Page                              | Payment Page                             |
-|--------------------------------------------|--------------------------------------------|------------------------------------------|
-| ![Coffee Page 2](assets/coffee_page_2.png) | ![Checkout Page](assets/checkout_page.png) | ![Payment Page](assets/payment_page.png) |
-
-| Transaction Page                                 | Profile Page                             |
-|--------------------------------------------------|------------------------------------------|
-| ![Transaction Page](assets/transaction_page.png) | ![Profile Page](assets/profile_page.png) |
 
 ## Demo
 
