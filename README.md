@@ -250,7 +250,6 @@ After the build process completes successfully:
 
 ## Design Pattern
 
-**[Design Pattern](https://www.kodeco.com/18409174-common-design-patterns-and-app-architectures-for-android#toc-anchor-001)**
 >- Clean Architecture Pattern: Data Layer, Domain Layer, Presentation Layer
 >- Repository Pattern
 >- Dependency Injection Pattern
