@@ -34,7 +34,6 @@
 - [Todos](#todos)
 - [Done](#done)
 - [Bugs](#bugs)
-- [Flowchart](#flowchart)
 - [Credit / Contributor(s)](#credit--contributors)
 
 
@@ -292,10 +291,6 @@ After the build process completes successfully:
 ## Bugs
 
 >- [ ] Network Handling
-
-## Flowchart
-
-:exclamation: **COMING SOON**
 
 ## Credit / Contributor(s)
 
